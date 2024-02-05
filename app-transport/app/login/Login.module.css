@@ -1,0 +1,22 @@
+.main {
+  display: flex;
+}
+
+.left {
+  background-color: #a2c5eb;
+  width: 70%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  background-color: #94bae3;
+  width: 30%;
+  height: 100vh;
+}
+
+.img {
+  width: 70%;
+}
