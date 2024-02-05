@@ -30,6 +30,22 @@
   margin-right: 30px;
 }
 
-.text-xxs {
-  font-size: 5px;
+.h2 {
+  margin-top: 0.25rem;
+  text-align: center;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+  letter-spacing: -0.025em;
+  line-height: 0.75rem;
+  font-weight: 700;
+  font-size: 0.55rem;
+}
+
+.label {
+  display: block;
+  font-weight: 500;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+  font-size: 8px;
 }
