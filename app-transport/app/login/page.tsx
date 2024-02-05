@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Login.module.css";
 import Image from "next/image";
+
 const login = () => {
   return (
     <main className={styles.main}>
@@ -18,9 +19,9 @@ const login = () => {
         <div className="card w-95 h-95 bg-base-100 shadow-xl">
           <div className="card-body">
             {/* <h2 className="card-title">Card title!</h2> */}
-            <div className="card-actions justify-end">
+            {/* <div className="card-actions justify-end">
               <button className="btn btn-primary">Buy Now</button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
