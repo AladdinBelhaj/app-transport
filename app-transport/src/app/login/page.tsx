@@ -14,7 +14,7 @@ const login = () => {
           height={400}
         />
 
-        <div className="card bg-base-100 shadow-xl h-3/5 w-1/4">
+        <div className="card bg-base-100 h-3/5 w-1/4 shadow-xl">
           <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="card-body">
               {/* <img
@@ -38,7 +38,7 @@ const login = () => {
                 />
               </svg>
 
-              <h2 className="mt-1 text-center text-sm font-bold leading-3 tracking-tight text-gray-900">
+              <h2 className="text-gray-900 mt-1 text-center text-sm font-bold leading-3 tracking-tight">
                 Sign in to your account
               </h2>
             </div>
@@ -47,7 +47,7 @@ const login = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="text-gray-900 block text-sm font-medium leading-6"
                   >
                     Email address
                   </label>
@@ -58,7 +58,7 @@ const login = () => {
                       type="email"
                       autoComplete="email"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="text-gray-900 ring-gray-300 placeholder:text-gray-400 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -67,7 +67,7 @@ const login = () => {
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="password"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="text-gray-900 block text-sm font-medium leading-6"
                     >
                       Password
                     </label>
@@ -87,7 +87,7 @@ const login = () => {
                       type="password"
                       autoComplete="current-password"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="text-gray-900 ring-gray-300 placeholder:text-gray-400 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -102,7 +102,7 @@ const login = () => {
                 </div>
               </form>
 
-              <p className="mt-10 text-center text-sm text-gray-500">
+              <p className="text-gray-500 mt-10 text-center text-sm">
                 Not a member?{" "}
                 <a
                   href="#"

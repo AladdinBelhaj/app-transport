@@ -3,10 +3,9 @@ import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
   content: [
-    "./app/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}"
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   darkMode: "class",
   theme: {
@@ -332,8 +331,8 @@ const config: Config = {
     },
   },
   plugins: [
-    require('daisyui'),
-    require('@tailwindcss/forms')
+    require('@tailwindcss/forms'),
+    require('daisyui')
   ],
 };
 export default config;
