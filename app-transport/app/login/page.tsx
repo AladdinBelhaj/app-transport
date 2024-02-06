@@ -14,7 +14,7 @@ const login = () => {
           height={400}
         />
 
-        <div className="card w-95 bg-base-100 shadow-xl h-3/5 w-1/4">
+        <div className="card bg-base-100 shadow-xl h-3/5 w-1/4">
           <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="card-body">
               {/* <img
