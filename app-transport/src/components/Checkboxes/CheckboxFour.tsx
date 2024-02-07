@@ -1,6 +1,11 @@
+"use client";
 import { useState } from "react";
 
-const CheckboxFour = () => {
+interface CheckboxProps {
+  label: string;
+}
+
+const CheckboxFour = ({ label }: CheckboxProps) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   return (
@@ -32,7 +37,7 @@ const CheckboxFour = () => {
             </span>
           </div>
         </div>
-        Checkbox Text
+        {label}
       </label>
     </div>
   );
