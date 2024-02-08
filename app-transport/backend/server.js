@@ -23,10 +23,10 @@ const db = require("./app/models/index");
 // db.sequelize.sync()
 
 
-db.sequelize.sync({ force: true }).then(() => {
-    console.log("Drop and re-sync db.");
-initial();
-  });
+// db.sequelize.sync({ force: true }).then(() => {
+//     console.log("Drop and re-sync db.");
+// initial();
+//   });
 
 // db.sequelize.sync({ alter: true }).then(() => {
 //     console.log("Drop and re-sync db.");
