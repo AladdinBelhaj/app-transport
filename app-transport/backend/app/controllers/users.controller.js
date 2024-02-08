@@ -47,6 +47,7 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     try {
+    const salt = await bcrypt.genSaltSync(8);
         const user = await Users.findOne({
             where: {
                 email: req.body.email
@@ -57,7 +58,7 @@ exports.signin = async (req, res) => {
             return res.status(404).send({ message: "User Not found." });
         }
 
-        const passwordIsValid = crypto.Rabbit.decrypt(user.password, config.encryptionKey).toString(crypto.enc.Utf8) === req.body.password;
+        const passwordIsValid = bcrypt.hashSync(req.body.password, salt) === user.password;
 
         if (!passwordIsValid) {
             return res.status(401).send({
@@ -72,37 +73,30 @@ exports.signin = async (req, res) => {
 
         const roles = await user.getRoles();
 
-        const authorities = [];
-        const permissionn = [];
+        // const authorities = [];
+        // const permissionn = [];
 
-        for (let i = 0; i < roles.length; i++) {
-            authorities.push(roles[i].role);
-            const role = await Role.findOne({
-                where: { role: authorities[i] },
-                include: Permission, // Include the associated Permission model
-            });
+        // for (let i = 0; i < roles.length; i++) {
+        //     authorities.push(roles[i].role);
+        //     const role = await Role.findOne({
+        //         where: { role: authorities[i] },
+        //         include: Permission, // Include the associated Permission model
+        //     });
 
-            for (let j = 0; j < role.permissions.length; j++) {
-                permissionn.push(role.permissions[j].name);
-            }
-        }
+        //     for (let j = 0; j < role.permissions.length; j++) {
+        //         permissionn.push(role.permissions[j].name);
+        //     }
+        // }
 
         res.status(200).send({
             id: user.id,
-            firstname: user.firstname,
-            lastname: user.lastname,
+            fullname: user.fullname,
             email: user.email,
-            adresse: user.adresse,
-            governorat: user.governorat,
-            pays: user.pays,
-            specialty: user.specialty,
             phone: user.phone,
-            activ: user.activ,
-            zipcode: user.zipcode,
-            role: authorities[0],
+            // role: authorities[0],
             accessToken: token,
             picture: user.picture,
-            permission: permissionn
+            // permission: permissionn
         });
     } catch (err) {
         res.status(500).send({ message: err.message });

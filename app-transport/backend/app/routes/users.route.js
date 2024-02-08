@@ -15,6 +15,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post("/create", verifySignUp.checkDuplicateEmail, users.signup);
+    router.post("/auth",  users.signin);
 
 
     app.use('/api/users', router);
