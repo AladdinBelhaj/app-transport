@@ -20,7 +20,8 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.users = require("./user.model")(sequelize, Sequelize);
+db.users = require("./users.model")(sequelize, Sequelize);
+db.roles = require("./roles.model")(sequelize,Sequelize);
 
 db.ROLES = ["admin", "transporter", "client"];
 
