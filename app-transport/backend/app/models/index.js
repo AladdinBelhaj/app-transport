@@ -23,6 +23,20 @@ db.sequelize = sequelize;
 db.users = require("./users.model")(sequelize, Sequelize);
 db.roles = require("./roles.model")(sequelize,Sequelize);
 
+// user role association
+db.roles.belongsToMany(db.users, {
+    through: "user_roles",
+    foreignKey: "roleId",
+    otherKey: "userId"
+});
+db.users.belongsToMany(db.roles, {
+    through: "user_roles",
+    foreignKey: "userId",
+    otherKey: "roleId"
+});
+
+
+
 db.ROLES = ["admin", "transporter", "client"];
 
 

@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 
 
 const db = require("./app/models/index");
+const setupRoutes = require("./app/routes/routesetup.route");
 // db.sequelize.sync()
 
 
@@ -36,6 +37,11 @@ const db = require("./app/models/index");
 app.get('/', (req, res) => {
     res.send('Hello Express');
 });
+
+setupRoutes(app);
+
+
+
 
 const PORT = process.env.PORT || 8080;
 
