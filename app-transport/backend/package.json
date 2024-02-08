@@ -18,5 +18,8 @@
     "mysql2": "^3.9.1",
     "nodemailer": "^6.9.9",
     "sequelizer": "^1.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
   }
 }
