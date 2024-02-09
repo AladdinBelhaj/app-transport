@@ -1,9 +1,34 @@
+'use client';
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import style from "./signin.module.css";
+import { useState } from "react";
+import axios from "axios";
 
 const login = () => {
+
+
+  const [post, setPost] = useState({
+    email:"",
+    password:"",
+  })
+
+
+    const handleInput = (name:string,event: any) =>{
+      console.log(event);
+      setPost({...post, [name]: event})
+    }
+
+    function handleSubmit(event:any){
+      console.log(post)
+      event.preventDefault();
+      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
+      .then(response => console.log(response))
+      .catch(err=>console.log(err));
+
+    }
+
   return (
     <>
       <div
@@ -61,6 +86,7 @@ const login = () => {
                     <div className="relative">
                       <input
                         type="email"
+                        onChange={ (e) => handleInput('email',e.target.value)}
                         placeholder="Enter your email"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
@@ -92,6 +118,7 @@ const login = () => {
                     <div className="relative">
                       <input
                         type="password"
+                        onChange={ (e) => handleInput('password',e.target.value)}
                         placeholder="6+ Characters, 1 Capital letter"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-white outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
@@ -122,7 +149,8 @@ const login = () => {
 
                   <div className="mb-5">
                     <input
-                      type="submit"
+                      // type="submit"
+                      onClick={handleSubmit}
                       value="Sign In"
                       className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                     />
