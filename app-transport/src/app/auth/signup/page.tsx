@@ -21,15 +21,15 @@ const register = () => {
   })
 
 
-    const handleInput = (event: any) =>{
+    const handleInput = (name:string,event: any) =>{
       console.log(event);
-      setPost({...post, [event.target.name]: event.target.event})
+      setPost({...post, [name]: event})
     }
 
     function handleSubmit(event:any){
       console.log(post)
-      event.perventDefault();
-      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/create`, {post})
+      event.preventDefault();
+      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/create`, post)
       .then(response => console.log(response))
       .catch(err=>console.log(err));
 
@@ -94,7 +94,7 @@ const register = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      onChange={ (e) => handleInput(e.target.value)}
+                      onChange={ (e) => handleInput('fullname',e.target.value)}
                       name='fullname'
                       placeholder="Enter your full name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -132,7 +132,7 @@ const register = () => {
                     <input
                       type="email"
                       name="email"
-                      onChange={ (e) => handleInput(e.target.value)}
+                      onChange={ (e) => handleInput('email', e.target.value)}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -165,7 +165,7 @@ const register = () => {
                     <input
                       type="password"
                       name="password"
-                      onChange={ (e) => handleInput(e.target.value)}
+                      onChange={ (e) => handleInput('password',e.target.value)}
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -234,7 +234,7 @@ const register = () => {
                 </div>
                 <div className="mb-5">
                   <input
-                    type="submit"
+                    // type="submit"
                     onClick={handleSubmit}
                     value="Create account"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
