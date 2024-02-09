@@ -2,6 +2,7 @@ const db = require('../models/index');
 const Role = db.roles;
 const Users = db.users;
 const Op = db.Sequelize.Op;
+const config = require("../config/auth.config")
 
 var jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
@@ -58,8 +59,8 @@ exports.signin = async (req, res) => {
             return res.status(404).send({ message: "User Not found." });
         }
 
-        const passwordIsValid = bcrypt.hashSync(req.body.password, salt) === user.password;
 
+        const passwordIsValid = bcrypt.compare(req.body.password, user.password);
         if (!passwordIsValid) {
             return res.status(401).send({
                 accessToken: null,
