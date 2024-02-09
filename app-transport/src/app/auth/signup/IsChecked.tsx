@@ -2,16 +2,22 @@
 import React from "react";
 import { useState } from "react";
 
-const IsChecked = () => {
+interface IsCheckedProps {
+  selectRole: (role: string) => void;
+}
+
+function IsChecked({ selectRole }: IsCheckedProps) {
   const [isTransporterChecked, setIsTransporterChecked] = useState(false);
   const [isClientChecked, setIsClientChecked] = useState(false);
 
   const handleTransporterChange = () => {
+    selectRole('transporter');
     setIsTransporterChecked(!isTransporterChecked);
     setIsClientChecked(false); // Uncheck the Client checkbox
   };
 
   const handleClientChange = () => {
+    selectRole('client');
     setIsClientChecked(!isClientChecked);
     setIsTransporterChecked(false); // Uncheck the Transporter checkbox
   };
@@ -25,8 +31,7 @@ const IsChecked = () => {
           type="checkbox"
           className="checkbox"
           checked={isTransporterChecked}
-          onChange={handleTransporterChange}
-        />
+          onChange={handleTransporterChange} />
       </label>
       <label className="label cursor-pointer">
         <span className="label-text block font-medium text-black dark:text-white">
@@ -36,11 +41,10 @@ const IsChecked = () => {
           type="checkbox"
           className="checkbox"
           checked={isClientChecked}
-          onChange={handleClientChange}
-        />
+          onChange={handleClientChange} />
       </label>
     </div>
   );
-};
+}
 
 export default IsChecked;

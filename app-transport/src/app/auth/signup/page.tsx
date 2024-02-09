@@ -1,10 +1,46 @@
+'use client'
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import style from "./signup.module.css";
 import IsChecked from "./IsChecked";
+import axios from 'axios'
+import { useState } from "react";
+
+
 
 const register = () => {
+
+  // /api/users/create
+
+  const [post, setPost] = useState({
+    fullname:"",
+    email:"",
+    password:"",
+    role:""
+  })
+
+
+    const handleInput = (event: any) =>{
+      console.log(event);
+      setPost({...post, [event.target.name]: event.target.event})
+    }
+
+    function handleSubmit(event:any){
+      console.log(post)
+      event.perventDefault();
+      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/create`, {post})
+      .then(response => console.log(response))
+      .catch(err=>console.log(err));
+
+    }
+
+    function  handelselectRole(data:any){
+      console.log('ROLE :',data);
+      setPost({...post, role: data})
+
+    }
+
   return (
     <div className={`flex h-screen items-center justify-center ${style.body}`}>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -58,6 +94,8 @@ const register = () => {
                   <div className="relative">
                     <input
                       type="text"
+                      onChange={ (e) => handleInput(e.target.value)}
+                      name='fullname'
                       placeholder="Enter your full name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -93,6 +131,8 @@ const register = () => {
                   <div className="relative">
                     <input
                       type="email"
+                      name="email"
+                      onChange={ (e) => handleInput(e.target.value)}
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -124,6 +164,8 @@ const register = () => {
                   <div className="relative">
                     <input
                       type="password"
+                      name="password"
+                      onChange={ (e) => handleInput(e.target.value)}
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -188,11 +230,12 @@ const register = () => {
                 </div> */}
 
                 <div className={`form-control mb-3 ${style.checkbox}`}>
-                  <IsChecked></IsChecked>
+                  <IsChecked selectRole={handelselectRole}></IsChecked>
                 </div>
                 <div className="mb-5">
                   <input
                     type="submit"
+                    onClick={handleSubmit}
                     value="Create account"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   />
