@@ -8,7 +8,7 @@ const PasswordValidation = () => {
     if (field === "password") {
       setPassword(value);
       if (value.length < 6) {
-        setPasswordError("Password must contain at least 6 characters.");
+        setPasswordError("Password must contain at least 6 characters");
       } else {
         setPasswordError("");
       }
@@ -16,19 +16,24 @@ const PasswordValidation = () => {
   };
 
   return (
-    <div className="mb-4">
+    <div className="relative mb-4">
       <label className="mb-2.5 block font-medium text-black dark:text-white">
         Password
       </label>
+      {passwordError && (
+        <p className="text-red-500 absolute right-0 top-0 mt-1">
+          {passwordError}
+        </p>
+      )}
       <div className="relative">
         <input
           type="password"
           name="password"
           onChange={(e) => handleInput("password", e.target.value)}
           placeholder="Enter your password"
-          className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${passwordError && "border-red-500"}`}
+          className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${passwordError && "border-red-500"}`}
         />
-        {passwordError && <p className="text-red-500 mt-1">{passwordError}</p>}
+
         <span className="absolute right-4 top-4">
           <svg
             className="fill-current"

@@ -4,7 +4,7 @@ const NameValidation = () => {
   const [fullName, setFullName] = useState("");
   const [fullNameError, setFullNameError] = useState("");
 
-  const handleInput = (field: any, value: any) => {
+  const handleInputValidation = (field: any, value: any) => {
     if (field === "fullname") {
       setFullName(value);
       if (!/\s/.test(value)) {
@@ -14,20 +14,25 @@ const NameValidation = () => {
       }
     }
   };
+
   return (
-    <div className="mb-4">
+    <div className="relative mb-4">
       <label className="mb-2.5 block font-medium text-black dark:text-white">
         Name
       </label>
+      {fullNameError && (
+        <p className="text-red-500 absolute right-0 top-0 mt-1">
+          {fullNameError}
+        </p>
+      )}
       <div className="relative">
         <input
           type="text"
-          onChange={(e) => handleInput("fullname", e.target.value)}
+          onChange={(e) => handleInputValidation("fullname", e.target.value)}
           name="fullname"
           placeholder="Enter your full name"
-          className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${fullNameError && "border-red-500"}`}
+          className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${fullNameError && "border-red-500"}`}
         />
-        {fullNameError && <p className="text-red-500 mt-1">{fullNameError}</p>}
         <span className="absolute right-4 top-4">
           <svg
             className="fill-current"
