@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-const NameValidation = () => {
+interface NameValidationProps {
+  handleInput: (name: string, event: any) => void;
+}
+
+const NameValidation: React.FC<NameValidationProps> = ({ handleInput }) => {
   const [fullName, setFullName] = useState("");
   const [fullNameError, setFullNameError] = useState("");
 
@@ -28,7 +32,10 @@ const NameValidation = () => {
       <div className="relative">
         <input
           type="text"
-          onChange={(e) => handleInputValidation("fullname", e.target.value)}
+          onChange={(e) => {
+            handleInput("fullname", e.target.value);
+            handleInputValidation("fullname", e.target.value);
+          }}
           name="fullname"
           placeholder="Enter your full name"
           className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${fullNameError && "border-red-500"}`}

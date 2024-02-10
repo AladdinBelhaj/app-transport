@@ -85,7 +85,7 @@ const Register = () => {
               </h2>
 
               <form>
-                <NameValidation></NameValidation>
+                <NameValidation handleInput={handleInput}></NameValidation>
                 {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Name
@@ -122,7 +122,7 @@ const Register = () => {
                     </span>
                   </div>
                 </div> */}
-                <EmailValidation></EmailValidation>
+                <EmailValidation handleInput={handleInput}></EmailValidation>
                 {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -155,7 +155,9 @@ const Register = () => {
                     </span>
                   </div>
                 </div> */}
-                <PasswordValidation></PasswordValidation>
+                <PasswordValidation
+                  handleInput={handleInput}
+                ></PasswordValidation>
                 {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Password

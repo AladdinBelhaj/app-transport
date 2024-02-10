@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 
-const PasswordValidation = () => {
+interface PasswordValidationProps {
+  handleInput: (name: string, event: any) => void;
+}
+
+const PasswordValidation: React.FC<PasswordValidationProps> = ({
+  handleInput,
+}) => {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const handleInput = (field: any, value: any) => {
+  const handleInputValidation = (field: any, value: any) => {
     if (field === "password") {
       setPassword(value);
       if (value.length < 6) {
@@ -29,7 +35,10 @@ const PasswordValidation = () => {
         <input
           type="password"
           name="password"
-          onChange={(e) => handleInput("password", e.target.value)}
+          onChange={(e) => {
+            handleInput("password", e.target.value); // Adjusted to pass correct field name
+            handleInputValidation("password", e.target.value); // Adjusted to pass correct field name
+          }}
           placeholder="Enter your password"
           className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${passwordError && "border-red-500"}`}
         />
