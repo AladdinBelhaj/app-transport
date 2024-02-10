@@ -13,6 +13,15 @@ const Login = () => {
     password: "",
   });
 
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+
+  const isFormValid = () => {
+    return (
+      post.email !== "" && emailValid && post.password !== "" && passwordValid
+    );
+  };
+
   const handleInput = (name: string, event: any) => {
     console.log(event);
     setPost({ ...post, [name]: event });
@@ -27,19 +36,6 @@ const Login = () => {
       .catch((err) => console.log(err));
   }
 
-  // function handleSubmit(event: any) {
-  //   console.log(post);
-  //   event.preventDefault();
-  //   axios
-  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
-  //     .then((response) => {
-  //       console.log(response.status);
-  //       if (response.status === 200) {
-  //         router.push("/");
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
   return (
     <>
       <div
@@ -90,15 +86,24 @@ const Login = () => {
                 </h2>
 
                 <form>
-                  <EmailValidation></EmailValidation>
-                  <PasswordValidation></PasswordValidation>
+                  <EmailValidation
+                    handleInput={handleInput}
+                    setEmailValid={setEmailValid}
+                  ></EmailValidation>
+                  <PasswordValidation
+                    handleInput={handleInput}
+                    setPasswordValid={setPasswordValid}
+                  ></PasswordValidation>
 
                   <div className="mb-5">
                     <input
-                      // type="submit"
+                      type="submit"
                       onClick={handleSubmit}
                       value="Sign In"
-                      className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                      disabled={!isFormValid()}
+                      className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition ${
+                        !isFormValid() && "cursor-not-allowed opacity-50"
+                      }`}
                     />
                   </div>
                   {/* 
