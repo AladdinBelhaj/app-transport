@@ -2,12 +2,12 @@ import React, { useState } from "react";
 
 interface PasswordValidationProps {
   handleInput: (name: string, event: any) => void;
-  setFormValid: React.Dispatch<React.SetStateAction<boolean>>;
+  setPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PasswordValidation: React.FC<PasswordValidationProps> = ({
   handleInput,
-  setFormValid,
+  setPasswordValid,
 }) => {
   const [password, setPassword] = useState("");
 
@@ -15,10 +15,10 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
     if (field === "password") {
       setPassword(value);
       if (value.length < 6) {
-        setFormValid(false);
+        setPasswordValid(false);
         setPassword("Password must contain at least 6 characters");
       } else {
-        setFormValid(true);
+        setPasswordValid(true);
         setPassword("");
       }
     }

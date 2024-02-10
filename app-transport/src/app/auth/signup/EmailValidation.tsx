@@ -2,12 +2,12 @@ import React, { useState } from "react";
 
 interface EmailValidationProps {
   handleInput: (name: string, event: any) => void;
-  setFormValid: React.Dispatch<React.SetStateAction<boolean>>;
+  setEmailValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EmailValidation: React.FC<EmailValidationProps> = ({
   handleInput,
-  setFormValid,
+  setEmailValid,
 }) => {
   const [emailError, setEmailError] = useState("");
 
@@ -17,10 +17,10 @@ const EmailValidation: React.FC<EmailValidationProps> = ({
       const emailRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
       if (!emailRegex.test(value)) {
-        setFormValid(false);
+        setEmailValid(false);
         setEmailError("Please enter a valid email");
       } else {
-        setFormValid(true);
+        setEmailValid(true);
         setEmailError("");
       }
     }

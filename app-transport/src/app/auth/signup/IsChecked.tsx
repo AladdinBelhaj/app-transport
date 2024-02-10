@@ -12,12 +12,7 @@ function IsChecked({ selectRole, setFormValid }: IsCheckedProps) {
   const [isClientChecked, setIsClientChecked] = useState(false);
 
   useEffect(() => {
-    // Update formValid state based on the checked status of the checkboxes
-    if (isTransporterChecked || isClientChecked) {
-      setFormValid(true);
-    } else {
-      setFormValid(false);
-    }
+    setFormValid(isTransporterChecked || isClientChecked); // Set formValid to true if either checkbox is checked
   }, [isTransporterChecked, isClientChecked, setFormValid]);
 
   const handleTransporterChange = () => {

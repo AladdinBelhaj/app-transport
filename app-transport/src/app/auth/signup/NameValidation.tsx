@@ -72,12 +72,12 @@ import React, { useState } from "react";
 
 interface NameValidationProps {
   handleInput: (name: string, event: any) => void;
-  setFormValid: React.Dispatch<React.SetStateAction<boolean>>;
+  setNameValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const NameValidation: React.FC<NameValidationProps> = ({
   handleInput,
-  setFormValid,
+  setNameValid,
 }) => {
   const [fullName, setFullName] = useState("");
 
@@ -85,10 +85,10 @@ const NameValidation: React.FC<NameValidationProps> = ({
     if (field === "fullname") {
       setFullName(value);
       if (!/\s/.test(value)) {
-        setFormValid(false); // Set formValid to false if validation fails
+        setNameValid(false); // Set formValid to false if validation fails
         setFullName("Please enter your full name");
       } else {
-        setFormValid(true); // Set formValid to true if validation passes
+        setNameValid(true); // Set formValid to true if validation passes
         setFullName("");
       }
     }

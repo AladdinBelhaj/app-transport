@@ -42,12 +42,18 @@ const Register = () => {
   }
 
   const [formValid, setFormValid] = useState(false);
+  const [nameValid, setNameValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
 
   const isFormValid = () => {
     return (
       post.fullname !== "" &&
+      nameValid &&
       post.email !== "" &&
+      emailValid &&
       post.password !== "" &&
+      passwordValid &&
       post.role !== "" &&
       formValid
     );
@@ -101,17 +107,17 @@ const Register = () => {
               <form>
                 <NameValidation
                   handleInput={handleInput}
-                  setFormValid={setFormValid}
+                  setNameValid={setNameValid}
                 ></NameValidation>
 
                 <EmailValidation
                   handleInput={handleInput}
-                  setFormValid={setFormValid}
+                  setEmailValid={setEmailValid}
                 ></EmailValidation>
 
                 <PasswordValidation
                   handleInput={handleInput}
-                  setFormValid={setFormValid}
+                  setPasswordValid={setPasswordValid}
                 ></PasswordValidation>
 
                 <div className={`form-control mb-3 ${style.checkbox}`}>
