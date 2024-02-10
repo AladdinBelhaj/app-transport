@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,29 +6,39 @@ import style from "./signin.module.css";
 import { useState } from "react";
 import axios from "axios";
 
-const login = () => {
-
-
+const Login = () => {
   const [post, setPost] = useState({
-    email:"",
-    password:"",
-  })
+    email: "",
+    password: "",
+  });
 
+  const handleInput = (name: string, event: any) => {
+    console.log(event);
+    setPost({ ...post, [name]: event });
+  };
 
-    const handleInput = (name:string,event: any) =>{
-      console.log(event);
-      setPost({...post, [name]: event})
-    }
+  function handleSubmit(event: any) {
+    console.log(post);
+    event.preventDefault();
+    axios
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
+      .then((response) => console.log(response.status))
+      .catch((err) => console.log(err));
+  }
 
-    function handleSubmit(event:any){
-      console.log(post)
-      event.preventDefault();
-      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
-      .then(response => console.log(response))
-      .catch(err=>console.log(err));
-
-    }
-
+  // function handleSubmit(event: any) {
+  //   console.log(post);
+  //   event.preventDefault();
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
+  //     .then((response) => {
+  //       console.log(response.status);
+  //       if (response.status === 200) {
+  //         router.push("/");
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
   return (
     <>
       <div
@@ -86,7 +96,7 @@ const login = () => {
                     <div className="relative">
                       <input
                         type="email"
-                        onChange={ (e) => handleInput('email',e.target.value)}
+                        onChange={(e) => handleInput("email", e.target.value)}
                         placeholder="Enter your email"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
@@ -113,14 +123,17 @@ const login = () => {
 
                   <div className="mb-6">
                     <label className="mb-2.5 block font-medium text-black dark:text-white">
-                      Re-type Password
+                      Password
                     </label>
                     <div className="relative">
                       <input
                         type="password"
-                        onChange={ (e) => handleInput('password',e.target.value)}
-                        placeholder="6+ Characters, 1 Capital letter"
-                        className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-white outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        name="password"
+                        onChange={(e) =>
+                          handleInput("password", e.target.value)
+                        }
+                        placeholder="Enter your password"
+                        className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
 
                       <span className="absolute right-4 top-4">
@@ -155,7 +168,7 @@ const login = () => {
                       className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                     />
                   </div>
-
+                  {/* 
                   <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                     <span>
                       <svg
@@ -191,7 +204,7 @@ const login = () => {
                       </svg>
                     </span>
                     Sign in with Google
-                  </button>
+                  </button> */}
 
                   <div className="mt-6 text-center">
                     <p>
@@ -211,7 +224,7 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
 
 // <main className={styles.main}>
 // <div className={styles.left}>
