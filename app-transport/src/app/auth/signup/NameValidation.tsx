@@ -81,17 +81,15 @@ const NameValidation: React.FC<NameValidationProps> = ({
 }) => {
   const [fullName, setFullName] = useState("");
 
-  const [fullNameError, setFullNameError] = useState("");
-
   const handleInputValidation = (field: any, value: any) => {
     if (field === "fullname") {
       setFullName(value);
       if (!/\s/.test(value)) {
         setFormValid(false); // Set formValid to false if validation fails
-        setFullNameError("Please enter your full name");
+        setFullName("Please enter your full name");
       } else {
         setFormValid(true); // Set formValid to true if validation passes
-        setFullNameError("");
+        setFullName("");
       }
     }
   };
@@ -101,10 +99,8 @@ const NameValidation: React.FC<NameValidationProps> = ({
       <label className="mb-2.5 block font-medium text-black dark:text-white">
         Name
       </label>
-      {fullNameError && (
-        <p className="text-red-500 absolute right-0 top-0 mt-1">
-          {fullNameError}
-        </p>
+      {fullName && (
+        <p className="text-red-500 absolute right-0 top-0 mt-1">{fullName}</p>
       )}
       <div className="relative">
         <input

@@ -44,17 +44,13 @@ const Register = () => {
   const [formValid, setFormValid] = useState(false);
 
   const isFormValid = () => {
-    // return (
-    //   post.fullname !== "" &&
-    //   formValid &&
-    //   post.password !== "" &&
-    //   formValid &&
-    //   post.email !== "" &&
-    //   formValid &&
-    //   post.role !== ""
-    // );
-
-    return post.fullname !== "" && formValid;
+    return (
+      post.fullname !== "" &&
+      post.email !== "" &&
+      post.password !== "" &&
+      post.role !== "" &&
+      formValid
+    );
   };
 
   return (
@@ -115,11 +111,14 @@ const Register = () => {
 
                 <PasswordValidation
                   handleInput={handleInput}
-                  // setFormValid={setFormValid}
+                  setFormValid={setFormValid}
                 ></PasswordValidation>
 
                 <div className={`form-control mb-3 ${style.checkbox}`}>
-                  <IsChecked selectRole={handelselectRole}></IsChecked>
+                  <IsChecked
+                    selectRole={handelselectRole}
+                    setFormValid={setFormValid}
+                  ></IsChecked>
                 </div>
 
                 <div className="mb-5">

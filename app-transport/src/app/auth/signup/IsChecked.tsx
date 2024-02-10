@@ -1,25 +1,35 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-
+import { useEffect } from "react";
 interface IsCheckedProps {
   selectRole: (role: string) => void;
+  setFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function IsChecked({ selectRole }: IsCheckedProps) {
+function IsChecked({ selectRole, setFormValid }: IsCheckedProps) {
   const [isTransporterChecked, setIsTransporterChecked] = useState(false);
   const [isClientChecked, setIsClientChecked] = useState(false);
 
+  useEffect(() => {
+    // Update formValid state based on the checked status of the checkboxes
+    if (isTransporterChecked || isClientChecked) {
+      setFormValid(true);
+    } else {
+      setFormValid(false);
+    }
+  }, [isTransporterChecked, isClientChecked, setFormValid]);
+
   const handleTransporterChange = () => {
-    selectRole('transporter');
+    selectRole("transporter");
     setIsTransporterChecked(!isTransporterChecked);
-    setIsClientChecked(false); // Uncheck the Client checkbox
+    setIsClientChecked(false);
   };
 
   const handleClientChange = () => {
-    selectRole('client');
+    selectRole("client");
     setIsClientChecked(!isClientChecked);
-    setIsTransporterChecked(false); // Uncheck the Transporter checkbox
+    setIsTransporterChecked(false);
   };
   return (
     <div>
@@ -31,7 +41,8 @@ function IsChecked({ selectRole }: IsCheckedProps) {
           type="checkbox"
           className="checkbox"
           checked={isTransporterChecked}
-          onChange={handleTransporterChange} />
+          onChange={handleTransporterChange}
+        />
       </label>
       <label className="label cursor-pointer">
         <span className="label-text block font-medium text-black dark:text-white">
@@ -41,7 +52,8 @@ function IsChecked({ selectRole }: IsCheckedProps) {
           type="checkbox"
           className="checkbox"
           checked={isClientChecked}
-          onChange={handleClientChange} />
+          onChange={handleClientChange}
+        />
       </label>
     </div>
   );

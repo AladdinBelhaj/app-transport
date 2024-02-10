@@ -2,21 +2,24 @@ import React, { useState } from "react";
 
 interface PasswordValidationProps {
   handleInput: (name: string, event: any) => void;
+  setFormValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PasswordValidation: React.FC<PasswordValidationProps> = ({
   handleInput,
+  setFormValid,
 }) => {
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
   const handleInputValidation = (field: any, value: any) => {
     if (field === "password") {
       setPassword(value);
       if (value.length < 6) {
-        setPasswordError("Password must contain at least 6 characters");
+        setFormValid(false);
+        setPassword("Password must contain at least 6 characters");
       } else {
-        setPasswordError("");
+        setFormValid(true);
+        setPassword("");
       }
     }
   };
@@ -26,10 +29,8 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       <label className="mb-2.5 block font-medium text-black dark:text-white">
         Password
       </label>
-      {passwordError && (
-        <p className="text-red-500 absolute right-0 top-0 mt-1">
-          {passwordError}
-        </p>
+      {password && (
+        <p className="text-red-500 absolute right-0 top-0 mt-1">{password}</p>
       )}
       <div className="relative">
         <input
@@ -40,7 +41,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
             handleInputValidation("password", e.target.value); // Adjusted to pass correct field name
           }}
           placeholder="Enter your password"
-          className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${passwordError && "border-red-500"}`}
+          className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${password && "border-red-500"}`}
         />
 
         <span className="absolute right-4 top-4">

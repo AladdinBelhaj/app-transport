@@ -17,8 +17,10 @@ const EmailValidation: React.FC<EmailValidationProps> = ({
       const emailRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
       if (!emailRegex.test(value)) {
+        setFormValid(false);
         setEmailError("Please enter a valid email");
       } else {
+        setFormValid(true);
         setEmailError("");
       }
     }
