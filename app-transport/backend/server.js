@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const initial = require("./app/initial/role.initial")
-
+const stripe = require("./app/routes/stripe.route");
 
 var corsOptions = {
     origin: "*"
@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 });
 
 setupRoutes(app);
-
+app.use("/api/stripe", stripe);
 
 
 
