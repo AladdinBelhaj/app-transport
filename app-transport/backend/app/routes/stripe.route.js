@@ -5,7 +5,7 @@ require("dotenv").config();
 
 
 const stripeSecretKey = 'sk_test_51OiMpOGf5W8k6CNIpYU98INspETc4XxZp9G8CzB9qCkRUJHcWr9J7GkRUN8sI8HqXZw2i9RhMFLuKQCJ40tDfxoj00yqmN9pIO';
-const url = "https://localhost:3000"
+const url = "https://localhost:3000/"
 
 const stripe = Stripe(stripeSecretKey);
 
