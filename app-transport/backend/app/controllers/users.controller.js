@@ -74,6 +74,27 @@ exports.signin = async (req, res) => {
 
         const roles = await user.getRoles();
 
+
+
+
+        // const response = NextResponse.json({
+        //     message:"Success login!",
+        //     success:true
+        // })
+
+        // response.cookies().set("authToken", token,{
+        //     expiresIn:"1d",
+        //     httpOnly:false
+        // });
+
+    
+        res.cookie("authToken", token, {
+            maxAge: 86400 * 1000, // in milliseconds
+            httpOnly: false, // set to true if you want to prevent client-side JavaScript from accessing the cookie
+            // Add additional cookie options here as needed, such as 'secure' and 'sameSite'
+        });
+
+
         // const authorities = [];
         // const permissionn = [];
 

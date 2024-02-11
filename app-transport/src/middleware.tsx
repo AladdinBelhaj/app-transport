@@ -2,14 +2,12 @@
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getToken } from "../utils/auth";
 
-// Middleware function to check if the user is authenticated
 export async function middleware(request: NextRequest) {
-  // Check if token exists in local storage
-  const token = getToken();
-
-  // If the route is protected and the token doesn't exist, redirect to signin page
+  // Getting token from the request cookies
+  const token = request.cookies.get("authToken")?.value;
+  console.log(`here is the token:${token}`);
+  // If the token doesn't exist in cookies, redirect to signin page
   if (!token) {
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }

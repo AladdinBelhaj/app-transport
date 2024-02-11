@@ -18,6 +18,7 @@ verifyToken = (req, res, next) => {
             });
         }
         req.employeId = decoded.id;
+        
         next();
     });
 };
