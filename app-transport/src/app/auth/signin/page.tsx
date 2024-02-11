@@ -7,6 +7,8 @@ import { useState } from "react";
 import axios from "axios";
 import EmailValidation from "./EmailValidation";
 import PasswordValidation from "./PasswordValidation";
+import { saveToken } from "../../../../utils/auth";
+
 const Login = () => {
   const [post, setPost] = useState({
     email: "",
@@ -32,7 +34,22 @@ const Login = () => {
     event.preventDefault();
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
-      .then((response) => console.log(response.status))
+      .then((response) => {
+        if (response.status === 200) {
+          // Assuming status 200 indicates a successful login
+          const token = response.data.accessToken;
+          if (token) {
+            // Save the token to localStorage
+            saveToken(token);
+            console.log("Token saved to localStorage:", token);
+          } else {
+            console.error("Token not found in response:", response);
+          }
+        } else {
+          console.log("Login failed. Status:", response.status);
+          // Handle other status codes as needed
+        }
+      })
       .catch((err) => console.log(err));
   }
 
