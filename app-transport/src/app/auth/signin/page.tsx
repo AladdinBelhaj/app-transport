@@ -10,6 +10,7 @@ import PasswordValidation from "./PasswordValidation";
 import { getToken, saveToken } from "../../../../utils/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import SigninGuard from "@/components/Auth/SigninGuard";
 
 // import { useRedirectIfTokenExists } from "./customHook"
 
@@ -71,75 +72,76 @@ const Login = () => {
 
   return (
     <>
-      <div
-        className={`flex h-screen items-center justify-center ${style.body}`}
-      >
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="flex flex-wrap items-center">
-            <div className="hidden w-full xl:block xl:w-1/2">
-              <div className="px-26 py-17.5 text-center">
-                <Link className="mb-5.5 inline-block" href="/">
-                  <Image
-                    className="hidden dark:block"
-                    src={"/images/logo/logo.svg"}
-                    alt="Logo"
-                    width={176}
-                    height={32}
-                  />
-                  <Image
-                    className="dark:hidden"
-                    src={"/images/logo/logo-dark.svg"}
-                    alt="Logo"
-                    width={176}
-                    height={32}
-                  />
-                </Link>
-
-                <p className="2xl:px-20">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                  suspendisse.
-                </p>
-
-                <span className="mt-15 inline-block">
-                  <Image
-                    className="dark:hidden"
-                    src={"/images/logo/auth-logo.svg"}
-                    alt="Logo"
-                    width={600}
-                    height={80}
-                  />
-                </span>
-              </div>
-            </div>
-
-            <div className="border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-              <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-                <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                  Sign In to TailAdmin
-                </h2>
-
-                <form>
-                  <EmailValidation
-                    handleInput={handleInput}
-                    setEmailValid={setEmailValid}
-                  ></EmailValidation>
-                  <PasswordValidation
-                    handleInput={handleInput}
-                    setPasswordValid={setPasswordValid}
-                  ></PasswordValidation>
-
-                  <div className="mb-5">
-                    <input
-                      type="submit"
-                      onClick={handleSubmit}
-                      value="Sign In"
-                      disabled={!isFormValid()}
-                      className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition ${
-                        !isFormValid() && "cursor-not-allowed opacity-50"
-                      }`}
+      <SigninGuard redirect={"/"}>
+        <div
+          className={`flex h-screen items-center justify-center ${style.body}`}
+        >
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="flex flex-wrap items-center">
+              <div className="hidden w-full xl:block xl:w-1/2">
+                <div className="px-26 py-17.5 text-center">
+                  <Link className="mb-5.5 inline-block" href="/">
+                    <Image
+                      className="hidden dark:block"
+                      src={"/images/logo/logo.svg"}
+                      alt="Logo"
+                      width={176}
+                      height={32}
                     />
-                  </div>
-                  {/* 
+                    <Image
+                      className="dark:hidden"
+                      src={"/images/logo/logo-dark.svg"}
+                      alt="Logo"
+                      width={176}
+                      height={32}
+                    />
+                  </Link>
+
+                  <p className="2xl:px-20">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                    suspendisse.
+                  </p>
+
+                  <span className="mt-15 inline-block">
+                    <Image
+                      className="dark:hidden"
+                      src={"/images/logo/auth-logo.svg"}
+                      alt="Logo"
+                      width={600}
+                      height={80}
+                    />
+                  </span>
+                </div>
+              </div>
+
+              <div className="border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+                <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+                  <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                    Sign In to TailAdmin
+                  </h2>
+
+                  <form>
+                    <EmailValidation
+                      handleInput={handleInput}
+                      setEmailValid={setEmailValid}
+                    ></EmailValidation>
+                    <PasswordValidation
+                      handleInput={handleInput}
+                      setPasswordValid={setPasswordValid}
+                    ></PasswordValidation>
+
+                    <div className="mb-5">
+                      <input
+                        type="submit"
+                        onClick={handleSubmit}
+                        value="Sign In"
+                        disabled={!isFormValid()}
+                        className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition ${
+                          !isFormValid() && "cursor-not-allowed opacity-50"
+                        }`}
+                      />
+                    </div>
+                    {/* 
                   <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                     <span>
                       <svg
@@ -177,20 +179,21 @@ const Login = () => {
                     Sign in with Google
                   </button> */}
 
-                  <div className="mt-6 text-center">
-                    <p>
-                      Don’t have any account?{" "}
-                      <Link href="/auth/signup" className="text-primary">
-                        Sign Up
-                      </Link>
-                    </p>
-                  </div>
-                </form>
+                    <div className="mt-6 text-center">
+                      <p>
+                        Don’t have any account?{" "}
+                        <Link href="/auth/signup" className="text-primary">
+                          Sign Up
+                        </Link>
+                      </p>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </SigninGuard>
     </>
   );
 };
