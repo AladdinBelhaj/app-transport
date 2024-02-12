@@ -1,6 +1,10 @@
 import React from "react";
 
-const BlueToast = () => {
+interface BlueToastProps {
+  message: string;
+}
+
+const BlueToast: React.FC<BlueToastProps> = ({ message }) => {
   return (
     <div>
       <div
@@ -8,7 +12,7 @@ const BlueToast = () => {
         role="alert"
       >
         <div className="flex p-4">
-          Tailwind Components! Toast Alert!
+          {message}
           <div className="ml-auto">
             <button
               type="button"

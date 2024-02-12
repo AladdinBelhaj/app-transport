@@ -1,6 +1,10 @@
 import React from "react";
 
-const SuccessToast = () => {
+interface SuccessToastProps {
+  message: string;
+}
+
+const SuccessToast: React.FC<SuccessToastProps> = ({ message }) => {
   return (
     <div>
       <div
@@ -8,7 +12,7 @@ const SuccessToast = () => {
         role="alert"
       >
         <div className="flex p-4">
-          Tailwind Components! Toast Alert!
+          {message}
           <div className="ml-auto">
             <button
               type="button"

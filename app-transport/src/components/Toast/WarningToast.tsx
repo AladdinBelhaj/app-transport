@@ -1,6 +1,10 @@
 import React from "react";
 
-const WarningToast = () => {
+interface WarningToastProps {
+  message: string;
+}
+
+const WarningToast: React.FC<WarningToastProps> = ({ message }) => {
   return (
     <div>
       <div
