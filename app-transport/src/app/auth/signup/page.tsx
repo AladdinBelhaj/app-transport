@@ -27,15 +27,30 @@ const Register = () => {
     setPost({ ...post, [name]: event });
   };
 
+  // function handleSubmit(event: any) {
+  //   console.log(post);
+  //   event.preventDefault();
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/create`, post)
+  //     .then((response) => console.log(response))
+  //     .catch((err) => console.log(err));
+  // }
+
   function handleSubmit(event: any) {
     console.log(post);
     event.preventDefault();
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/create`, post)
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response);
+        // Check if the account creation was successful
+        if (response.status === 200) {
+          // Set the flag in local storage indicating first-time login
+          localStorage.setItem("firstTimeLogin", JSON.stringify(true));
+        }
+      })
       .catch((err) => console.log(err));
   }
-
   function handelselectRole(data: any) {
     console.log("ROLE :", data);
     setPost({ ...post, role: data });
