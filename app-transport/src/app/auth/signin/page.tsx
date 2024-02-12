@@ -11,6 +11,9 @@ import { getToken, saveToken } from "../../../../utils/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import SigninGuard from "@/components/Auth/SigninGuard";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 // import { useRedirectIfTokenExists } from "./customHook"
 
@@ -38,6 +41,38 @@ const Login = () => {
     setPost({ ...post, [name]: event });
   };
 
+  // function handleSubmit(event: any) {
+  //   console.log(post);
+  //   event.preventDefault();
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         const token = response.data.accessToken;
+  //         if (token) {
+  //           saveToken(token);
+
+  //           if (localStorage.getItem("firstTimeLogin") == "true") {
+  //             router.push("/settings");
+  //             localStorage.setItem("firstTimeLogin", JSON.stringify(false));
+  //           } else if (localStorage.getItem("firstTimeLogin") == "true") {
+  //             router.push("/");
+  //           } else {
+  //             router.push("/");
+  //           }
+
+  //           console.log("Token saved to localStorage:", getToken());
+  //         } else {
+  //           console.error("Token not found in response:", response);
+  //         }
+  //       } else {
+  //         console.log("Login failed. Status:", response.status);
+  //         // Handle other status codes as needed
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
+
   function handleSubmit(event: any) {
     console.log(post);
     event.preventDefault();
@@ -49,11 +84,9 @@ const Login = () => {
           if (token) {
             saveToken(token);
 
-            if (localStorage.getItem("firstTimeLogin") == "true") {
+            if (localStorage.getItem("firstTimeLogin") === "true") {
               router.push("/settings");
               localStorage.setItem("firstTimeLogin", JSON.stringify(false));
-            } else if (localStorage.getItem("firstTimeLogin") == "true") {
-              router.push("/");
             } else {
               router.push("/");
             }
@@ -64,10 +97,20 @@ const Login = () => {
           }
         } else {
           console.log("Login failed. Status:", response.status);
-          // Handle other status codes as needed
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wrong credentials!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   }
 
   return (
@@ -76,6 +119,7 @@ const Login = () => {
         <div
           className={`flex h-screen items-center justify-center ${style.body}`}
         >
+          <ToastContainer />
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="flex flex-wrap items-center">
               <div className="hidden w-full xl:block xl:w-1/2">

@@ -9,8 +9,6 @@ import axios from "axios";
 import EmailValidation from "./EmailValidation";
 import PasswordValidation from "./PasswordValidation";
 import NameValidation from "./NameValidation";
-import SuccessToast from "@/components/Toast/SuccessToast";
-import WarningToast from "@/components/Toast/WarningToast";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
