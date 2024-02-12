@@ -17,8 +17,6 @@ const AuthGuard: NextPage<Props> = ({ redirect ,children}) => {
     // Redirect server-side
     router.replace(redirect);
     return null; // Return null to prevent rendering on the client side
-  }else if (token != null && redirect=="/auth/signin"){
-    router.replace('/');
   }
 
   return children;
