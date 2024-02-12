@@ -8,6 +8,10 @@ import axios from "axios";
 import EmailValidation from "./EmailValidation";
 import PasswordValidation from "./PasswordValidation";
 import { getToken, saveToken } from "../../../../utils/auth";
+import {useRouter} from 'next/navigation';
+import { useEffect } from "react";
+// import { useRedirectIfTokenExists } from "./customHook"
+
 
 const Login = () => {
   const [post, setPost] = useState({
@@ -15,8 +19,15 @@ const Login = () => {
     password: "",
   });
 
+  
+
+  const router = useRouter()
+
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+
+  // useRedirectIfTokenExists();
+
 
   const isFormValid = () => {
     return (
@@ -38,7 +49,9 @@ const Login = () => {
         if (response.status === 200) {
           const token = response.data.accessToken;
           if (token) {
+            
             saveToken(token);
+            router.push('/profile');
             console.log("Token saved to localStorage:", getToken());
           } else {
             console.error("Token not found in response:", response);
@@ -50,6 +63,9 @@ const Login = () => {
       })
       .catch((err) => console.log(err));
   }
+
+
+
 
   return (
     <>

@@ -2,6 +2,7 @@
 import React, { useState, ReactNode } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import AuthGuard from "@/components/Auth/AuthGuard"; 
 
 export default function DefaultLayout({
   children,
@@ -10,6 +11,8 @@ export default function DefaultLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
+    <AuthGuard redirect={"/auth/signin"}> 
+    
     <>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
@@ -35,5 +38,9 @@ export default function DefaultLayout({
       </div>
       {/* <!-- ===== Page Wrapper End ===== --> */}
     </>
+    </AuthGuard>
+
   );
 }
+
+

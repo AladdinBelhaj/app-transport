@@ -3,6 +3,8 @@ const Role = db.roles;
 const Users = db.users;
 const Op = db.Sequelize.Op;
 const config = require("../config/auth.config")
+const { serialize } = require('cookie');
+const { NextResponse } = require ("next/server");
 
 var jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
@@ -87,13 +89,6 @@ exports.signin = async (req, res) => {
         //     httpOnly:false
         // });
 
-    
-        res.cookie("authToken", token, {
-            maxAge: 86400 * 1000, // in milliseconds
-            httpOnly: false, // set to true if you want to prevent client-side JavaScript from accessing the cookie
-            // Add additional cookie options here as needed, such as 'secure' and 'sameSite'
-        });
-
 
         // const authorities = [];
         // const permissionn = [];
@@ -124,3 +119,33 @@ exports.signin = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+// exports.handler = async (req, res, next) => {
+//     try {
+//         const user = await Users.findOne({
+//             where: {
+//                 email: req.body.email
+//             }
+//         });
+
+//         // Sign the JWT token
+//         const token = jwt.sign({ id: user.id }, config.secret, {
+//             expiresIn: 86400 // 24 hours
+//         });
+
+//         // Serialize the token as a cookie named "authToken"
+//         const cookie = serialize('authToken', token, {
+//             httpOnly: true,
+//             maxAge: 60 * 60 * 24 * 7, // One week
+//             // Add additional cookie options here as needed, such as 'secure' and 'sameSite'
+//         });
+
+//         res.setHeader('Set-Cookie', cookie)
+//         // res.status(200).json({ message: 'Successfully set cookie!' })
+//         next();
+//     } catch (error) {
+//         // Handle any errors
+//         console.error(error);
+//         return NextResponse.error(new Error('Internal server error'));
+//     }
+// };
