@@ -9,6 +9,11 @@ import axios from "axios";
 import EmailValidation from "./EmailValidation";
 import PasswordValidation from "./PasswordValidation";
 import NameValidation from "./NameValidation";
+import SuccessToast from "@/components/Toast/SuccessToast";
+import WarningToast from "@/components/Toast/WarningToast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const Register = () => {
   // /api/users/create
@@ -36,21 +41,59 @@ const Register = () => {
   //     .catch((err) => console.log(err));
   // }
 
+  // function handleSubmit(event: any) {
+  //   console.log(post);
+  //   event.preventDefault();
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/create`, post)
+  //     .then((response) => {
+  //       console.log(response);
+  //       // Check if the account creation was successful
+  //       if (response.status === 200) {
+  //         // Set the flag in local storage indicating first-time login
+  //         localStorage.setItem("firstTimeLogin", JSON.stringify(true));
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
+
   function handleSubmit(event: any) {
-    console.log(post);
     event.preventDefault();
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/create`, post)
       .then((response) => {
         console.log(response);
-        // Check if the account creation was successful
         if (response.status === 200) {
+          // Display success toast
+          toast.success("Account created!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
           // Set the flag in local storage indicating first-time login
           localStorage.setItem("firstTimeLogin", JSON.stringify(true));
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        // Display error toast
+        toast.error("Account already exists!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   }
+
   function handelselectRole(data: any) {
     console.log("ROLE :", data);
     setPost({ ...post, role: data });
@@ -76,6 +119,7 @@ const Register = () => {
 
   return (
     <div className={`flex h-screen items-center justify-center ${style.body}`}>
+      <ToastContainer />
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
