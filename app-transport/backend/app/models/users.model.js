@@ -21,6 +21,9 @@ module.exports = (sequelize, Sequelize) => {
         picture: {
             type: Sequelize.STRING
         },
+        isFirstLogin: {
+            type: Sequelize.BOOLEAN
+        },
     });
     return Users;
 };

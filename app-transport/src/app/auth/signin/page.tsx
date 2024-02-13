@@ -81,9 +81,10 @@ const Login = () => {
       .then((response) => {
         if (response.status === 200) {
           const token = response.data.accessToken;
+          const id = response.data.id;
           if (token) {
+            localStorage.setItem("id",id);
             saveToken(token);
-
             if (localStorage.getItem("firstTimeLogin") === "true") {
               router.push("/settings");
               localStorage.setItem("firstTimeLogin", JSON.stringify(false));

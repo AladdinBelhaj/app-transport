@@ -20,6 +20,7 @@ exports.signup = async (req, res) => {
         fullname: req.body.fullname,
         email: req.body.email,
         password: bcrypt.hashSync(password, salt),
+        isFirstLogin: true
     })
         .then(user => {
             if (req.body.role) {
@@ -120,32 +121,5 @@ exports.signin = async (req, res) => {
     }
 };
 
-// exports.handler = async (req, res, next) => {
-//     try {
-//         const user = await Users.findOne({
-//             where: {
-//                 email: req.body.email
-//             }
-//         });
 
-//         // Sign the JWT token
-//         const token = jwt.sign({ id: user.id }, config.secret, {
-//             expiresIn: 86400 // 24 hours
-//         });
 
-//         // Serialize the token as a cookie named "authToken"
-//         const cookie = serialize('authToken', token, {
-//             httpOnly: true,
-//             maxAge: 60 * 60 * 24 * 7, // One week
-//             // Add additional cookie options here as needed, such as 'secure' and 'sameSite'
-//         });
-
-//         res.setHeader('Set-Cookie', cookie)
-//         // res.status(200).json({ message: 'Successfully set cookie!' })
-//         next();
-//     } catch (error) {
-//         // Handle any errors
-//         console.error(error);
-//         return NextResponse.error(new Error('Internal server error'));
-//     }
-// };
