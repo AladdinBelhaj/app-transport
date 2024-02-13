@@ -3,9 +3,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 // import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { useEffect } from "react";
-import { useState } from "react";
-import axios from "axios";
+import { useUserData } from "../../../utils/getUserData";
 
 // export const metadata: Metadata = {
 //   title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
@@ -13,34 +11,8 @@ import axios from "axios";
 //     "This is Next.js Settings page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 // };
 
-interface UserData {
-  fullname: string;
-  phone: string;
-  email: string;
-  username: string;
-  bio: string;
-}
 const Settings = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const id = localStorage.getItem("id");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${id}`,
-        );
-        setUserData(response.data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    if (id) {
-      fetchData();
-    }
-  }, [id]);
-
+  const userData = useUserData();
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">

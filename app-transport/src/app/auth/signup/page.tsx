@@ -72,9 +72,6 @@ const Register = () => {
             draggable: true,
             progress: undefined,
           });
-
-          // Set the flag in local storage indicating first-time login
-          localStorage.setItem("firstTimeLogin", JSON.stringify(true));
         }
       })
       .catch((err) => {
