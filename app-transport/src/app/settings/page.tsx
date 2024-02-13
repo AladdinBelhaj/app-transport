@@ -13,15 +13,23 @@ import axios from "axios";
 //     "This is Next.js Settings page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 // };
 
+interface UserData {
+  fullname: string;
+  phone: string;
+  email: string;
+  username: string;
+  bio: string;
+}
 const Settings = () => {
-
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const id = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${id}`);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${id}`,
+        );
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -32,10 +40,6 @@ const Settings = () => {
       fetchData();
     }
   }, [id]);
-
-
-
-
 
   return (
     <DefaultLayout>
@@ -91,8 +95,8 @@ const Settings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          defaultValue={userData.fullname}
-                          placeholder={userData.fullname}
+                          defaultValue={userData?.fullname}
+                          placeholder={userData?.fullname}
                         />
                       </div>
                     </div>
@@ -109,8 +113,8 @@ const Settings = () => {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        defaultValue={userData?.phone}
+                        placeholder="99 999 999"
                       />
                     </div>
                   </div>
@@ -153,8 +157,8 @@ const Settings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        defaultValue={userData?.email}
+                        placeholder={userData?.email}
                       />
                     </div>
                   </div>
@@ -171,8 +175,8 @@ const Settings = () => {
                       type="text"
                       name="Username"
                       id="Username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      placeholder="Username"
+                      defaultValue={userData?.username}
                     />
                   </div>
 
@@ -181,7 +185,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
-                      BIO
+                      Bio
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -221,18 +225,12 @@ const Settings = () => {
                         id="bio"
                         rows={6}
                         placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        defaultValue={userData?.bio}
                       ></textarea>
                     </div>
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"

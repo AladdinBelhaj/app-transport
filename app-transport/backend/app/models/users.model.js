@@ -21,6 +21,10 @@ module.exports = (sequelize, Sequelize) => {
         picture: {
             type: Sequelize.STRING
         },
+        bio: {
+            type: Sequelize.STRING
+        },
+        
         isFirstLogin: {
             type: Sequelize.BOOLEAN
         },
