@@ -121,5 +121,23 @@ exports.signin = async (req, res) => {
     }
 };
 
+exports.getUserData = async (req, res) => {
+    try {
+        const userId = req.params.userId; // Assuming the user ID is passed as a parameter in the URL
 
+        // Retrieve the user data from the database
+        const user = await Users.findOne({
+            where: { id: userId },
+            include:Role
+        });
 
+        if (!user) {
+            return res.status(404).send({ message: "User not found." });
+        }
+
+        // Return the user data
+        res.status(200).send(user);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};

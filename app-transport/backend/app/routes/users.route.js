@@ -17,7 +17,7 @@ module.exports = app => {
 
     router.post("/create", verifySignUp.checkDuplicateEmail, users.signup);
     router.post("/auth",users.signin);
-
+    router.get("/:userId",users.getUserData);
 
     app.use('/api/users', router);
 };
