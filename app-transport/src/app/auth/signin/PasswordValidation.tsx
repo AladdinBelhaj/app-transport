@@ -30,7 +30,12 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         Password
       </label>
       {password && (
-        <p className="text-red-500 absolute right-0 top-0 mt-1">{password}</p>
+        <p
+          style={{ color: "red" }}
+          className="text-red-500 absolute right-0 top-0 mt-1"
+        >
+          {password}
+        </p>
       )}
       <div className="relative">
         <input

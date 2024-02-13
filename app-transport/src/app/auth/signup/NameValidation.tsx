@@ -2,19 +2,24 @@
 
 // interface NameValidationProps {
 //   handleInput: (name: string, event: any) => void;
+//   setNameValid: React.Dispatch<React.SetStateAction<boolean>>;
 // }
 
-// const NameValidation: React.FC<NameValidationProps> = ({ handleInput }) => {
+// const NameValidation: React.FC<NameValidationProps> = ({
+//   handleInput,
+//   setNameValid,
+// }) => {
 //   const [fullName, setFullName] = useState("");
-//   const [fullNameError, setFullNameError] = useState("");
 
 //   const handleInputValidation = (field: any, value: any) => {
 //     if (field === "fullname") {
 //       setFullName(value);
 //       if (!/\s/.test(value)) {
-//         setFullNameError("Please enter your full name");
+//         setNameValid(false); // Set formValid to false if validation fails
+//         setFullName("Please enter your full name");
 //       } else {
-//         setFullNameError("");
+//         setNameValid(true); // Set formValid to true if validation passes
+//         setFullName("");
 //       }
 //     }
 //   };
@@ -24,11 +29,18 @@
 //       <label className="mb-2.5 block font-medium text-black dark:text-white">
 //         Name
 //       </label>
-//       {fullNameError && (
-//         <p className="text-red-500 absolute right-0 top-0 mt-1">
-//           {fullNameError}
+//       {/* {fullName && (
+//         <p className="text-red-500 absolute right-0 top-0 mt-1">{fullName}</p>
+//       )} */}
+//       {fullName && (
+//         <p
+//           style={{ color: "red", fontWeight: "500" }}
+//           className="absolute right-0 top-0 mt-1"
+//         >
+//           Please enter your full name
 //         </p>
 //       )}
+
 //       <div className="relative">
 //         <input
 //           type="text"
@@ -38,7 +50,9 @@
 //           }}
 //           name="fullname"
 //           placeholder="Enter your full name"
-//           className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${fullNameError && "border-red-500"}`}
+//           className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
+//             !/\s/.test(fullName) && "border-red-500"
+//           }`}
 //         />
 //         <span className="absolute right-4 top-4">
 //           <svg
@@ -67,7 +81,6 @@
 // };
 
 // export default NameValidation;
-
 import React, { useState } from "react";
 
 interface NameValidationProps {
@@ -79,17 +92,16 @@ const NameValidation: React.FC<NameValidationProps> = ({
   handleInput,
   setNameValid,
 }) => {
-  const [fullName, setFullName] = useState("");
+  const [fullNameError, setFullNameError] = useState("");
 
   const handleInputValidation = (field: any, value: any) => {
     if (field === "fullname") {
-      setFullName(value);
-      if (!/\s/.test(value)) {
+      if (!/^[a-zA-Z]+\s[a-zA-Z]+$/.test(value)) {
         setNameValid(false); // Set formValid to false if validation fails
-        setFullName("Please enter your full name");
+        setFullNameError("Please enter your full name");
       } else {
         setNameValid(true); // Set formValid to true if validation passes
-        setFullName("");
+        setFullNameError("");
       }
     }
   };
@@ -99,9 +111,12 @@ const NameValidation: React.FC<NameValidationProps> = ({
       <label className="mb-2.5 block font-medium text-black dark:text-white">
         Name
       </label>
-      {fullName && (
-        <p className="text-red-500 absolute right-0 top-0 mt-1">{fullName}</p>
+      {fullNameError && (
+        <p style={{ color: "red" }} className="absolute right-0 top-0 mt-1">
+          {fullNameError}
+        </p>
       )}
+
       <div className="relative">
         <input
           type="text"
@@ -112,7 +127,7 @@ const NameValidation: React.FC<NameValidationProps> = ({
           name="fullname"
           placeholder="Enter your full name"
           className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-16 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${
-            !/\s/.test(fullName) && "border-red-500"
+            fullNameError && "border-red-500"
           }`}
         />
         <span className="absolute right-4 top-4">
