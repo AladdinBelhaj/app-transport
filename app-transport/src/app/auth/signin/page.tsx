@@ -14,6 +14,7 @@ import SigninGuard from "@/components/Auth/SigninGuard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useUserData } from "../../../../utils/getUserData";
 
 // import { useRedirectIfTokenExists } from "./customHook"
 
@@ -73,6 +74,8 @@ const Login = () => {
   //     .catch((err) => console.log(err));
   // }
 
+  const userData = useUserData();
+
   function handleSubmit(event: any) {
     console.log(post);
     event.preventDefault();
@@ -83,7 +86,7 @@ const Login = () => {
           const token = response.data.accessToken;
           const id = response.data.id;
           if (token) {
-            localStorage.setItem("id",id);
+            localStorage.setItem("id", id);
             saveToken(token);
             if (localStorage.getItem("firstTimeLogin") === "true") {
               router.push("/settings");
