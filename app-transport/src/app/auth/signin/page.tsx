@@ -54,7 +54,7 @@ const Login = () => {
             saveToken(token);
             if (response.data.isFirstLogin == "1") {
               router.push("/settings");
-              updateUserData({ isFirstLogin: "0" });
+              // updateUserData({ isFirstLogin: "0" });
             } else {
               router.push("/");
             }

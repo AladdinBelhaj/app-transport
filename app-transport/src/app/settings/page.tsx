@@ -24,6 +24,7 @@ const Settings = () => {
     username: "",
     phone: "",
     bio: userData?.bio || "",
+    isFirstLogin: "1",
   });
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const Settings = () => {
       username: userData?.username || "",
       phone: "",
       bio: userData?.bio || "",
+      isFirstLogin: "0",
     });
   }, [userData]);
 
