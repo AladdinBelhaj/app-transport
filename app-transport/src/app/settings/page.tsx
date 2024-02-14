@@ -4,7 +4,9 @@ import Image from "next/image";
 // import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useUserData } from "../../../utils/getUserData";
-
+import { useUpdateUserData } from "../../../utils/updateUserData";
+import { useState } from "react";
+import { useEffect } from "react";
 // export const metadata: Metadata = {
 //   title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
 //   description:
@@ -13,6 +15,41 @@ import { useUserData } from "../../../utils/getUserData";
 
 const Settings = () => {
   const userData = useUserData();
+  const updateUserData = useUpdateUserData()
+  const [formData, setFormData] = useState({
+    fullname: userData?.fullname,
+    email: userData?.email,
+    username: userData?.username || "",
+    phone: userData?.phone || "",
+    bio: userData?.bio || ""
+  });
+
+
+  useEffect(() => {
+    setFormData({
+      fullname: userData?.fullname,
+      email: userData?.email,
+      username: userData?.username || "",
+      phone: userData?.phone || "",
+      bio: userData?.bio || ""
+    });
+  }, [userData]);
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+
+const handleSubmit= (event: any)=>{
+  event.preventDefault()
+  console.log(formData);
+  updateUserData(formData);
+} 
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
@@ -65,8 +102,9 @@ const Settings = () => {
                         <input
                           className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           type="text"
-                          name="fullName"
-                          id="fullName"
+                          name="fullname"
+                          id="fullname"
+                          onChange={handleChange}
                           defaultValue={userData?.fullname}
                           placeholder={userData?.fullname}
                         />
@@ -76,17 +114,18 @@ const Settings = () => {
                     <div className="w-full sm:w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
+                        htmlFor="phone"
                       >
                         Phone Number
                       </label>
                       <input
                         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
+                        name="phone"
+                        id="phone"
+                        onChange={handleChange}
                         defaultValue={userData?.phone}
-                        placeholder="99 999 999"
+                        placeholder={userData?.phone}
                       />
                     </div>
                   </div>
@@ -94,7 +133,7 @@ const Settings = () => {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
+                      htmlFor="email"
                     >
                       Email Address
                     </label>
@@ -127,8 +166,10 @@ const Settings = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
-                        name="emailAddress"
-                        id="emailAddress"
+                        name="email"
+                        id="email"
+                        // value={formData.email}
+                        onChange={handleChange}
                         defaultValue={userData?.email}
                         placeholder={userData?.email}
                       />
@@ -138,17 +179,18 @@ const Settings = () => {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
+                      htmlFor="username"
                     >
                       Username
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
-                      name="Username"
-                      id="Username"
-                      placeholder="Username"
+                      name="username"
+                      id="username"
+                      onChange={handleChange}
                       defaultValue={userData?.username}
+                      placeholder={userData?.username}
                     />
                   </div>
 
@@ -197,6 +239,7 @@ const Settings = () => {
                         id="bio"
                         rows={6}
                         placeholder="Write your bio here"
+                        onChange={handleChange}
                         defaultValue={userData?.bio}
                       ></textarea>
                     </div>
@@ -206,6 +249,7 @@ const Settings = () => {
                     <button
                       className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
+                      onClick={handleSubmit}
                     >
                       Save
                     </button>
@@ -293,7 +337,7 @@ const Settings = () => {
                       <p>(max, 800 X 800px)</p>
                     </div>
                   </div>
-
+{/* 
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
@@ -307,7 +351,7 @@ const Settings = () => {
                     >
                       Save
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>

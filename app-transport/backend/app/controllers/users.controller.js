@@ -170,6 +170,14 @@ exports.updateUserData = async (req, res) => {
             updatedFields.isFirstLogin = req.body.isFirstLogin;
         }
 
+        if(req.body.username){
+            updatedFields.username = req.body.username;
+        }
+
+        if(req.body.bio){
+            updatedFields.bio = req.body.bio;
+        }
+
         // Update user data
         await Users.update(updatedFields, {
             where: { id: userId }
