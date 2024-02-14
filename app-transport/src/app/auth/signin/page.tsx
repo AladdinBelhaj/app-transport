@@ -16,7 +16,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useUpdateUserData } from "../../../../utils/updateUserData";
 
-
 const Login = () => {
   const [post, setPost] = useState({
     email: "",
@@ -28,7 +27,6 @@ const Login = () => {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
 
-
   const isFormValid = () => {
     return (
       post.email !== "" && emailValid && post.password !== "" && passwordValid
@@ -39,9 +37,6 @@ const Login = () => {
     console.log(event);
     setPost({ ...post, [name]: event });
   };
-
-
-
 
   const updateUserData = useUpdateUserData();
 
@@ -56,11 +51,10 @@ const Login = () => {
           const id = response.data.id;
           localStorage.setItem("id", id);
           if (token) {
-          
             saveToken(token);
             if (response.data.isFirstLogin == "1") {
               router.push("/settings");
-              updateUserData({isFirstLogin:"0"})
+              updateUserData({ isFirstLogin: "0" });
             } else {
               router.push("/");
             }
@@ -297,45 +291,36 @@ export default Login;
 </div> */
 }
 
-
-
-
-
-
-
-
-
-
 // old auth
 
-  // function handleSubmit(event: any) {
-  //   console.log(post);
-  //   event.preventDefault();
-  //   axios
-  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         const token = response.data.accessToken;
-  //         if (token) {
-  //           saveToken(token);
+// function handleSubmit(event: any) {
+//   console.log(post);
+//   event.preventDefault();
+//   axios
+//     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
+//     .then((response) => {
+//       if (response.status === 200) {
+//         const token = response.data.accessToken;
+//         if (token) {
+//           saveToken(token);
 
-  //           if (localStorage.getItem("firstTimeLogin") == "true") {
-  //             router.push("/settings");
-  //             localStorage.setItem("firstTimeLogin", JSON.stringify(false));
-  //           } else if (localStorage.getItem("firstTimeLogin") == "true") {
-  //             router.push("/");
-  //           } else {
-  //             router.push("/");
-  //           }
+//           if (localStorage.getItem("firstTimeLogin") == "true") {
+//             router.push("/settings");
+//             localStorage.setItem("firstTimeLogin", JSON.stringify(false));
+//           } else if (localStorage.getItem("firstTimeLogin") == "true") {
+//             router.push("/");
+//           } else {
+//             router.push("/");
+//           }
 
-  //           console.log("Token saved to localStorage:", getToken());
-  //         } else {
-  //           console.error("Token not found in response:", response);
-  //         }
-  //       } else {
-  //         console.log("Login failed. Status:", response.status);
-  //         // Handle other status codes as needed
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
+//           console.log("Token saved to localStorage:", getToken());
+//         } else {
+//           console.error("Token not found in response:", response);
+//         }
+//       } else {
+//         console.log("Login failed. Status:", response.status);
+//         // Handle other status codes as needed
+//       }
+//     })
+//     .catch((err) => console.log(err));
+// }

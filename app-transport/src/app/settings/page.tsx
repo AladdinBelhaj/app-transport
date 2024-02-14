@@ -6,6 +6,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useUserData } from "../../../utils/getUserData";
 import { useUpdateUserData } from "../../../utils/updateUserData";
 import PhoneValidation from "./PhoneValidation";
+import UsernameValidation from "./UsernameValidation";
 import { useState } from "react";
 import { useEffect } from "react";
 // export const metadata: Metadata = {
@@ -16,23 +17,22 @@ import { useEffect } from "react";
 
 const Settings = () => {
   const userData = useUserData();
-  const updateUserData = useUpdateUserData()
+  const updateUserData = useUpdateUserData();
   const [formData, setFormData] = useState({
     fullname: userData?.fullname,
     email: userData?.email,
-    username: userData?.username || "",
-    phone: userData?.phone || "",
-    bio: userData?.bio || ""
+    username: "",
+    phone: "",
+    bio: userData?.bio || "",
   });
-
 
   useEffect(() => {
     setFormData({
       fullname: userData?.fullname,
       email: userData?.email,
       username: userData?.username || "",
-      phone: userData?.phone || "",
-      bio: userData?.bio || ""
+      phone: "",
+      bio: userData?.bio || "",
     });
   }, [userData]);
 
@@ -44,12 +44,15 @@ const Settings = () => {
     }));
   };
 
-
   const handleSubmit = (event: any) => {
-    event.preventDefault()
+    event.preventDefault();
     console.log(formData);
     updateUserData(formData);
-  }
+  };
+
+  const isFormValid = () => {
+    return formData.email !== "" && formData.username !== "" ? true : false;
+  };
 
   return (
     <DefaultLayout>
@@ -108,6 +111,13 @@ const Settings = () => {
                           onChange={handleChange}
                           defaultValue={userData?.fullname}
                           placeholder={userData?.fullname}
+                          readOnly
+                          disabled // Add the disabled attribute to ensure the input is disabled
+                          style={{
+                            backgroundColor: "#f4f4f4", // Change the background color to a lighter shade
+                            borderColor: "#d1d1d1", // Change the border color
+                            cursor: "not-allowed", // Change the cursor style
+                          }}
                         />
                       </div>
                     </div>
@@ -129,7 +139,10 @@ const Settings = () => {
                         placeholder={userData?.phone}
                       />
                     </div> */}
-                    <PhoneValidation userData={userData} handleChange={handleChange} />
+                    <PhoneValidation
+                      userData={userData}
+                      handleChange={handleChange}
+                    />
                   </div>
 
                   <div className="mb-5.5">
@@ -185,16 +198,15 @@ const Settings = () => {
                         placeholder={userData?.email}
                         disabled // Add the disabled attribute to ensure the input is disabled
                         style={{
-                          backgroundColor: '#f4f4f4', // Change the background color to a lighter shade
-                          borderColor: '#d1d1d1', // Change the border color
-                          cursor: 'not-allowed', // Change the cursor style
+                          backgroundColor: "#f4f4f4", // Change the background color to a lighter shade
+                          borderColor: "#d1d1d1", // Change the border color
+                          cursor: "not-allowed", // Change the cursor style
                         }}
                       />
-
                     </div>
                   </div>
 
-                  <div className="mb-5.5">
+                  {/* <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="username"
@@ -210,8 +222,12 @@ const Settings = () => {
                       defaultValue={userData?.username}
                       placeholder={userData?.username}
                     />
-                  </div>
+                  </div> */}
 
+                  <UsernameValidation
+                    userData={userData}
+                    handleChange={handleChange}
+                  ></UsernameValidation>
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -265,9 +281,12 @@ const Settings = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                      className={`flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90${
+                        !isFormValid() && "cursor-not-allowed opacity-50"
+                      }`}
                       type="submit"
                       onClick={handleSubmit}
+                      disabled={!isFormValid()}
                     >
                       Save
                     </button>
