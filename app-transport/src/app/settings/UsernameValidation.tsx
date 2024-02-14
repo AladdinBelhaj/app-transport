@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 interface UserData {
   fullname?: string;
@@ -10,13 +11,27 @@ interface UserData {
 
 interface UsernameValidationProps {
   userData: UserData | null; // Allow null values
-  handleChange: (e: any) => void;
+  handleInput: (name: string, event: any) => void;
+  setUsernameValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UsernameValidation: React.FC<UsernameValidationProps> = ({
   userData,
-  handleChange,
+  handleInput,
+  setUsernameValid,
 }) => {
+  const [phoneError, setPhoneError] = useState("");
+  const [username, setUsername] = useState(userData?.username || "");
+  const handleInputValidation = (field: any, defaultValue: any) => {
+    if (field === "username") {
+      setUsername(defaultValue);
+      if (defaultValue.length == 0) {
+        setUsernameValid(false);
+      } else {
+        setUsernameValid(true);
+      }
+    }
+  };
   return (
     <div className="mb-5.5">
       <label
@@ -25,13 +40,20 @@ const UsernameValidation: React.FC<UsernameValidationProps> = ({
       >
         Username
       </label>
+      {/* {usernameError && (
+        <p style={{ color: "red" }} className="absolute right-0 top-0 mt-1">
+          {usernameError}
+        </p>
+      )} */}
       <input
         className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
         type="text"
         name="username"
         id="username"
-        onChange={handleChange}
-        defaultValue={userData?.username}
+        onChange={(e) => {
+          handleInput("username", e.target.value); // Adjusted to pass correct field name
+          handleInputValidation("username", e.target.value); // Adjusted to pass correct field name
+        }}
         placeholder={userData?.username}
       />
     </div>

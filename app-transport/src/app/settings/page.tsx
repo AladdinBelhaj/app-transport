@@ -21,11 +21,18 @@ const Settings = () => {
   const [formData, setFormData] = useState({
     fullname: userData?.fullname,
     email: userData?.email,
-    username: "",
-    phone: "",
+    username: userData?.username,
+    phone: userData?.phone,
     bio: userData?.bio || "",
     isFirstLogin: "1",
   });
+
+  const [usernameValid, setUsernameValid] = useState(!!userData?.username);
+  const [phoneValid, setPhoneValid] = useState(!!userData?.phone);
+
+  const handleInput = (name: string, event: any) => {
+    setFormData({ ...formData, [name]: event });
+  };
 
   useEffect(() => {
     setFormData({
@@ -38,22 +45,18 @@ const Settings = () => {
     });
   }, [userData]);
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const isFormValid = () => {
+    if (formData.phone == "") {
+      return false;
+    } else if (phoneValid) {
+      return true;
+    }
   };
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(formData);
     updateUserData(formData);
-  };
-
-  const isFormValid = () => {
-    return formData.email !== "" && formData.username !== "" ? true : false;
   };
 
   return (
@@ -110,7 +113,9 @@ const Settings = () => {
                           type="text"
                           name="fullname"
                           id="fullname"
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            handleInput("fullname", e.target.value);
+                          }}
                           defaultValue={userData?.fullname}
                           placeholder={userData?.fullname}
                           readOnly
@@ -124,26 +129,10 @@ const Settings = () => {
                       </div>
                     </div>
 
-                    {/* <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phone"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        onChange={handleChange}
-                        defaultValue={userData?.phone}
-                        placeholder={userData?.phone}
-                      />
-                    </div> */}
                     <PhoneValidation
                       userData={userData}
-                      handleChange={handleChange}
+                      handleInput={handleInput}
+                      setPhoneValid={setPhoneValid}
                     />
                   </div>
 
@@ -180,16 +169,6 @@ const Settings = () => {
                           </g>
                         </svg>
                       </span>
-                      {/* <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="email"
-                        id="email"
-                        // value={formData.email}
-                        onChange={handleChange}
-                        defaultValue={userData?.email}
-                        placeholder={userData?.email}
-                      /> */}
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
@@ -208,27 +187,10 @@ const Settings = () => {
                     </div>
                   </div>
 
-                  {/* <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="username"
-                    >
-                      Username
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="username"
-                      id="username"
-                      onChange={handleChange}
-                      defaultValue={userData?.username}
-                      placeholder={userData?.username}
-                    />
-                  </div> */}
-
                   <UsernameValidation
                     userData={userData}
-                    handleChange={handleChange}
+                    handleInput={handleInput}
+                    setUsernameValid={setUsernameValid}
                   ></UsernameValidation>
                   <div className="mb-5.5">
                     <label
@@ -275,7 +237,9 @@ const Settings = () => {
                         id="bio"
                         rows={6}
                         placeholder="Write your bio here"
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleInput("bio", e.target.value);
+                        }}
                         defaultValue={userData?.bio}
                       ></textarea>
                     </div>
@@ -283,9 +247,8 @@ const Settings = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className={`flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90${
-                        !isFormValid() && "cursor-not-allowed opacity-50"
-                      }`}
+                      className={`flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90
+                      ${!isFormValid() && "cursor-not-allowed opacity-50"}`}
                       type="submit"
                       onClick={handleSubmit}
                       disabled={!isFormValid()}
