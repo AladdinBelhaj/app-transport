@@ -14,9 +14,8 @@ import SigninGuard from "@/components/Auth/SigninGuard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { useUserData } from "../../../../utils/getUserData";
+import { useUpdateUserData } from "../../../../utils/updateUserData";
 
-// import { useRedirectIfTokenExists } from "./customHook"
 
 const Login = () => {
   const [post, setPost] = useState({
@@ -29,7 +28,6 @@ const Login = () => {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
 
-  // useRedirectIfTokenExists();
 
   const isFormValid = () => {
     return (
@@ -42,39 +40,10 @@ const Login = () => {
     setPost({ ...post, [name]: event });
   };
 
-  // function handleSubmit(event: any) {
-  //   console.log(post);
-  //   event.preventDefault();
-  //   axios
-  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         const token = response.data.accessToken;
-  //         if (token) {
-  //           saveToken(token);
 
-  //           if (localStorage.getItem("firstTimeLogin") == "true") {
-  //             router.push("/settings");
-  //             localStorage.setItem("firstTimeLogin", JSON.stringify(false));
-  //           } else if (localStorage.getItem("firstTimeLogin") == "true") {
-  //             router.push("/");
-  //           } else {
-  //             router.push("/");
-  //           }
 
-  //           console.log("Token saved to localStorage:", getToken());
-  //         } else {
-  //           console.error("Token not found in response:", response);
-  //         }
-  //       } else {
-  //         console.log("Login failed. Status:", response.status);
-  //         // Handle other status codes as needed
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
 
-  const userData = useUserData();
+  const updateUserData = useUpdateUserData();
 
   function handleSubmit(event: any) {
     console.log(post);
@@ -85,12 +54,13 @@ const Login = () => {
         if (response.status === 200) {
           const token = response.data.accessToken;
           const id = response.data.id;
+          localStorage.setItem("id", id);
           if (token) {
-            localStorage.setItem("id", id);
+          
             saveToken(token);
-            if (localStorage.getItem("firstTimeLogin") === "true") {
+            if (response.data.isFirstLogin) {
               router.push("/settings");
-              localStorage.setItem("firstTimeLogin", JSON.stringify(false));
+              updateUserData({isFirstLogin:"0"})
             } else {
               router.push("/");
             }
@@ -326,3 +296,46 @@ export default Login;
 </div>
 </div> */
 }
+
+
+
+
+
+
+
+
+
+
+// old auth
+
+  // function handleSubmit(event: any) {
+  //   console.log(post);
+  //   event.preventDefault();
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/auth`, post)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         const token = response.data.accessToken;
+  //         if (token) {
+  //           saveToken(token);
+
+  //           if (localStorage.getItem("firstTimeLogin") == "true") {
+  //             router.push("/settings");
+  //             localStorage.setItem("firstTimeLogin", JSON.stringify(false));
+  //           } else if (localStorage.getItem("firstTimeLogin") == "true") {
+  //             router.push("/");
+  //           } else {
+  //             router.push("/");
+  //           }
+
+  //           console.log("Token saved to localStorage:", getToken());
+  //         } else {
+  //           console.error("Token not found in response:", response);
+  //         }
+  //       } else {
+  //         console.log("Login failed. Status:", response.status);
+  //         // Handle other status codes as needed
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }

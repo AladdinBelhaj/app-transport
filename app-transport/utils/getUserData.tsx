@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
 interface UserData {
   fullname: string;
   phone: string;
   email: string;
   username: string;
   bio: string;
+  isFirstLogin: number;
 }
 
 export const useUserData = (): UserData | null => {

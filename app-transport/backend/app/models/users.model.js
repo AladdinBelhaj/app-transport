@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         
         isFirstLogin: {
-            type: Sequelize.BOOLEAN
+            type: Sequelize.INTEGER
         },
     });
     return Users;

@@ -20,7 +20,7 @@ exports.signup = async (req, res) => {
         fullname: req.body.fullname,
         email: req.body.email,
         password: bcrypt.hashSync(password, salt),
-        isFirstLogin: true
+        isFirstLogin: 1
     })
         .then(user => {
             if (req.body.role) {
@@ -114,6 +114,7 @@ exports.signin = async (req, res) => {
             // role: authorities[0],
             accessToken: token,
             picture: user.picture,
+            isFirstLogin: user.isFirstLogin
             // permission: permissionn
         });
     } catch (err) {
@@ -164,12 +165,15 @@ exports.updateUserData = async (req, res) => {
         if (req.body.phone) {
             updatedFields.phone = req.body.phone;
         }
-        // Add more fields as needed
+        
+        if(req.body.isFirstLogin){
+            updatedFields.isFirstLogin = req.body.isFirstLogin;
+        }
 
         // Update user data
         await Users.update(updatedFields, {
             where: { id: userId }
-        });
+        }).then(data => console.log(data));
 
         // Return a success message
         res.status(200).send({ message: "User data updated successfully." });
