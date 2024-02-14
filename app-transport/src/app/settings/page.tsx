@@ -5,6 +5,7 @@ import Image from "next/image";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useUserData } from "../../../utils/getUserData";
 import { useUpdateUserData } from "../../../utils/updateUserData";
+import PhoneValidation from "./PhoneValidation";
 import { useState } from "react";
 import { useEffect } from "react";
 // export const metadata: Metadata = {
@@ -111,7 +112,7 @@ const handleSubmit= (event: any)=>{
                       </div>
                     </div>
 
-                    <div className="w-full sm:w-1/2">
+                    {/* <div className="w-full sm:w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="phone"
@@ -127,7 +128,8 @@ const handleSubmit= (event: any)=>{
                         defaultValue={userData?.phone}
                         placeholder={userData?.phone}
                       />
-                    </div>
+                    </div> */}
+                    <PhoneValidation userData={userData} handleChange={handleChange} />
                   </div>
 
                   <div className="mb-5.5">
