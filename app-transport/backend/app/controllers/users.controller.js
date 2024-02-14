@@ -141,3 +141,39 @@ exports.getUserData = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+exports.updateUserData = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        const user = await Users.findOne({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            return res.status(404).send({ message: "User not found." });
+        }
+
+        const updatedFields = {};
+        if (req.body.fullname) {
+            updatedFields.fullname = req.body.fullname;
+        }
+        if (req.body.email) {
+            updatedFields.email = req.body.email;
+        }
+        if (req.body.phone) {
+            updatedFields.phone = req.body.phone;
+        }
+        // Add more fields as needed
+
+        // Update user data
+        await Users.update(updatedFields, {
+            where: { id: userId }
+        });
+
+        // Return a success message
+        res.status(200).send({ message: "User data updated successfully." });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
