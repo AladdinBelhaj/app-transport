@@ -45,11 +45,11 @@ const Settings = () => {
   };
 
 
-const handleSubmit= (event: any)=>{
-  event.preventDefault()
-  console.log(formData);
-  updateUserData(formData);
-} 
+  const handleSubmit = (event: any) => {
+    event.preventDefault()
+    console.log(formData);
+    updateUserData(formData);
+  }
 
   return (
     <DefaultLayout>
@@ -165,7 +165,7 @@ const handleSubmit= (event: any)=>{
                           </g>
                         </svg>
                       </span>
-                      <input
+                      {/* <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
                         name="email"
@@ -174,7 +174,23 @@ const handleSubmit= (event: any)=>{
                         onChange={handleChange}
                         defaultValue={userData?.email}
                         placeholder={userData?.email}
+                      /> */}
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="email"
+                        name="email"
+                        id="email"
+                        readOnly
+                        defaultValue={userData?.email}
+                        placeholder={userData?.email}
+                        disabled // Add the disabled attribute to ensure the input is disabled
+                        style={{
+                          backgroundColor: '#f4f4f4', // Change the background color to a lighter shade
+                          borderColor: '#d1d1d1', // Change the border color
+                          cursor: 'not-allowed', // Change the cursor style
+                        }}
                       />
+
                     </div>
                   </div>
 
@@ -339,7 +355,7 @@ const handleSubmit= (event: any)=>{
                       <p>(max, 800 X 800px)</p>
                     </div>
                   </div>
-{/* 
+                  {/* 
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"

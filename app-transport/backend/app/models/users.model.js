@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         
         isFirstLogin: {
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
         },
     });
     return Users;
