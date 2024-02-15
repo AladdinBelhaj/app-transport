@@ -57,7 +57,6 @@ const Settings = () => {
   }, [userData]);
 
   useEffect(() => {
-    console.log(userData?.picture);
     if (userData?.isFirstLogin === "1") {
       // Open the modal
       const modal = document.getElementById(
@@ -111,7 +110,6 @@ const Settings = () => {
   };
 
   const handleImageDelete = (event: any) => {
-    event.preventDefault();
     updateUserData({ picture: "app/uploads/images/default.png" });
   };
 
@@ -203,8 +201,15 @@ const Settings = () => {
                       </span>
                       <span className="flex gap-2.5">
                         <button
-                          onClick={handleImageDelete}
                           className="text-sm hover:text-primary"
+                          onClick={() => {
+                            const modal = document.getElementById(
+                              "my_modal_2",
+                            ) as HTMLDialogElement | null;
+                            if (modal) {
+                              modal.showModal();
+                            }
+                          }}
                         >
                           Delete
                         </button>
@@ -292,6 +297,28 @@ const Settings = () => {
                 <div className="modal-action">
                   <form method="dialog">
                     {/* if there is a button in form, it will close the modal */}
+                    <button className="btn">Close</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+            <dialog id="my_modal_2" className="modal">
+              <div className="modal-box">
+                <h3 className="text-lg font-bold " style={{ color: "black" }}>
+                  Warning!
+                </h3>
+                <p className="py-4" style={{ color: "black" }}>
+                  Are you sure you want to delete your photo?
+                </p>
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button
+                      className="btn btn-error mr-1"
+                      onClick={handleImageDelete}
+                    >
+                      Delete
+                    </button>
                     <button className="btn">Close</button>
                   </form>
                 </div>
