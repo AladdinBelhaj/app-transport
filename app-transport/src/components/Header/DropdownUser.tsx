@@ -60,19 +60,14 @@ const DropdownUser = () => {
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>
-
-        <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
-            src={"/images/user/default.svg"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-          />
-        </span>
+        <div className="avatar">
+                      <div className="w-14 rounded-full">
+                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
+                          width={55}
+                          height={55}
+                          alt="User" />
+                      </div>
+                    </div>
 
         <svg
           className="hidden fill-current sm:block"
