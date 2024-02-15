@@ -19,5 +19,6 @@ module.exports = app => {
     router.post("/auth",users.signin);
     router.get("/:userId",users.getUserData);
     router.put("/:userId",users.updateUserData);
+    router.put("/:userId/imageData",users.uploadImage);
     app.use('/api/users', router);
 };

@@ -189,3 +189,29 @@ exports.updateUserData = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+
+exports.uploadImage = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const imageData = req.body.imageData; // Assuming you're sending the image data in the request body
+
+        // Find the user by ID
+        const user = await Users.findOne({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            return res.status(404).send({ message: "User not found." });
+        }
+
+        // Update the user's picture field with the provided image data
+        await Users.update({ picture: imageData }, {
+            where: { id: userId }
+        });
+
+        res.status(200).send({ message: "Image uploaded successfully." });
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+};
