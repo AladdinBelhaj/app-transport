@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, ReactNode } from "react";
-import Sidebar from "@/components/Sidebar";
+// import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import FirstLoginGuard from "../Auth/FirstLoginGuard";
+import FirstLoginSidebar from "@/components/Sidebar";
 export default function DefaultLayout({
   children,
 }: {
@@ -16,7 +17,7 @@ export default function DefaultLayout({
         {/* <!-- ===== Page Wrapper Start ===== --> */}
         <div className="flex h-screen overflow-hidden">
           {/* <!-- ===== Sidebar Start ===== --> */}
-          <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <FirstLoginSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           {/* <!-- ===== Sidebar End ===== --> */}
 
           {/* <!-- ===== Content Area Start ===== --> */}
