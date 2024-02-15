@@ -38,7 +38,7 @@ const Settings = () => {
     setFormData({
       fullname: userData?.fullname,
       email: userData?.email,
-      username: userData?.username || "",
+      username: "",
       phone: "",
       bio: userData?.bio || "",
       isFirstLogin: "1",
@@ -46,7 +46,17 @@ const Settings = () => {
   }, [userData]);
 
   const isFormValid = () => {
-    if (formData.phone == "") {
+    if(formData.username != "" && formData.phone == ""){
+      return true;
+    }
+    else if (formData.username != "" && !phoneValid){
+      return false;
+    } else if(formData.username != "" && phoneValid){
+      return true;
+    }else if(formData.username != "" && formData.phone == ""){
+      return true;
+    }
+    else if (formData.phone == "") {
       return false;
     } else if (phoneValid) {
       return true;
@@ -201,7 +211,7 @@ const Settings = () => {
                     </label>
                     <p
                       className="text-red-500 absolute inset-y-full"
-                      style={{ top: "74%", right: "44.5%" }}
+                      style={{ top: "36rem", right: "36.5rem" }}
                     >
                       Optional
                     </p>
@@ -242,11 +252,10 @@ const Settings = () => {
                         name="bio"
                         id="bio"
                         rows={6}
-                        placeholder="Write your bio here"
+                        placeholder={userData?.bio}
                         onChange={(e) => {
                           handleInput("bio", e.target.value);
                         }}
-                        defaultValue={userData?.bio}
                       ></textarea>
                     </div>
                   </div>
