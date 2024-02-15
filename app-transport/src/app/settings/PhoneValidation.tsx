@@ -44,7 +44,7 @@ const PhoneValidation: React.FC<PhoneValidationProps> = ({
       </label>
       <p
         className="text-red-500 absolute inset-y-full"
-        style={{ top: "251px", right: "484px" }}
+        style={{ top: "33%", right: "44.5%" }}
       >
         Required
       </p>

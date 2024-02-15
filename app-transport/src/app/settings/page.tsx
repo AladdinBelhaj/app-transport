@@ -201,7 +201,7 @@ const Settings = () => {
                     </label>
                     <p
                       className="text-red-500 absolute inset-y-full"
-                      style={{ top: "562px", right: "484px" }}
+                      style={{ top: "74%", right: "44.5%" }}
                     >
                       Optional
                     </p>

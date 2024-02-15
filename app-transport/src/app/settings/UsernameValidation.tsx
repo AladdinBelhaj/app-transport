@@ -43,7 +43,7 @@ const UsernameValidation: React.FC<UsernameValidationProps> = ({
 
       <p
         className="text-red-500 absolute inset-y-full"
-        style={{ top: "460px", right: "484px" }}
+        style={{ top: "60.59%", right: "44.5%" }}
       >
         Optional
       </p>
