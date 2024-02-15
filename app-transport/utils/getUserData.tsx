@@ -8,6 +8,7 @@ interface UserData {
   username: string;
   bio: string;
   isFirstLogin: string;
+  picture: string;
 }
 
 export const useUserData = (): UserData | null => {

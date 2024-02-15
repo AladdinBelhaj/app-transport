@@ -8,6 +8,7 @@ interface UpdateUserData {
   username?: string;
   bio?: string;
   isFirstLogin?: string;
+  picture?: string;
 }
 
 export const useUpdateUserData = (): ((data: UpdateUserData) => Promise<void>) => {

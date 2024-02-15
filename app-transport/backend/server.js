@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 
 const db = require("./app/models/index");
 const setupRoutes = require("./app/routes/routesetup.route");
+const setupStaticRoutes = require("./app/routes/filespath.route");
 // db.sequelize.sync()
 
 
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
 });
 
 setupRoutes(app);
+setupStaticRoutes(app);
 app.use("/api/stripe", stripe);
 
 

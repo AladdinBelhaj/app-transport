@@ -12,6 +12,8 @@ import { useEffect } from "react";
 import Fullname from "./Fullname";
 import Email from "./Email";
 import Bio from "./Bio";
+import { useUpdateUserImage } from "../../../utils/updateUserImage";
+
 // export const metadata: Metadata = {
 //   title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
 //   description:
@@ -20,6 +22,7 @@ import Bio from "./Bio";
 
 const Settings = () => {
   const userData = useUserData();
+  const updateUserImage = useUpdateUserImage();
   const updateUserData = useUpdateUserData();
   const [formData, setFormData] = useState({
     fullname: userData?.fullname,
@@ -28,7 +31,11 @@ const Settings = () => {
     phone: userData?.phone,
     bio: userData?.bio || "",
     isFirstLogin: "1",
+    picture: userData?.picture
   });
+
+
+  const formDataToSend = new FormData();
 
   const [usernameValid, setUsernameValid] = useState(!!userData?.username);
   const [phoneValid, setPhoneValid] = useState(!!userData?.phone);
@@ -45,6 +52,7 @@ const Settings = () => {
       phone: "",
       bio: userData?.bio || "",
       isFirstLogin: "0",
+      picture: userData?.picture || ""
     });
   }, [userData]);
 
@@ -88,6 +96,24 @@ const Settings = () => {
     }
   
   };
+
+
+
+
+  const handleInputImageChange = (file: { target: { files: any; }; })=> {
+    const reader = new FileReader()
+    const { files } = file.target
+    if (files && files.length !== 0) {
+        reader.readAsDataURL(files[0])
+        formDataToSend.append('picture', files[0]);
+        setFormData({ ...formData, "picture": files[0] });
+        updateUserImage(formDataToSend);
+        // if (reader.result !== null) {
+        //     setInputValue(reader.result)
+        // } 
+      }
+    }
+
 
   return (
     <DefaultLayout>
@@ -158,8 +184,8 @@ const Settings = () => {
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
-                      <Image
-                        src={"/images/user/default.svg"}
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/app/uploads/images/1708001737869.png`}
                         width={55}
                         height={55}
                         alt="User"
@@ -187,6 +213,8 @@ const Settings = () => {
                     <input
                       type="file"
                       accept="image/*"
+                      name = "picture"
+                      onChange={handleInputImageChange}
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
@@ -225,7 +253,22 @@ const Settings = () => {
                       <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
                       <p>(max, 800 X 800px)</p>
                     </div>
+                    
                   </div>
+                  <div className="flex justify-end gap-4.5">
+                    <button
+                     className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                     type="submit"
+                    >
+                     Cancel
+                    </button>
+                    <button
+                     className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                     type="submit"
+                    >
+                     Save
+                    </button>
+                 </div>
                 </form>
               </div>
             </div>

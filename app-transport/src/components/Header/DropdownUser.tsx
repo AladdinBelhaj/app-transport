@@ -2,9 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useUserData } from "../../../utils/getUserData";
+
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+
+  const userData = useUserData();
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
@@ -26,12 +30,14 @@ const DropdownUser = () => {
 
   // close if the esc key is pressed
   useEffect(() => {
+    console.log(userData);
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;
       setDropdownOpen(false);
     };
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
+    
   });
 
   const router = useRouter();
@@ -50,7 +56,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {userData?.fullname}
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>
@@ -59,7 +65,7 @@ const DropdownUser = () => {
           <Image
             width={112}
             height={112}
-            src={"/images/user/user-01.png"}
+            src={"/images/user/default.svg"}
             style={{
               width: "auto",
               height: "auto",
