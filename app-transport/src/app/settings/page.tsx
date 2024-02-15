@@ -39,6 +39,7 @@ const Settings = () => {
 
   const [usernameValid, setUsernameValid] = useState(!!userData?.username);
   const [phoneValid, setPhoneValid] = useState(!!userData?.phone);
+  const [imageSrc, setImgSrc] = useState(userData?.picture);
 
   const handleInput = (name: string, event: any) => {
     setFormData({ ...formData, [name]: event });
@@ -57,6 +58,7 @@ const Settings = () => {
   }, [userData]);
 
   useEffect(() => {
+    console.log(userData?.picture)
     if (userData?.isFirstLogin === "1") {
       // Open the modal
       const modal = document.getElementById('my_modal_1') as HTMLDialogElement | null;
@@ -65,8 +67,8 @@ const Settings = () => {
       }
     }
   }, [userData?.isFirstLogin]);
-  
-  
+
+
 
   const isFormValid = () => {
     if (formData.username != "" && formData.phone == "") {
@@ -89,30 +91,31 @@ const Settings = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(formData);
-    
+
     updateUserData(formData);
-    if(userData?.isFirstLogin === "1"){
-      updateUserData(({isFirstLogin: "0"}));
+    if (userData?.isFirstLogin === "1") {
+      updateUserData(({ isFirstLogin: "0" }));
     }
-  
+
   };
 
 
 
 
-  const handleInputImageChange = (file: { target: { files: any; }; })=> {
+  const handleInputImageChange = (file: { target: { files: any; }; }) => {
     const reader = new FileReader()
     const { files } = file.target
     if (files && files.length !== 0) {
-        reader.readAsDataURL(files[0])
-        formDataToSend.append('picture', files[0]);
-        setFormData({ ...formData, "picture": files[0] });
-        updateUserImage(formDataToSend);
-        // if (reader.result !== null) {
-        //     setInputValue(reader.result)
-        // } 
-      }
+      // reader.onload = () => setImgSrc(reader.result ||undfine)
+      reader.readAsDataURL(files[0])
+      formDataToSend.append('picture', files[0]);
+      setFormData({ ...formData, "picture": files[0] });
+      updateUserImage(formDataToSend);
+      // if (reader.result !== null) {
+      //     setInputValue(reader.result)
+      // } 
     }
+  }
 
 
   return (
@@ -183,13 +186,22 @@ const Settings = () => {
               <div className="p-7">
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-full">
+                    {/* <div className="h-14 w-14 rounded-full">
                       <img
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/app/uploads/images/1708001737869.png`}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
                         width={55}
                         height={55}
                         alt="User"
                       />
+                    </div> */}
+
+                    <div className="avatar">
+                      <div className="w-20 rounded-full">
+                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
+                          width={55}
+                          height={55}
+                          alt="User" />
+                      </div>
                     </div>
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
@@ -213,7 +225,7 @@ const Settings = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      name = "picture"
+                      name="picture"
                       onChange={handleInputImageChange}
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
                     />
@@ -253,29 +265,29 @@ const Settings = () => {
                       <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
                       <p>(max, 800 X 800px)</p>
                     </div>
-                    
+
                   </div>
                   <div className="flex justify-end gap-4.5">
                     <button
-                     className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                     type="submit"
+                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      type="submit"
                     >
-                     Cancel
+                      Cancel
                     </button>
                     <button
-                     className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                     type="submit"
+                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                      type="submit"
                     >
-                     Save
+                      Save
                     </button>
-                 </div>
+                  </div>
                 </form>
               </div>
             </div>
             <dialog id="my_modal_1" className="modal">
               <div className="modal-box">
-                <h3 className="font-bold text-lg "style = {{color: "black"}}>Hello!</h3>
-                <p className="py-4" style = {{color: "black"}}>Please finish setting up your account to access all of our functionalities</p>
+                <h3 className="font-bold text-lg " style={{ color: "black" }}>Hello!</h3>
+                <p className="py-4" style={{ color: "black" }}>Please finish setting up your account to access all of our functionalities</p>
                 <div className="modal-action">
                   <form method="dialog">
                     {/* if there is a button in form, it will close the modal */}

@@ -52,7 +52,8 @@ exports.signup = async (req, res) => {
         fullname: req.body.fullname,
         email: req.body.email,
         password: bcrypt.hashSync(password, salt),
-        isFirstLogin: "1"
+        isFirstLogin: "1",
+        picture: "/app/uploads/images/default.svg"
     })
         .then(user => {
             if (req.body.role) {
