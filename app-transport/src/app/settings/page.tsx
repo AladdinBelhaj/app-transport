@@ -31,9 +31,8 @@ const Settings = () => {
     phone: userData?.phone,
     bio: userData?.bio || "",
     isFirstLogin: "1",
-    picture: userData?.picture
+    picture: userData?.picture,
   });
-
 
   const formDataToSend = new FormData();
 
@@ -53,35 +52,33 @@ const Settings = () => {
       phone: "",
       bio: userData?.bio || "",
       isFirstLogin: "0",
-      picture: userData?.picture || ""
+      picture: userData?.picture || "",
     });
   }, [userData]);
 
   useEffect(() => {
-    console.log(userData?.picture)
+    console.log(userData?.picture);
     if (userData?.isFirstLogin === "1") {
       // Open the modal
-      const modal = document.getElementById('my_modal_1') as HTMLDialogElement | null;
+      const modal = document.getElementById(
+        "my_modal_1",
+      ) as HTMLDialogElement | null;
       if (modal) {
         modal.showModal();
       }
     }
   }, [userData?.isFirstLogin]);
 
-
-
   const isFormValid = () => {
     if (formData.username != "" && formData.phone == "") {
       return true;
-    }
-    else if (formData.username != "" && !phoneValid) {
+    } else if (formData.username != "" && !phoneValid) {
       return false;
     } else if (formData.username != "" && phoneValid) {
       return true;
     } else if (formData.username != "" && formData.phone == "") {
       return true;
-    }
-    else if (formData.phone == "") {
+    } else if (formData.phone == "") {
       return false;
     } else if (phoneValid) {
       return true;
@@ -94,29 +91,29 @@ const Settings = () => {
 
     updateUserData(formData);
     if (userData?.isFirstLogin === "1") {
-      updateUserData(({ isFirstLogin: "0" }));
+      updateUserData({ isFirstLogin: "0" });
     }
-
   };
 
-
-
-
-  const handleInputImageChange = (file: { target: { files: any; }; }) => {
-    const reader = new FileReader()
-    const { files } = file.target
+  const handleInputImageChange = (file: { target: { files: any } }) => {
+    const reader = new FileReader();
+    const { files } = file.target;
     if (files && files.length !== 0) {
       // reader.onload = () => setImgSrc(reader.result ||undfine)
-      reader.readAsDataURL(files[0])
-      formDataToSend.append('picture', files[0]);
-      setFormData({ ...formData, "picture": files[0] });
+      reader.readAsDataURL(files[0]);
+      formDataToSend.append("picture", files[0]);
+      setFormData({ ...formData, picture: files[0] });
       updateUserImage(formDataToSend);
       // if (reader.result !== null) {
       //     setInputValue(reader.result)
-      // } 
+      // }
     }
-  }
+  };
 
+  const handleImageDelete = (event: any) => {
+    event.preventDefault();
+    updateUserData({ picture: "app/uploads/images/default.png" });
+  };
 
   return (
     <DefaultLayout>
@@ -134,10 +131,10 @@ const Settings = () => {
               <div className="p-7">
                 <form action="#">
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-
                     <Fullname
                       userData={userData}
-                      handleInput={handleInput}></Fullname>
+                      handleInput={handleInput}
+                    ></Fullname>
 
                     <PhoneValidation
                       userData={userData}
@@ -146,9 +143,7 @@ const Settings = () => {
                     />
                   </div>
 
-
                   <Email userData={userData}></Email>
-
 
                   <UsernameValidation
                     userData={userData}
@@ -156,10 +151,7 @@ const Settings = () => {
                     setUsernameValid={setUsernameValid}
                   ></UsernameValidation>
 
-
-                  <Bio userData={userData}
-                    handleInput={handleInput}></Bio>
-
+                  <Bio userData={userData} handleInput={handleInput}></Bio>
 
                   <div className="flex justify-end gap-4.5">
                     <button
@@ -197,10 +189,12 @@ const Settings = () => {
 
                     <div className="avatar">
                       <div className="w-20 rounded-full">
-                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
+                        <img
+                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
                           width={55}
                           height={55}
-                          alt="User" />
+                          alt="User"
+                        />
                       </div>
                     </div>
                     <div>
@@ -208,12 +202,15 @@ const Settings = () => {
                         Edit your photo
                       </span>
                       <span className="flex gap-2.5">
-                        <button className="text-sm hover:text-primary">
+                        <button
+                          onClick={handleImageDelete}
+                          className="text-sm hover:text-primary"
+                        >
                           Delete
                         </button>
-                        <button className="text-sm hover:text-primary">
+                        {/* <button className="text-sm hover:text-primary">
                           Update
-                        </button>
+                        </button> */}
                       </span>
                     </div>
                   </div>
@@ -265,9 +262,8 @@ const Settings = () => {
                       <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
                       <p>(max, 800 X 800px)</p>
                     </div>
-
                   </div>
-                  <div className="flex justify-end gap-4.5">
+                  {/* <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
@@ -280,14 +276,19 @@ const Settings = () => {
                     >
                       Save
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>
             <dialog id="my_modal_1" className="modal">
               <div className="modal-box">
-                <h3 className="font-bold text-lg " style={{ color: "black" }}>Hello!</h3>
-                <p className="py-4" style={{ color: "black" }}>Please finish setting up your account to access all of our functionalities</p>
+                <h3 className="text-lg font-bold " style={{ color: "black" }}>
+                  Hello!
+                </h3>
+                <p className="py-4" style={{ color: "black" }}>
+                  Please finish setting up your account to access all of our
+                  functionalities
+                </p>
                 <div className="modal-action">
                   <form method="dialog">
                     {/* if there is a button in form, it will close the modal */}
@@ -304,4 +305,3 @@ const Settings = () => {
 };
 
 export default Settings;
-
