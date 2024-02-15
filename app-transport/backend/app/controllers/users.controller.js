@@ -9,6 +9,38 @@ const { NextResponse } = require ("next/server");
 var jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
 
+
+
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: async (req, file, cb) => {
+        cb(null, './app/uploads/images')
+
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+
+exports.upload = multer({
+    storage: storage,
+    limits: { fileSize: '5242880' },
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png|gif/
+        const mimeType = fileTypes.test(file.mimetype)
+        const extname = fileTypes.test(path.extname(file.originalname))
+        if (mimeType && extname) {
+            return cb(null, true)
+
+        } else {
+            return cb('Give proper files formate to upload : jpeg|jpg|png|gif')
+        }
+    }
+}).single('picture')
+
 exports.signup = async (req, res) => {
 
     // console.log(res)
@@ -192,26 +224,26 @@ exports.updateUserData = async (req, res) => {
 
 
 exports.uploadImage = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const imageData = req.body.imageData; // Assuming you're sending the image data in the request body
+  try {
+    const userId = req.params.userId;
+    const imageData = req.file.path;
 
-        // Find the user by ID
-        const user = await Users.findOne({
-            where: { id: userId }
-        });
+    // Find the user by ID
+    const user = await Users.findOne({
+      where: { id: userId }
+    });
 
-        if (!user) {
-            return res.status(404).send({ message: "User not found." });
-        }
-
-        // Update the user's picture field with the provided image data
-        await Users.update({ picture: imageData }, {
-            where: { id: userId }
-        });
-
-        res.status(200).send({ message: "Image uploaded successfully." });
-    } catch (error) {
-        res.status(500).send({ message: error.message });
+    if (!user) {
+      return res.status(404).send({ message: 'User not found.' });
     }
+
+    // Update the user's picture field with the uploaded image data
+    await Users.update({ picture: imageData }, {
+      where: { id: userId }
+    });
+
+    res.status(200).send({ message: 'Image uploaded successfully.' });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 };

@@ -1,7 +1,6 @@
 const { authJwt } = require("../middleware");
 const { verifySignUp } = require("../middleware");
 
-
 module.exports = app => {
     app.use(function (req, res, next) {
         res.header(
@@ -19,6 +18,7 @@ module.exports = app => {
     router.post("/auth",users.signin);
     router.get("/:userId",users.getUserData);
     router.put("/:userId",users.updateUserData);
-    router.put("/:userId/imageData",users.uploadImage);
+    router.put("/imageData/:userId",users.upload,users.uploadImage)
+
     app.use('/api/users', router);
 };

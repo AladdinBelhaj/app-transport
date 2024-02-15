@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         picture: {
-            type: Sequelize.BLOB
+            type: Sequelize.STRING
         },
         bio: {
             type: Sequelize.STRING
