@@ -44,19 +44,19 @@ const Settings = () => {
       username: "",
       phone: "",
       bio: userData?.bio || "",
-      isFirstLogin: "1",
+      isFirstLogin: "0",
     });
   }, [userData]);
 
   useEffect(() => {
-    if (formData?.isFirstLogin === "1") {
+    if (userData?.isFirstLogin === "1") {
       // Open the modal
       const modal = document.getElementById('my_modal_1') as HTMLDialogElement | null;
       if (modal) {
         modal.showModal();
       }
     }
-  }, [formData]);
+  }, [userData?.isFirstLogin]);
   
   
 
@@ -81,7 +81,12 @@ const Settings = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(formData);
+    
     updateUserData(formData);
+    if(userData?.isFirstLogin === "1"){
+      updateUserData(({isFirstLogin: "0"}));
+    }
+  
   };
 
   return (
