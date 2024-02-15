@@ -41,7 +41,7 @@ const Settings = () => {
       username: userData?.username || "",
       phone: "",
       bio: userData?.bio || "",
-      isFirstLogin: "0",
+      isFirstLogin: "1",
     });
   }, [userData]);
 

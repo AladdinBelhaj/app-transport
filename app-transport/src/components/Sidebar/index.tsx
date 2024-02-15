@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-
+import { useUserData } from "../../../utils/getUserData";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -58,8 +58,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [sidebarExpanded]);
 
+  const userData = useUserData();
+  const isFirstLogin = userData?.isFirstLogin;
+
+  const disableAllInteractions = isFirstLogin === "1";
+
   return (
     <aside
+      style={{
+        cursor: isFirstLogin === "1" ? "not-allowed !important" : "auto",
+        pointerEvents: isFirstLogin === "1" ? "none" : "auto",
+      }}
       ref={sidebar}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
