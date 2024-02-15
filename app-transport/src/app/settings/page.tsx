@@ -199,6 +199,13 @@ const Settings = () => {
                     >
                       Bio
                     </label>
+                    <p
+                      className="text-red-500 absolute inset-y-full"
+                      style={{ top: "562px", right: "484px" }}
+                    >
+                      Optional
+                    </p>
+
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
                         <svg
@@ -229,8 +236,7 @@ const Settings = () => {
                             </clipPath>
                           </defs>
                         </svg>
-                      </span>
-
+                      </span>{" "}
                       <textarea
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         name="bio"
