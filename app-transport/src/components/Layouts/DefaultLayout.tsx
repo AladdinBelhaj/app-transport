@@ -16,13 +16,9 @@ export default function DefaultLayout({
   let userData:any;
   if (storedData) {
     userData = JSON.parse(storedData);
-    // Now you can access properties of the object
-    // const fullname = parsedData.fullname;
-    // const email = parsedData.email;
-    // etc.
 }
 
-  const [isFirstLogin, setIsFirstLogin] = useState(userData.isFirstLogin);
+  const [isFirstLogin, setIsFirstLogin] = useState(userData?.isFirstLogin);
 
   useEffect(() => {
     setIsFirstLogin(userData?.isFirstLogin);

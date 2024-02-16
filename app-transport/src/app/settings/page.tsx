@@ -13,6 +13,7 @@ import Fullname from "./Fullname";
 import Email from "./Email";
 import Bio from "./Bio";
 import { useUpdateUserImage } from "../../../utils/updateUserImage";
+import { useRouter } from "next/navigation";
 
 // export const metadata: Metadata = {
 //   title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
@@ -35,7 +36,7 @@ const Settings = () => {
   });
 
   const formDataToSend = new FormData();
-
+  const router = useRouter();
   const [usernameValid, setUsernameValid] = useState(!!userData?.username);
   const [phoneValid, setPhoneValid] = useState(!!userData?.phone);
 
@@ -83,14 +84,21 @@ const Settings = () => {
     }
   };
 
+  const storedData = localStorage.getItem("data");
+  let parsedData:any;
+  if (storedData) {
+    parsedData = JSON.parse(storedData);
+}
+
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(formData);
-
     updateUserData(formData);
-    if (userData?.isFirstLogin === "1") {
-      updateUserData({ isFirstLogin: "0" });
-    }
+    parsedData.isFirstLogin = "0";
+    localStorage.setItem("data", JSON.stringify(parsedData));
+    router.push('/');
+
   };
 
 

@@ -57,7 +57,7 @@ const Login = () => {
           // const bio = response.data.bio;
           // const isFirstLogin = response.data.isFirstLogin;
 
-          // localStorage.setItem("id", id);
+          localStorage.setItem("id", id);
           // localStorage.setItem("fullname", fullname);
           // localStorage.setItem("email", email);
           // localStorage.setItem("username", username);
