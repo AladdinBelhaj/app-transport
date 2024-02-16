@@ -41,24 +41,21 @@ const UsernameValidation: React.FC<UsernameValidationProps> = ({
         Username
       </label>
 
-      <p
-        className="text-red-500 absolute inset-y-full"
-        style={{ top: "29.5rem", right: "36.5rem" }}
-      >
-        Optional
-      </p>
+      <div className="indicator w-full">
+        <span className="badge indicator-item">Optional</span>
 
-      <input
-        className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-        type="text"
-        name="username"
-        id="username"
-        onChange={(e) => {
-          handleInput("username", e.target.value); // Adjusted to pass correct field name
-          handleInputValidation("username", e.target.value); // Adjusted to pass correct field name
-        }}
-        placeholder={userData?.username}
-      />
+        <input
+          className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+          type="text"
+          name="username"
+          id="username"
+          onChange={(e) => {
+            handleInput("username", e.target.value); // Adjusted to pass correct field name
+            handleInputValidation("username", e.target.value); // Adjusted to pass correct field name
+          }}
+          placeholder={userData?.username}
+        />
+      </div>
     </div>
   );
 };

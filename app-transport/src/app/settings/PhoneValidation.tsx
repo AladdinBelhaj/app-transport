@@ -42,31 +42,22 @@ const PhoneValidation: React.FC<PhoneValidationProps> = ({
       >
         Phone Number
       </label>
-      <p
-        className="text-red-500 absolute inset-y-full"
-        style={{ top: "16.5rem", right: "36.5rem" }}
-      >
-        Required
-      </p>
 
-      <input
-        className={`w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary ${
-          phoneError ? "border-red-500" : ""
-        }`}
-        type="text"
-        name="phone"
-        id="phone"
-        onChange={(e) => {
-          handleInput("phone", e.target.value); // Adjusted to pass correct field name
-          handleInputValidation("phone", e.target.value); // Adjusted to pass correct field name
-        }}
-        placeholder={userData?.phone}
-      />
-      {phoneError && (
-        <p className="text-red-500 mt-1 text-sm">
-          Phone number contains letters.
-        </p>
-      )}
+      <div className="indicator w-full">
+        <span className="badge indicator-item">Required</span>
+
+        <input
+          className={`w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary`}
+          type="text"
+          name="phone"
+          id="phone"
+          onChange={(e) => {
+            handleInput("phone", e.target.value); // Adjusted to pass correct field name
+            handleInputValidation("phone", e.target.value); // Adjusted to pass correct field name
+          }}
+          placeholder={userData?.phone}
+        />
+      </div>
     </div>
   );
 };
