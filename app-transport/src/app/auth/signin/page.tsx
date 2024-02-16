@@ -49,7 +49,24 @@ const Login = () => {
         if (response.status === 200) {
           const token = response.data.accessToken;
           const id = response.data.id;
-          localStorage.setItem("id", id);
+          // const fullname = response.data.fullname;
+          // const email = response.data.email;
+          // const username = response.data.username;
+          // const phone = response.data.phone;
+          // const picture = response.data.picture;
+          // const bio = response.data.bio;
+          // const isFirstLogin = response.data.isFirstLogin;
+
+          // localStorage.setItem("id", id);
+          // localStorage.setItem("fullname", fullname);
+          // localStorage.setItem("email", email);
+          // localStorage.setItem("username", username);
+          // localStorage.setItem("phone", phone);
+          // localStorage.setItem("picture", picture);
+          // localStorage.setItem("bio", bio);
+          // localStorage.setItem("isFirstLogin", isFirstLogin);
+          localStorage.setItem("data", response.data);
+          console.log(response.data);
           if (token) {
             saveToken(token);
             if (response.data.isFirstLogin == "1") {

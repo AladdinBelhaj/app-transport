@@ -1,23 +1,46 @@
 "use client";
 import React, { useState, ReactNode } from "react";
-// import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import AuthGuard from "@/components/Auth/AuthGuard";
-import FirstLoginGuard from "../Auth/FirstLoginGuard";
-import FirstLoginSidebar from "@/components/Sidebar";
+import { useUserData } from "../../../utils/getUserData";
+import { useEffect } from "react";
+import SidebarFirstLogin from "@/components/SidebarFirstLogin";
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const userData = useUserData();
+
+  const [isFirstLogin, setIsFirstLogin] = useState(userData?.isFirstLogin);
+
+  useEffect(() => {
+    setIsFirstLogin(userData?.isFirstLogin);
+  }, [userData?.isFirstLogin]);
+
+  if (isFirstLogin === null) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <AuthGuard redirect={"/auth/signin"}>
       <>
         {/* <!-- ===== Page Wrapper Start ===== --> */}
         <div className="flex h-screen overflow-hidden">
           {/* <!-- ===== Sidebar Start ===== --> */}
-          <FirstLoginSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          {isFirstLogin === "1" ? (
+            <SidebarFirstLogin
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+          ) : (
+            <Sidebar
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+          )}
           {/* <!-- ===== Sidebar End ===== --> */}
 
           {/* <!-- ===== Content Area Start ===== --> */}

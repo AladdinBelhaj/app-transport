@@ -10,7 +10,6 @@ interface Props {
 }
 
 const AuthGuard: NextPage<Props> = ({ redirect ,children}) => {
-  console.log('hello')
   const router = useRouter();
   const token = getToken();
   if (token == null) {

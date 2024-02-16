@@ -38,7 +38,6 @@ const Settings = () => {
 
   const [usernameValid, setUsernameValid] = useState(!!userData?.username);
   const [phoneValid, setPhoneValid] = useState(!!userData?.phone);
-  const [imageSrc, setImgSrc] = useState(userData?.picture);
 
   const handleInput = (name: string, event: any) => {
     setFormData({ ...formData, [name]: event });
@@ -84,6 +83,7 @@ const Settings = () => {
     }
   };
 
+  const [imageSrc, setImgSrc] = useState(userData?.picture);
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(formData);
