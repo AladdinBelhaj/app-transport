@@ -65,7 +65,7 @@ const Login = () => {
           // localStorage.setItem("picture", picture);
           // localStorage.setItem("bio", bio);
           // localStorage.setItem("isFirstLogin", isFirstLogin);
-          localStorage.setItem("data", response.data);
+          localStorage.setItem("data", JSON.stringify(response.data));
           console.log(response.data);
           if (token) {
             saveToken(token);

@@ -83,7 +83,6 @@ const Settings = () => {
     }
   };
 
-  const [imageSrc, setImgSrc] = useState(userData?.picture);
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(formData);
@@ -93,6 +92,13 @@ const Settings = () => {
       updateUserData({ isFirstLogin: "0" });
     }
   };
+
+
+  const [imageSrc, setImageSrc] = useState(userData?.picture);
+
+  useEffect(() => {
+    setImageSrc(userData?.picture);
+  }, [userData?.picture]);
 
   const handleInputImageChange = (file: { target: { files: any } }) => {
     const reader = new FileReader();
@@ -111,6 +117,7 @@ const Settings = () => {
 
   const handleImageDelete = (event: any) => {
     updateUserData({ picture: "app/uploads/images/default.png" });
+    setImageSrc("app/uploads/images/default.png");
   };
 
   return (
@@ -188,7 +195,7 @@ const Settings = () => {
                     <div className="avatar">
                       <div className="w-20 rounded-full">
                         <img
-                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
+                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${imageSrc}`}
                           width={55}
                           height={55}
                           alt="User"
@@ -202,7 +209,8 @@ const Settings = () => {
                       <span className="flex gap-2.5">
                         <button
                           className="text-sm hover:text-primary"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             const modal = document.getElementById(
                               "my_modal_2",
                             ) as HTMLDialogElement | null;
