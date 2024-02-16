@@ -2,7 +2,7 @@ import ECommerce from "@/components/Dashboard/E-commerce";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import FirstLoginGuard from "@/components/Auth/FirstLoginGuard";
+
 // import { getToken } from "../../utils/auth";
 // import { useRouter } from "next/navigation";
 export const metadata: Metadata = {
