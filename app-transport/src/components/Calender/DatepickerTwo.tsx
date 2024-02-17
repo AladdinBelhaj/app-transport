@@ -30,6 +30,7 @@ const DatePickerTwo = () => {
           className="form-datepicker bg-gray-50 border-gray-300 text-gray-900 focus:ring-modal-600 focus:border-modal-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
           placeholder="mm/dd/yyyy"
           data-class="flatpickr-right"
+          required
         />
 
         <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">

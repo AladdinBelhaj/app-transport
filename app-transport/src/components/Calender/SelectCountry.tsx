@@ -1,6 +1,180 @@
-import React from "react";
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+
+// // Define a type for the country object
+// type Country = {
+//   iso2: string;
+//   iso3: string;
+//   country: string;
+//   cities: string[]; // Change to cities for states
+// };
+
+// const SelectCountry = () => {
+//   const [countries, setCountries] = useState<Country[]>([]);
+//   const [loading, setLoading] = useState(true);
+//   const [selectedCountry, setSelectedCountry] = useState<string>("");
+//   const [selectedState, setSelectedState] = useState<string>("");
+
+//   useEffect(() => {
+//     const fetchCountries = async () => {
+//       try {
+//         const response = await axios.get(
+//           "https://countriesnow.space/api/v0.1/countries",
+//         );
+//         const data: Country[] = response.data.data;
+//         setCountries(data);
+//         setLoading(false);
+//       } catch (error) {
+//         console.error("Error fetching countries:", error);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchCountries();
+//   }, []);
+
+//   // Function to handle country selection
+//   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//     setSelectedCountry(e.target.value);
+//     // Reset selected state when a new country is selected
+//     setSelectedState("");
+//   };
+
+//   // Function to handle state selection
+//   const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//     setSelectedState(e.target.value);
+//   };
+
+//   return (
+//     <>
+//       <div>
+//         <label
+//           htmlFor="departure"
+//           className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
+//         >
+//           Departure
+//         </label>
+//         <select
+//           id="departure"
+//           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
+//           onChange={handleCountryChange}
+//           required
+//         >
+//           <option value="" disabled selected>
+//             {loading ? "Loading countries..." : "Choose a country"}
+//           </option>
+//           {countries.map((country) => (
+//             <option key={country.iso2} value={country.iso2}>
+//               {country.country}
+//             </option>
+//           ))}
+//         </select>
+//       </div>
+//       <div>
+//         <label
+//           htmlFor="departureState"
+//           className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
+//         >
+//           Departure State
+//         </label>
+//         <select
+//           id="departureState"
+//           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
+//           required
+//           disabled={!selectedCountry}
+//           onChange={handleStateChange}
+//         >
+//           <option value="" disabled selected={!selectedCountry}>
+//             {selectedCountry ? "Choose a state" : "Select a country first"}
+//           </option>
+//           {selectedCountry &&
+//             countries
+//               .find((country) => country.iso2 === selectedCountry)
+//               ?.cities.map((city) => (
+//                 <option key={city} value={city}>
+//                   {city}
+//                 </option>
+//               ))}
+//         </select>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default SelectCountry;
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+// Define a type for the country object
+type Country = {
+  iso2: string;
+  iso3: string;
+  country: string;
+  cities: string[]; // Change to cities for states
+};
 
 const SelectCountry = () => {
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedDepartureCountry, setSelectedDepartureCountry] =
+    useState<string>("");
+  const [selectedDepartureState, setSelectedDepartureState] =
+    useState<string>("");
+  const [selectedDestinationCountry, setSelectedDestinationCountry] =
+    useState<string>("");
+  const [selectedDestinationState, setSelectedDestinationState] =
+    useState<string>("");
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get(
+          "https://countriesnow.space/api/v0.1/countries",
+        );
+        const data: Country[] = response.data.data;
+        setCountries(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCountries();
+  }, []);
+
+  // Function to handle country selection for departure
+  const handleDepartureCountryChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedDepartureCountry(e.target.value);
+    // Reset selected state when a new country is selected
+    setSelectedDepartureState("");
+  };
+
+  // Function to handle state selection for departure
+  const handleDepartureStateChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedDepartureState(e.target.value);
+  };
+
+  // Function to handle country selection for destination
+  const handleDestinationCountryChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedDestinationCountry(e.target.value);
+    // Reset selected state when a new country is selected
+    setSelectedDestinationState("");
+  };
+
+  // Function to handle state selection for destination
+  const handleDestinationStateChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedDestinationState(e.target.value);
+  };
+
   return (
     <>
       <div>
@@ -13,15 +187,50 @@ const SelectCountry = () => {
         <select
           id="departure"
           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          onChange={handleDepartureCountryChange}
           required
         >
-          <option selected>Choose a country</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
+          <option value="" disabled selected>
+            {loading ? "Loading countries..." : "Choose a country"}
+          </option>
+          {countries.map((country) => (
+            <option key={country.iso2} value={country.iso2}>
+              {country.country}
+            </option>
+          ))}
         </select>
       </div>
+      <div>
+        <label
+          htmlFor="departureState"
+          className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
+        >
+          Departure State
+        </label>
+        <select
+          id="departureState"
+          className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          required
+          disabled={!selectedDepartureCountry}
+          onChange={handleDepartureStateChange}
+        >
+          <option value="" disabled selected={!selectedDepartureCountry}>
+            {selectedDepartureCountry
+              ? "Choose a state"
+              : "Select a country first"}
+          </option>
+          {selectedDepartureCountry &&
+            countries
+              .find((country) => country.iso2 === selectedDepartureCountry)
+              ?.cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+        </select>
+      </div>
+
+      {/* Destination */}
       <div>
         <label
           htmlFor="destination"
@@ -32,51 +241,46 @@ const SelectCountry = () => {
         <select
           id="destination"
           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          onChange={handleDestinationCountryChange}
           required
         >
-          <option selected>Choose a country</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
+          <option value="" disabled selected>
+            {loading ? "Loading countries..." : "Choose a country"}
+          </option>
+          {countries.map((country) => (
+            <option key={country.iso2} value={country.iso2}>
+              {country.country}
+            </option>
+          ))}
         </select>
       </div>
       <div>
         <label
-          htmlFor="destination"
-          className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
-        >
-          Departure State
-        </label>
-        <select
-          id="destination"
-          className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          required
-        >
-          <option selected>Choose a state</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
-        </select>
-      </div>
-      <div>
-        <label
-          htmlFor="destination"
+          htmlFor="destinationState"
           className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
         >
           Destination State
         </label>
         <select
-          id="destination"
+          id="destinationState"
           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
           required
+          disabled={!selectedDestinationCountry}
+          onChange={handleDestinationStateChange}
         >
-          <option selected>Choose a state</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
+          <option value="" disabled selected={!selectedDestinationCountry}>
+            {selectedDestinationCountry
+              ? "Choose a state"
+              : "Select a country first"}
+          </option>
+          {selectedDestinationCountry &&
+            countries
+              .find((country) => country.iso2 === selectedDestinationCountry)
+              ?.cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
         </select>
       </div>
     </>
