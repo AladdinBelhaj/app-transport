@@ -23,11 +23,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         description: {
             type: Sequelize.STRING
-        },
-        
-        isFirstLogin: {
-            type: Sequelize.STRING
-        },
+        }
     });
     return Trips;
 };
