@@ -7,15 +7,11 @@ module.exports = app => {
         next();
     });
 
-    const trips = require("")
+    const trips = require("../controllers/trips.controller")
     var router = require("express").Router();
 
 
-    router.post("/create", verifySignUp.checkDuplicateEmail, users.signup);
-    router.post("/auth",users.signin);
-    router.get("/:userId",users.getUserData);
-    router.put("/:userId",users.updateUserData);
-    router.put("/imageData/:userId",users.upload,users.uploadImage)
+    router.post("/createTrip", trips.createTrip);
 
     app.use('/api/users', router);
 };
