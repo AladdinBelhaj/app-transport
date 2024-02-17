@@ -50,7 +50,7 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
           required
           disabled
           onChange={(e) => {
-            handleInput("departDate", e.target.value.toString());
+            handleInput("departDate", e.target.value); // Pass the raw input value
           }}
         />
 

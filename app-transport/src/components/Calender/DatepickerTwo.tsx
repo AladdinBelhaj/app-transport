@@ -36,7 +36,7 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({ handleInput }) => {
           data-class="flatpickr-right"
           required
           onChange={(e) => {
-            handleInput("arrivDate", e.target.value.toString());
+            handleInput("arrivDate", e.target.value); // Pass the raw input value
           }}
         />
 

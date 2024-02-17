@@ -75,8 +75,8 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     departState: "",
     destCountry: "",
     desState: "",
-    departDate: "",
-    arrivDate: "",
+    departDate: new Date(),
+    arrivDate: new Date(),
     maxWeight: "",
     description: "",
   });
