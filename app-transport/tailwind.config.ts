@@ -11,6 +11,40 @@ const config: Config = {
   theme: {
     fontFamily: {
       satoshi: ["Satoshi", "sans-serif"],
+      body: [
+        'Inter', 
+        'ui-sans-serif', 
+        'system-ui', 
+        '-apple-system', 
+        'system-ui', 
+        'Segoe UI', 
+        'Roboto', 
+        'Helvetica Neue', 
+        'Arial', 
+        'Noto Sans', 
+        'sans-serif', 
+        'Apple Color Emoji', 
+        'Segoe UI Emoji', 
+        'Segoe UI Symbol', 
+        'Noto Color Emoji'
+      ],
+          sans: [
+        'Inter', 
+        'ui-sans-serif', 
+        'system-ui', 
+        '-apple-system', 
+        'system-ui', 
+        'Segoe UI', 
+        'Roboto', 
+        'Helvetica Neue', 
+        'Arial', 
+        'Noto Sans', 
+        'sans-serif', 
+        'Apple Color Emoji', 
+        'Segoe UI Emoji', 
+        'Segoe UI Symbol', 
+        'Noto Color Emoji'
+      ]
     },
     screens: {
       "2xsm": "375px",
@@ -20,6 +54,7 @@ const config: Config = {
     },
     extend: {
       colors: {
+        modal: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"},
         current: "currentColor",
         transparent: "transparent",
         white: "#FFFFFF",
@@ -27,10 +62,10 @@ const config: Config = {
         red: "#FB5454",
         "black-2": "#010101",
         body: "#64748B",
+        primary:"#3C50E0",
         bodydark: "#AEB7C0",
         bodydark1: "#DEE4EE",
         bodydark2: "#8A99AF",
-        primary: "#3C50E0",
         secondary: "#80CAEE",
         stroke: "#E2E8F0",
         gray: "#EFF4FB",
@@ -336,3 +371,51 @@ const config: Config = {
   ],
 };
 export default config;
+
+
+// tailwind.config = {
+//   darkMode: 'class',
+//   theme: {
+//     extend: {
+//       colors: {
+//         primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
+//       }
+//     },
+//     fontFamily: {
+//       'body': [
+//     'Inter', 
+//     'ui-sans-serif', 
+//     'system-ui', 
+//     '-apple-system', 
+//     'system-ui', 
+//     'Segoe UI', 
+//     'Roboto', 
+//     'Helvetica Neue', 
+//     'Arial', 
+//     'Noto Sans', 
+//     'sans-serif', 
+//     'Apple Color Emoji', 
+//     'Segoe UI Emoji', 
+//     'Segoe UI Symbol', 
+//     'Noto Color Emoji'
+//   ],
+//       'sans': [
+//     'Inter', 
+//     'ui-sans-serif', 
+//     'system-ui', 
+//     '-apple-system', 
+//     'system-ui', 
+//     'Segoe UI', 
+//     'Roboto', 
+//     'Helvetica Neue', 
+//     'Arial', 
+//     'Noto Sans', 
+//     'sans-serif', 
+//     'Apple Color Emoji', 
+//     'Segoe UI Emoji', 
+//     'Segoe UI Symbol', 
+//     'Noto Color Emoji'
+//   ]
+//     }
+//   }
+// }
