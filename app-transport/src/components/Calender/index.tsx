@@ -9,6 +9,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import AddTripModal from "./AddTripModal";
 
 const Calendar = () => {
+  const today = new Date();
   const [clickedDate, setClickedDate] = useState<Date | null>(null);
   const [initialEvents, setInitialEvents] = useState<any[]>([
     { title: "nice event", start: new Date(), resourceId: "a" },
@@ -70,6 +71,7 @@ const Calendar = () => {
           { id: "c", title: "Auditorium C", eventColor: "orange" },
         ]}
         initialEvents={initialEvents}
+        validRange={{ start: today }}
       />
       {/* Render AddTripModal inside Calendar */}
       <AddTripModal
