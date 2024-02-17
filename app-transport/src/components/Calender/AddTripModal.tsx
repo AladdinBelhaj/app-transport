@@ -245,6 +245,9 @@ const AddTripModal: React.FC<AddTripModalProps> = ({ isOpen, closeModal }) => {
         }`}
         style={{ zIndex: 9999 }}
       >
+        <div
+          className="fixed inset-0 bg-black opacity-50" // Close the modal if clicked outside
+        ></div>
         <div className="relative h-full w-full max-w-2xl p-6 md:h-auto">
           {/* Modal content */}
           <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 shadow sm:p-5">
