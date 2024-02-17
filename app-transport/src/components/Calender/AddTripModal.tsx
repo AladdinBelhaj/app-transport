@@ -194,6 +194,9 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
                   <textarea
                     id="description"
                     rows={4}
+                    onChange={(e) => {
+                      handleInput("description", e.target.value);
+                    }}
                     className="text-gray-900 bg-gray-50 border-gray-300 focus:ring-modal-500 focus:border-modal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
                     placeholder="Write product description here"
                     defaultValue={""}
