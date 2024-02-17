@@ -3,9 +3,13 @@ import { useEffect } from "react";
 
 interface DatePickerOneProps {
   clickedDate: Date | null;
+  handleInput: (name: string, event: any) => void;
 }
 
-const DatePickerOne: React.FC<DatePickerOneProps> = ({ clickedDate }) => {
+const DatePickerOne: React.FC<DatePickerOneProps> = ({
+  clickedDate,
+  handleInput,
+}) => {
   useEffect(() => {
     // Init flatpickr
     flatpickr(".form-datepicker", {
@@ -45,6 +49,9 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({ clickedDate }) => {
           data-class="flatpickr-right"
           required
           disabled
+          onChange={(e) => {
+            handleInput("departDate", e.target.value.toString());
+          }}
         />
 
         <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">

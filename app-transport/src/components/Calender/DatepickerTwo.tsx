@@ -1,7 +1,11 @@
 import flatpickr from "flatpickr";
 import { useEffect } from "react";
 
-const DatePickerTwo = () => {
+interface DatePickerTwoProps {
+  handleInput: (name: string, event: any) => void;
+}
+
+const DatePickerTwo: React.FC<DatePickerTwoProps> = ({ handleInput }) => {
   useEffect(() => {
     // Init flatpickr
     flatpickr(".form-datepicker", {
@@ -31,6 +35,9 @@ const DatePickerTwo = () => {
           placeholder="mm/dd/yyyy"
           data-class="flatpickr-right"
           required
+          onChange={(e) => {
+            handleInput("arrivDate", e.target.value.toString());
+          }}
         />
 
         <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">

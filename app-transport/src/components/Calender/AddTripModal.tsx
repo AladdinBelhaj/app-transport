@@ -6,6 +6,10 @@ import type { InstanceOptions } from "flowbite";
 import SelectCountry from "./SelectCountry";
 import DatePickerOne from "./DatepickerOne";
 import DatePickerTwo from "./DatepickerTwo";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import axios from "axios";
 
 interface AddTripModalProps {
   isOpen: boolean;
@@ -66,6 +70,47 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     }
   }, []);
 
+  const [post, setPost] = useState({
+    departCountry: "",
+    departState: "",
+    destCountry: "",
+    desState: "",
+    departDate: "",
+    arrivDate: "",
+    maxWeight: "",
+    description: "",
+  });
+
+  const handleInput = (name: string, event: any) => {
+    console.log(event);
+    setPost({ ...post, [name]: event });
+  };
+
+  function handleSubmit(event: any) {
+    event.preventDefault();
+    axios
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/create`, post)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          // Display success toast
+          toast.success("Trip created!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // Display error toast
+      });
+  }
+
   return (
     <>
       {/* Main modal */}
@@ -113,9 +158,12 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
             {/* Modal body */}
             <form action="#">
               <div className="mb-4 grid gap-4 sm:grid-cols-2">
-                <SelectCountry />
-                <DatePickerOne clickedDate={clickedDate} />
-                <DatePickerTwo />
+                <SelectCountry handleInput={handleInput} />
+                <DatePickerOne
+                  clickedDate={clickedDate}
+                  handleInput={handleInput}
+                />
+                <DatePickerTwo handleInput={handleInput} />
                 <div>
                   <label
                     htmlFor="weight"
@@ -127,6 +175,9 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
                     type="number"
                     name="weight"
                     id="weight"
+                    onChange={(e) => {
+                      handleInput("maxWeight", e.target.value);
+                    }}
                     className="bg-gray-50 border-gray-300 text-gray-900 focus:ring-modal-600 focus:border-modal-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
                     placeholder="KG"
                     required
@@ -152,6 +203,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
               <button
                 type="submit"
                 className="bg-modal-700 hover:bg-modal-800 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                onClick={handleSubmit}
               >
                 <svg
                   className="-ml-1 mr-1 h-6 w-6"
