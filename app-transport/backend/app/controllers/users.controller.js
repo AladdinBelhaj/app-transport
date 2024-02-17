@@ -3,8 +3,7 @@ const Role = db.roles;
 const Users = db.users;
 const Op = db.Sequelize.Op;
 const config = require("../config/auth.config")
-const { serialize } = require('cookie');
-const { NextResponse } = require ("next/server");
+
 
 var jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
