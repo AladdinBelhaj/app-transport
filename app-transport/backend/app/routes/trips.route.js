@@ -1,3 +1,4 @@
+const { verifySignUp } = require("../middleware");
 module.exports = app => {
     app.use(function (req, res, next) {
         res.header(
@@ -11,7 +12,7 @@ module.exports = app => {
     var router = require("express").Router();
 
 
-    router.post("/createTrip", trips.createTrip);
+    router.post("/create", trips.createTrip);
 
-    app.use('/api/users', router);
+    app.use('/api/trips', router);
 };
