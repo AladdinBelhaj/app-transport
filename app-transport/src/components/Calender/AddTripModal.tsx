@@ -171,6 +171,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal } from "flowbite";
 import type { ModalOptions, ModalInterface } from "flowbite";
 import type { InstanceOptions } from "flowbite";
+import SelectCountry from "./SelectCountry";
+import DatePickerOne from "./DatepickerOne";
+import DatePickerTwo from "./DatepickerTwo";
 
 const AddTripModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -234,7 +237,7 @@ const AddTripModal = () => {
           className="bg-modal-700 hover:bg-modal-800 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800 block rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
           type="button"
         >
-          Add Product
+          Add Trip
         </button>
       </div>
 
@@ -245,13 +248,14 @@ const AddTripModal = () => {
         aria-hidden="true"
         className={`h-modal fixed left-0 right-0 top-0 z-50 w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full ${isModalOpen ? "" : "hidden"}`}
       >
-        <div className="relative h-full w-full max-w-2xl p-4 md:h-auto">
+        {/* <div className="relative h-full w-full max-w-3xl p-4 md:h-auto"> */}
+        <div className="relative h-full w-full max-w-2xl p-6 md:h-auto">
           {/* Modal content */}
           <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 shadow sm:p-5">
             {/* Modal header */}
             <div className="dark:border-gray-600 mb-4 flex items-center justify-between rounded-t border-b pb-4 sm:mb-5">
               <h3 className="text-gray-900 text-lg font-semibold dark:text-white">
-                Add Product
+                Add Trip
               </h3>
               <button
                 onClick={closeModal}
@@ -277,12 +281,12 @@ const AddTripModal = () => {
             {/* Modal body */}
             <form action="#">
               <div className="mb-4 grid gap-4 sm:grid-cols-2">
-                <div>
+                {/* <div>
                   <label
                     htmlFor="name"
                     className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
                   >
-                    Name
+                    Departure
                   </label>
                   <input
                     type="text"
@@ -292,36 +296,23 @@ const AddTripModal = () => {
                     placeholder="Type product name"
                     required
                   />
-                </div>
+                </div> */}
+                <SelectCountry></SelectCountry>
+                <DatePickerOne></DatePickerOne>
+                <DatePickerTwo></DatePickerTwo>
                 <div>
                   <label
-                    htmlFor="brand"
+                    htmlFor="weight"
                     className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
                   >
-                    Brand
-                  </label>
-                  <input
-                    type="text"
-                    name="brand"
-                    id="brand"
-                    className="bg-gray-50 border-gray-300 text-gray-900 focus:ring-modal-600 focus:border-modal-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
-                    placeholder="Product brand"
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="price"
-                    className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
-                  >
-                    Price
+                    Max Weight
                   </label>
                   <input
                     type="number"
-                    name="price"
-                    id="price"
+                    name="weight"
+                    id="weight"
                     className="bg-gray-50 border-gray-300 text-gray-900 focus:ring-modal-600 focus:border-modal-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
-                    placeholder="$2999"
+                    placeholder="KG"
                     required
                   />
                 </div>

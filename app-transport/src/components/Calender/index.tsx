@@ -172,6 +172,7 @@ const Calendar = () => {
                     required
                   />
                 </div>
+                <div></div>
                 <div>
                   <label
                     htmlFor="price"

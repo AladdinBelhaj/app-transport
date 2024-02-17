@@ -21,13 +21,17 @@
     "axios": "^1.6.7",
     "flatpickr": "^4.6.13",
     "flowbite": "^2.3.0",
+    "flowbite-datepicker": "^1.2.6",
     "jsvectormap": "^1.5.3",
     "next": "14.1.0",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
+    "react-bootstrap-date-picker": "^5.1.0",
+    "react-datepicker": "^6.1.0",
     "react-dom": "^18",
     "react-router-dom": "^6.22.0",
-    "react-toastify": "^10.0.4"
+    "react-toastify": "^10.0.4",
+    "tailwind-datepicker-react": "^1.4.3"
   },
   "devDependencies": {
     "@types/node": "^20",
