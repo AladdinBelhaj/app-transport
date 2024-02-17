@@ -243,6 +243,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({ isOpen, closeModal }) => {
         className={`fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden ${
           isOpen ? "" : "hidden"
         }`}
+        style={{ zIndex: 9999 }}
       >
         <div className="relative h-full w-full max-w-2xl p-6 md:h-auto">
           {/* Modal content */}
