@@ -81,6 +81,17 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     description: "",
   });
 
+  const isFormValid = () => {
+    return (
+      post.departCountry !== "" &&
+      post.departState !== "" &&
+      post.destCountry !== "" &&
+      post.desState !== "" &&
+      post.maxWeight !== "" &&
+      post.arrivDate == null
+    );
+  };
+
   const handleInput = (name: string, event: any) => {
     console.log(event);
     setPost({ ...post, [name]: event });
@@ -205,7 +216,10 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
               </div>
               <button
                 type="submit"
-                className="bg-modal-700 hover:bg-modal-800 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                className={`bg-modal-700 hover:bg-modal-800 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4${
+                  !isFormValid() && "cursor-not-allowed opacity-50"
+                }`}
+                disabled={!isFormValid()}
                 onClick={handleSubmit}
               >
                 <svg
