@@ -1,4 +1,7 @@
-const { verifySignUp } = require("../middleware");
+const {verifyTrip} = require("../middleware")
+
+
+
 module.exports = app => {
     app.use(function (req, res, next) {
         res.header(
@@ -12,7 +15,7 @@ module.exports = app => {
     var router = require("express").Router();
 
 
-    router.post("/create", trips.createTrip);
+    router.post("/create", verifyTrip.checkDuplicateTrip , trips.createTrip);
 
     app.use('/api/trips', router);
 };

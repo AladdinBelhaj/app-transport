@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const CalendarPage = () => {
   return (
     <DefaultLayout>
-      <Calendar onTripStatusReceived={handleTripStatusReceived} />
+      <Calendar />
     </DefaultLayout>
   );
 };
