@@ -60,6 +60,8 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
               : ""
           }
           data-class="flatpickr-right"
+          readOnly
+          disabled
           required
           // onChange={(e) => {
           //   handleInput("departDate", e.target.value);

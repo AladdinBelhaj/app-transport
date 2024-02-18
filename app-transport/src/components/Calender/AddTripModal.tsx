@@ -80,7 +80,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       day: "2-digit",
       year: "numeric",
     }),
-    arrivDate: null,
+    arrivDate: "",
     maxWeight: "",
     description: "",
   });
@@ -114,17 +114,22 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
   }, [clickedDate]);
 
   const isFormValid = () => {
+    const departDateObj = new Date(post.departDate);
+    const arrivDateObj = new Date(post?.arrivDate);
+
     return (
       post.departCountry !== "" &&
       post.departState !== "" &&
       post.destCountry !== "" &&
       post.desState !== "" &&
-      post.maxWeight !== ""
+      post.maxWeight !== "" &&
+      arrivDateObj > departDateObj
     );
   };
 
   const handleInput = (name: string, event: any) => {
     setPost({ ...post, [name]: event });
+    console.log(post);
   };
 
   function handleSubmit(event: any) {
