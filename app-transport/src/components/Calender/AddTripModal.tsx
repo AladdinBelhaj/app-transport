@@ -88,13 +88,13 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       post.destCountry !== "" &&
       post.desState !== "" &&
       post.maxWeight !== "" &&
-      post.arrivDate == null
+      post.arrivDate !== null
     );
   };
 
   const handleInput = (name: string, event: any) => {
-    console.log(event);
     setPost({ ...post, [name]: event });
+    console.log(post);
   };
 
   function handleSubmit(event: any) {
