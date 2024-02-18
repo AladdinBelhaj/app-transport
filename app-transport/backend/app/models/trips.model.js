@@ -23,6 +23,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         description: {
             type: Sequelize.STRING
+        },
+        transporterId:{
+            type: Sequelize.STRING
         }
     });
     return Trips;

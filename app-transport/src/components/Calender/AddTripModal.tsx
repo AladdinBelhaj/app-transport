@@ -71,6 +71,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
   }, []);
 
   const [post, setPost] = useState({
+    transporterId: localStorage.getItem("id"),
     departCountry: "",
     departState: "",
     destCountry: "",
@@ -85,31 +86,15 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     description: "",
   });
 
-  // useEffect(() => {
-  //   handleInput(
-  //     "departDate",
-  //     clickedDate.toLocaleDateString("en-US", {
-  //       month: "short",
-  //       day: "2-digit",
-  //       year: "numeric",
-  //     }),
-  //   );
-  // }, [clickedDate]);
   useEffect(() => {
-    // Create a new Date object with the clickedDate
     const nextDayDate = new Date(clickedDate);
-
-    // Add one day to the date
     nextDayDate.setDate(nextDayDate.getDate() + 1);
-
-    // Format the next day's date
     const formattedDate = nextDayDate.toLocaleDateString("en-US", {
       month: "short",
       day: "2-digit",
       year: "numeric",
     });
 
-    // Update the departDate state with the formatted date
     handleInput("departDate", formattedDate);
   }, [clickedDate]);
 
