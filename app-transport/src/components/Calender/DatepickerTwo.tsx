@@ -4,21 +4,26 @@ import flatpickr from "flatpickr";
 
 interface DatePickerTwoProps {
   handleInput: (name: string, event: any) => void;
+  clickedDate: Date;
 }
-const DatePickerTwo: React.FC<DatePickerTwoProps> = ({ handleInput }) => {
+const DatePickerTwo: React.FC<DatePickerTwoProps> = ({
+  handleInput,
+  clickedDate,
+}) => {
   useEffect(() => {
     flatpickr(".element", {
       mode: "single",
       static: true,
       monthSelectorType: "static",
-      minDate: "today",
+      minDate: clickedDate,
       dateFormat: "M j, Y",
       prevArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
       nextArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
     });
-  }, []);
+  }, [clickedDate]);
+
   return (
     <div>
       <label
@@ -30,7 +35,7 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({ handleInput }) => {
       <div className="relative">
         <input
           id="secondDate"
-          className="element bg-gray-50 border-gray-300 text-gray-900 focus:ring-modal-600 focus:border-modal-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
+          className="element bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
           placeholder="mm/dd/yyyy"
           data-class="flatpickr-right"
           onChange={(e) => {

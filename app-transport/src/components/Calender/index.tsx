@@ -11,7 +11,7 @@ import AddTripModal from "./AddTripModal";
 const Calendar = () => {
   const today = new Date();
 
-  const [clickedDate, setClickedDate] = useState<Date | null>(null);
+  const [clickedDate, setClickedDate] = useState<Date>(new Date());
   const [initialEvents, setInitialEvents] = useState<any[]>([
     { title: "nice event", start: new Date(), resourceId: "a" },
   ]);

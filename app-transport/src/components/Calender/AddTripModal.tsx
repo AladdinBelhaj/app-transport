@@ -14,7 +14,7 @@ import axios from "axios";
 interface AddTripModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  clickedDate: Date | null;
+  clickedDate: Date;
 }
 
 const AddTripModal: React.FC<AddTripModalProps> = ({
@@ -174,7 +174,10 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
                   clickedDate={clickedDate}
                   handleInput={handleInput}
                 />
-                <DatePickerTwo handleInput={handleInput} />
+                <DatePickerTwo
+                  handleInput={handleInput}
+                  clickedDate={clickedDate}
+                />
                 <div>
                   <label
                     htmlFor="weight"
@@ -189,7 +192,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
                     onChange={(e) => {
                       handleInput("maxWeight", e.target.value);
                     }}
-                    className="bg-gray-50 border-gray-300 text-gray-900 focus:ring-modal-600 focus:border-modal-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
+                    className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                     placeholder="KG"
                     required
                   />
@@ -208,7 +211,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
                     onChange={(e) => {
                       handleInput("description", e.target.value);
                     }}
-                    className="text-gray-900 bg-gray-50 border-gray-300 focus:ring-modal-500 focus:border-modal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
+                    className="text-gray-900 bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-500 focus:ring-modal-500 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                     placeholder="Write product description here"
                     defaultValue={""}
                   />
@@ -216,7 +219,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
               </div>
               <button
                 type="submit"
-                className={`bg-modal-700 hover:bg-modal-800 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4${
+                className={`inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800 focus:ring-4${
                   !isFormValid() && "cursor-not-allowed opacity-50"
                 }`}
                 disabled={!isFormValid()}
