@@ -98,6 +98,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
   };
 
   function handleSubmit(event: any) {
+    openModal();
     event.preventDefault();
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/create`, post)
