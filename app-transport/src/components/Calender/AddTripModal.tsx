@@ -104,8 +104,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/create`, post)
       .then((response) => {
         console.log(response);
-        if (response.status === 200) {
-          // Display success toast
+        if (response.status === 201) {
           toast.success("Trip created!", {
             position: "top-center",
             autoClose: 5000,
@@ -119,12 +118,12 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       })
       .catch((err) => {
         console.log(err);
-        // Display error toast
       });
   }
 
   return (
     <>
+      <ToastContainer></ToastContainer>
       {/* Main modal */}
       <div
         id="modalEl" // Set the id for modal element
@@ -213,7 +212,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
                       handleInput("description", e.target.value);
                     }}
                     className="text-gray-900 bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-500 focus:ring-modal-500 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
-                    placeholder="Write product description here"
+                    placeholder="Write trip description here"
                     defaultValue={""}
                   />
                 </div>

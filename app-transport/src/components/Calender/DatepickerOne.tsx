@@ -11,7 +11,6 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
   handleInput,
 }) => {
   useEffect(() => {
-    // Init flatpickr
     flatpickr(".form-datepicker", {
       mode: "single",
       static: true,
@@ -22,7 +21,7 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
       nextArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
     });
-  }, [clickedDate]); // Add clickedDate to dependency array
+  }, [clickedDate]);
 
   return (
     <div>
@@ -35,7 +34,7 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
       <div className="relative">
         <input
           id="firstDate"
-          className="form-datepicker bg-gray-50 border-gray-300 text-gray-900 focus:ring-modal-600 focus:border-modal-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-modal-500 dark:focus:border-modal-500 block w-full rounded-lg border p-2.5 text-sm dark:text-white"
+          className="form-datepicker bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
           placeholder="mm/dd/yyyy"
           value={
             clickedDate
