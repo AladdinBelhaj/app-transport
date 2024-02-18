@@ -2,7 +2,7 @@ import flatpickr from "flatpickr";
 import { useEffect } from "react";
 
 interface DatePickerOneProps {
-  clickedDate: Date | null;
+  clickedDate: Date;
   handleInput: (name: string, event: any) => void;
 }
 
@@ -20,8 +20,22 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
       nextArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
+      onChange: function (selectedDates, dateStr, instance) {
+        // Parse the dateStr into a Date object
+        const selectedDate = new Date(dateStr);
+        // Add one day to the selected date
+        selectedDate.setDate(selectedDate.getDate() + 1);
+        // Convert the modified date back to a string
+        const modifiedDateStr = selectedDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        });
+        // Pass the modified dateStr representing the latest selected date to handleInput as arrivDate
+        handleInput("departDate", modifiedDateStr);
+      },
     });
-  }, [clickedDate]);
+  }, [handleInput, clickedDate]);
 
   return (
     <div>
@@ -47,10 +61,9 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
           }
           data-class="flatpickr-right"
           required
-          disabled
-          onChange={(e) => {
-            handleInput("departDate", e.target.value); // Pass the raw input value
-          }}
+          // onChange={(e) => {
+          //   handleInput("departDate", e.target.value);
+          // }}
         />
 
         <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">

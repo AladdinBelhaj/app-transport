@@ -13,10 +13,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         departDate: {
-            type: Sequelize.STRING
+            type: Sequelize.DATE
         },
         arrivDate: {
-            type: Sequelize.STRING
+            type: Sequelize.DATE
         },
         maxWeight: {
             type: Sequelize.STRING

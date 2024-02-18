@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -10,12 +10,11 @@ import AddTripModal from "./AddTripModal";
 
 const Calendar = () => {
   const today = new Date();
-
   const [clickedDate, setClickedDate] = useState<Date>(new Date());
   const [initialEvents, setInitialEvents] = useState<any[]>([
     { title: "nice event", start: new Date(), resourceId: "a" },
   ]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDateClick = (arg: any) => {
     console.log("Date clicked:", arg.dateStr);
@@ -26,6 +25,7 @@ const Calendar = () => {
       parseInt(dateParts[2]),
     );
     setClickedDate(clickedDate);
+    console.log(clickedDate);
     const newEvent = {
       title: "testing",
       start: clickedDate,
@@ -34,7 +34,6 @@ const Calendar = () => {
     console.log("New event:", newEvent);
     setInitialEvents((prevEvents) => [...prevEvents, newEvent]);
 
-    // Open the modal
     setIsModalOpen(true);
   };
 

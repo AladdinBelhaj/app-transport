@@ -21,8 +21,22 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
       nextArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
+      onChange: function (selectedDates, dateStr, instance) {
+        // Parse the dateStr into a Date object
+        const selectedDate = new Date(dateStr);
+        // Add one day to the selected date
+        selectedDate.setDate(selectedDate.getDate() + 1);
+        // Convert the modified date back to a string
+        const modifiedDateStr = selectedDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        });
+        // Pass the modified dateStr representing the latest selected date to handleInput as arrivDate
+        handleInput("arrivDate", modifiedDateStr);
+      },
     });
-  }, [clickedDate]);
+  }, [clickedDate, handleInput]);
 
   return (
     <div>
@@ -38,9 +52,9 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({
           className="element bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
           placeholder="mm/dd/yyyy"
           data-class="flatpickr-right"
-          onChange={(e) => {
-            handleInput("arrivDate", e.target.value); // Pass the raw input value
-          }}
+          // onChange={(e) => {
+          //   handleInput("arrivDate", e.target.value);
+          // }}
         />
         <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
           <svg

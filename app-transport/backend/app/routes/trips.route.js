@@ -1,4 +1,4 @@
-const {verifyTrip} = require("../middleware")
+// const {verifyTrip} = require("../middleware")
 
 
 
@@ -14,8 +14,8 @@ module.exports = app => {
     const trips = require("../controllers/trips.controller")
     var router = require("express").Router();
 
-
-    router.post("/create", verifyTrip.checkDuplicateTrip , trips.createTrip);
+    // verifyTrip.checkDuplicateTrip
+    router.post("/create" , trips.createTrip);
 
     app.use('/api/trips', router);
 };

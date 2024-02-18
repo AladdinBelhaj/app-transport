@@ -75,11 +75,43 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     departState: "",
     destCountry: "",
     desState: "",
-    departDate: new Date(),
-    arrivDate: new Date(),
+    departDate: clickedDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    }),
+    arrivDate: null,
     maxWeight: "",
     description: "",
   });
+
+  // useEffect(() => {
+  //   handleInput(
+  //     "departDate",
+  //     clickedDate.toLocaleDateString("en-US", {
+  //       month: "short",
+  //       day: "2-digit",
+  //       year: "numeric",
+  //     }),
+  //   );
+  // }, [clickedDate]);
+  useEffect(() => {
+    // Create a new Date object with the clickedDate
+    const nextDayDate = new Date(clickedDate);
+
+    // Add one day to the date
+    nextDayDate.setDate(nextDayDate.getDate() + 1);
+
+    // Format the next day's date
+    const formattedDate = nextDayDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+
+    // Update the departDate state with the formatted date
+    handleInput("departDate", formattedDate);
+  }, [clickedDate]);
 
   const isFormValid = () => {
     return (
@@ -87,18 +119,17 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       post.departState !== "" &&
       post.destCountry !== "" &&
       post.desState !== "" &&
-      post.maxWeight !== "" &&
-      post.arrivDate !== null
+      post.maxWeight !== ""
     );
   };
 
   const handleInput = (name: string, event: any) => {
     setPost({ ...post, [name]: event });
-    console.log(post);
   };
 
   function handleSubmit(event: any) {
     openModal();
+
     event.preventDefault();
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/create`, post)
@@ -118,6 +149,15 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       })
       .catch((err) => {
         console.log(err);
+        toast.error("A trip already exists on that day!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   }
 
