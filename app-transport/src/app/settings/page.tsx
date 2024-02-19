@@ -85,11 +85,10 @@ const Settings = () => {
   };
 
   const storedData = localStorage.getItem("data");
-  let parsedData:any;
+  let parsedData: any;
   if (storedData) {
     parsedData = JSON.parse(storedData);
-}
-
+  }
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -97,10 +96,8 @@ const Settings = () => {
     updateUserData(formData);
     parsedData.isFirstLogin = "0";
     localStorage.setItem("data", JSON.stringify(parsedData));
-    router.push('/');
-
+    router.push("/");
   };
-
 
   const [imageSrc, setImageSrc] = useState(userData?.picture);
 
@@ -121,6 +118,7 @@ const Settings = () => {
       //     setInputValue(reader.result)
       // }
     }
+    window.location.reload();
   };
 
   const handleImageDelete = (event: any) => {
