@@ -51,13 +51,14 @@ const Calendar = () => {
           // resourceTimelinePlugin,
           dayGridPlugin,
           interactionPlugin,
-          timeGridPlugin,
+          // timeGridPlugin,
         ]}
         headerToolbar={{
           left: "prev,next today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek",
+          right: "dayGridMonth",
           // resourceTimelineWeek,
+          // timeGridWeek
         }}
         initialView="dayGridMonth"
         nowIndicator={true}

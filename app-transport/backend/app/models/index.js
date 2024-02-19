@@ -23,6 +23,7 @@ db.sequelize = sequelize;
 db.users = require("./users.model")(sequelize, Sequelize);
 db.roles = require("./roles.model")(sequelize,Sequelize);
 db.trips = require("./trips.model")(sequelize, Sequelize);
+db.events = require("./trips.model")(sequelize, Sequelize);
 
 // user role association
 db.roles.belongsToMany(db.users, {
