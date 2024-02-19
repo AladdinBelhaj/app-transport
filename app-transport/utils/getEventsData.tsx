@@ -2,13 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface EventsData {
-  fullname: string;
-  phone: string;
-  email: string;
-  username: string;
-  bio: string;
-  isFirstLogin: string;
-  picture: string;
+  start: Date;
+  end: Date;
+  resourceId: string;
 }
 
 export const useEventsData = (): EventsData | null => {

@@ -152,6 +152,8 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       });
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/create`, {
+        start: post.departDate,
+        end: post.arrivDate,
         transporterId: post.transporterId,
       })
       .then((response) => {
