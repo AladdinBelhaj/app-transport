@@ -13,7 +13,8 @@ exports.createTrip = async (req, res) => {
             departDate:  req.body.departDate,
             arrivDate: req.body.arrivDate,
             maxWeight: req.body.maxWeight,
-            description:req.body.description
+            description:req.body.description,
+            transporterId: req.body.transporterId
         });
         res.status(201).send({ message: "Trip created successfully!" });
     } catch (err) {

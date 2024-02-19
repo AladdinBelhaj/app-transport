@@ -70,8 +70,8 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     }
   }, []);
 
+  const id = localStorage.getItem("id");
   const [post, setPost] = useState({
-    transporterId: localStorage.getItem("id"),
     departCountry: "",
     departState: "",
     destCountry: "",
@@ -84,6 +84,7 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     arrivDate: "",
     maxWeight: "",
     description: "",
+    transporterId: id,
   });
 
   useEffect(() => {

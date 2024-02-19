@@ -14,6 +14,7 @@ const Calendar = () => {
   const [initialEvents, setInitialEvents] = useState<any[]>([
     { title: "nice event", start: new Date(), resourceId: "a" },
   ]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDateClick = (arg: any) => {
@@ -47,7 +48,7 @@ const Calendar = () => {
       <FullCalendar
         key={JSON.stringify(initialEvents)} // Add key prop here
         plugins={[
-          resourceTimelinePlugin,
+          // resourceTimelinePlugin,
           dayGridPlugin,
           interactionPlugin,
           timeGridPlugin,
@@ -55,11 +56,12 @@ const Calendar = () => {
         headerToolbar={{
           left: "prev,next today",
           center: "title",
-          right: "resourceTimelineWeek,dayGridMonth,timeGridWeek",
+          right: "dayGridMonth,timeGridWeek",
+          // resourceTimelineWeek,
         }}
         initialView="dayGridMonth"
         nowIndicator={true}
-        editable={true}
+        // editable={true}
         selectable={true}
         selectMirror={true}
         dateClick={handleDateClick}
