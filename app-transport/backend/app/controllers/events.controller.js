@@ -5,7 +5,7 @@ const config = require("../config/auth.config")
 
 exports.createEvent = async (req, res) => {
     try {
-        await Trips.create({
+        await Events.create({
             departDate:  req.body.departDate,
             arrivDate: req.body.arrivDate,
             transporterId: req.body.transporterId,
