@@ -1,19 +1,60 @@
-require("../models");
+// require("../models");
+// const db = require("../models");
+// const Trip = db.trips;
+// const Op = db.Sequelize.Op;
+
+// checkDuplicateTrip = (req, res, next) => {
+
+
+//     Trip.findOne({
+//         where: {
+//             departDate: req.body.departDate
+//         }
+//     }).then(trip => {
+//         if (trip) {
+//             res.status(400).send({
+//                 message: "Failed! A trip already exists on that day!"
+//             });
+//             return;
+//         }
+
+//         next();
+//     });
+// };
+
+// const verifyTrip = {
+//     checkDuplicateTrip: checkDuplicateTrip,
+// };
+
+// module.exports = verifyTrip;
+
+// Importing required modules and models
 const db = require("../models");
 const Trip = db.trips;
 const Op = db.Sequelize.Op;
 
+// Function to check for duplicate trips
 checkDuplicateTrip = (req, res, next) => {
-
-
     Trip.findOne({
         where: {
-            departDate: req.body.departDate
+            [Op.or]: [
+                {
+                    departDate: req.body.departDate
+                },
+                {
+                    departDate: {
+                        [Op.lte]: req.body.departDate
+                    },
+                    arrivDate: {
+                        [Op.gte]: req.body.departDate
+                    }
+                }
+            ]
         }
     }).then(trip => {
         if (trip) {
             res.status(400).send({
-                message: "Failed! A trip already exists on that day!"
+                message: "Failed! A trip already exists on that day or within that period!"
             });
             return;
         }
@@ -22,8 +63,10 @@ checkDuplicateTrip = (req, res, next) => {
     });
 };
 
+// Object to hold verification functions
 const verifyTrip = {
     checkDuplicateTrip: checkDuplicateTrip,
 };
 
 module.exports = verifyTrip;
+
