@@ -1,4 +1,4 @@
-const { events } = require("../models");
+const { events } = require("../models/events.model");
 
 
 module.exports = app => {
@@ -10,11 +10,11 @@ module.exports = app => {
         next();
     });
 
-    const trips = require("../controllers/events.controller")
+    const events = require("../controllers/events.controller")
     var router = require("express").Router();
 
    
     router.post("/create",events.createEvent);
 
-    app.use('/api/trips', router);
+    app.use('/api/events', router);
 };
