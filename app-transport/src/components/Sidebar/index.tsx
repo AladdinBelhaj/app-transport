@@ -242,24 +242,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <Link
-                              href="/trips/pending-trips"
+                              href="/trips/current-trips"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
                                 pathname === "/trips/pending-trips" &&
                                 "text-white"
                               }`}
                             >
-                              Pending trips
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/trips/completed-trips"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "/trips/completed-trips" &&
-                                "text-white"
-                              } `}
-                            >
-                              Completed trips
+                              Current Trips
                             </Link>
                           </li>
                         </ul>

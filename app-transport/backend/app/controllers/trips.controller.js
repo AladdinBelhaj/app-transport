@@ -22,3 +22,23 @@ exports.createTrip = async (req, res) => {
         res.status(500).send({ message: "An error occurred while creating the trip." });
     }
 };
+
+
+exports.getTripData = async (req, res) => {
+    try {
+        const transporterId = req.params.transporterId; // Assuming the user ID is passed as a parameter in the URL
+
+
+        const user = await Trips.findAll({
+            where: { transporterId: transporterId },
+        });
+
+        if (!user) {
+            return res.status(404).send({ message: "Trip not found." });
+        }
+
+        res.status(200).send(user);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
