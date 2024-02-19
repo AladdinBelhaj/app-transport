@@ -1,33 +1,37 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface EventsData {
-  title: string;
-  start: Date;
-  end: Date;
-  resourceId: string;
-}
-
-export const useEventsData = (): EventsData | null => {
-  const [eventsData, setEventsData] = useState<EventsData | null>(null);
+export const useEventsData = () => {
+  const [events, setEvents] = useState<any[]>([]);
   const id = localStorage.getItem("id");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchEventsData = async () => {
       try {
-        if (id) {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${id}`,
-          );
-          setEventsData(response.data);
-        }
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${id}`,
+        );
+
+        const formattedEvents = response.data.map((event: any) => {
+          const startDate = new Date(event.start);
+          startDate.setDate(startDate.getDate() - 1);
+
+          return {
+            title: event.title,
+            start: startDate.toISOString(), // Convert back to ISO string format
+            end: event.end,
+            resourceId: event.resourceId,
+          };
+        });
+
+        setEvents(formattedEvents);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching events data:", error);
       }
     };
 
-    fetchData();
-  }, [id]);
+    fetchEventsData();
+  }, []);
 
-  return eventsData;
+  return events;
 };

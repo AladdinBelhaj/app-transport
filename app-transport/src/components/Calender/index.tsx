@@ -14,21 +14,12 @@ const Calendar = () => {
   const [clickedDate, setClickedDate] = useState<Date>(new Date());
   const eventsData = useEventsData();
 
-  // useEffect(() => {
-  //   if (eventsData) {
-  //     const formattedEvents = eventsData.map((event: any) => ({
-  //       title: event.title,
-  //       start: new Date(event.start),
-  //       end: new Date(event.end),
-  //       resourceId: event.resourceId,
-  //     }));
-  //     setInitialEvents(formattedEvents);
-  //   }
-  // }, [eventsData]);
-
   const [initialEvents, setInitialEvents] = useState<any[]>([]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    setInitialEvents(eventsData);
+  }, [eventsData]);
 
   const handleDateClick = (arg: any) => {
     console.log(eventsData);

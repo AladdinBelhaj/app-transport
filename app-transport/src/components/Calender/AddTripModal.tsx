@@ -22,8 +22,8 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
   closeModal,
   clickedDate,
 }) => {
-  const $modalElementRef = useRef<HTMLDivElement>(null); // Adjusted the type here
-  let modal: ModalInterface | undefined;
+  // const $modalElementRef = useRef<HTMLDivElement>(null); // Adjusted the type here
+  // let modal: ModalInterface | undefined;
 
   // Function to open the modal
   const openModal = () => {
@@ -54,15 +54,15 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
   };
 
   // Function to initialize the modal when the component mounts
-  useEffect(() => {
-    if ($modalElementRef?.current) {
-      modal = new Modal(
-        $modalElementRef.current,
-        modalOptions,
-        instanceOptions,
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if ($modalElementRef?.current) {
+  //     modal = new Modal(
+  //       $modalElementRef.current,
+  //       modalOptions,
+  //       instanceOptions,
+  //     );
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (isOpen) {
