@@ -26,8 +26,8 @@ exports.getEventsData = async (req, res) => {
         const transporterId = req.params.transporterId; // Assuming the user ID is passed as a parameter in the URL
 
         // Retrieve the user data from the database
-        const event = await Events.findOne({
-            where: { id: transporterId },
+        const event = await Events.findAll({
+            where: { transporterId: transporterId },
         });
 
         if (!event) {

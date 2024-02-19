@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface EventsData {
+  title: string;
   start: Date;
   end: Date;
   resourceId: string;
@@ -16,7 +17,7 @@ export const useEventsData = (): EventsData | null => {
       try {
         if (id) {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${id}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${id}`,
           );
           setEventsData(response.data);
         }
