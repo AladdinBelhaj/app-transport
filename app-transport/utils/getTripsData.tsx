@@ -1,35 +1,40 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-interface TripData {
-  fullname: string;
-  phone: string;
-  email: string;
-  username: string;
-  bio: string;
-  isFirstLogin: string;
-  picture: string;
+interface Trip {
+  id: number;
+  departCountry: string;
+  departState: string;
+  destCountry: string;
+  desState: string;
+  departDate: string;
+  arrivDate: string;
+  maxWeight: string;
+  description: string;
+  transporterId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export const useTripData = (): TripData | null => {
-  const [tripData, setTripData] = useState<TripData | null>(null);
+export const useTripData = () => {
+  const [tripData, setTripData] = useState<Trip[] | null>(null); // Type assertion added
   const id = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (id) {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${id}`,
-          );
-          setTripData(response.data);
-        }
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${id}`,
+        );
+        setTripData(response.data);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching trip data:", error);
       }
     };
 
     fetchData();
+
+    return () => {};
   }, [id]);
 
   return tripData;
