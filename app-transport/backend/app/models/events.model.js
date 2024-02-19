@@ -1,9 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
     const Events = sequelize.define("events", {
-        departDate: {
+        title:{
+            type:Sequelize.DATE
+        },
+        start: {
             type: Sequelize.DATE
         },
-        arrivDate: {
+        end: {
             type: Sequelize.DATE
         },
         transporterId:{

@@ -12,7 +12,15 @@ const Calendar = () => {
   const today = new Date();
   const [clickedDate, setClickedDate] = useState<Date>(new Date());
   const [initialEvents, setInitialEvents] = useState<any[]>([
-    { title: "nice event", start: new Date(), resourceId: "a" },
+    {
+      title: "nice event",
+      start: new Date(), // Start date and time
+      end: new Date(new Date().getTime() + 86400000), // End date and time (one day after the start time)
+      resourceId: "a", // ResourceId for the start time
+      extendedProps: {
+        endResourceId: "b", // ResourceId for the end time
+      },
+    },
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);

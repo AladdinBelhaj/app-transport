@@ -6,10 +6,12 @@ const config = require("../config/auth.config")
 exports.createEvent = async (req, res) => {
     try {
         await Events.create({
-            departDate:  req.body.departDate,
-            arrivDate: req.body.arrivDate,
+            title:"New trip!",
+            start:  req.body.departDate,
+            end: req.body.arrivDate,
             transporterId: req.body.transporterId,
-            resourceId: req.body.resourceId
+            // resourceId: req.body.resourceId
+             resourceId: "a"
         });
         res.status(201).send({ message: "Event created successfully!" });
     } catch (err) {
