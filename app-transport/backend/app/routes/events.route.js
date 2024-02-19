@@ -1,4 +1,5 @@
 const { events } = require("../models/events.model");
+const {verifyTrip} = require("../middleware")
 
 
 module.exports = app => {
@@ -14,8 +15,8 @@ module.exports = app => {
     var router = require("express").Router();
 
    
-    router.post("/create",events.createEvent);
+    router.post("/create",verifyTrip.checkDuplicateTrip,events.createEvent);
     router.get("/:transporterId",events.getEventsData);
-    
+
     app.use('/api/events', router);
 };
