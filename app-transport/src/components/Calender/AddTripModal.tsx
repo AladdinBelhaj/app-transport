@@ -10,17 +10,21 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useEventsData } from "../../../utils/getEventsData";
+import { fetchEventsData } from "../../../utils/fetchEventsData";
 
 interface AddTripModalProps {
   isOpen: boolean;
   closeModal: () => void;
   clickedDate: Date;
+  setInitialEvents: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const AddTripModal: React.FC<AddTripModalProps> = ({
   isOpen,
   closeModal,
   clickedDate,
+  setInitialEvents,
 }) => {
   // const $modalElementRef = useRef<HTMLDivElement>(null); // Adjusted the type here
   // let modal: ModalInterface | undefined;
@@ -118,6 +122,86 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
     console.log(post);
   };
 
+  // function handleSubmit(event: any) {
+  //   openModal();
+
+  //   event.preventDefault();
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/create`, post)
+  //     .then((response) => {
+  //       console.log(response);
+  //       if (response.status === 201) {
+  //         toast.success("Trip created!", {
+  //           position: "top-center",
+  //           autoClose: 5000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error("A trip already exists during that period", {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+  //     });
+  //   axios
+  //     .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/create`, {
+  //       start: post.departDate,
+  //       end: post.arrivDate,
+  //       transporterId: post.transporterId,
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+
+  //       fetchEventsData().then((eventsData) => {
+  //         if(eventsData !== null){
+  //           setInitialEvents(eventsData);
+  //         }
+
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
+
+  const [tripCreated, setTripCreated] = useState(false);
+
+  useEffect(() => {
+    // Check if a trip has been created
+    const tripCreatedStorage = localStorage.getItem("tripCreated");
+    if (tripCreatedStorage === "true") {
+      // Clear the flag in localStorage
+      localStorage.removeItem("tripCreated");
+      // Set the state to trigger the toast
+      setTripCreated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Show the toast when tripCreated state changes
+    if (tripCreated) {
+      toast.success("Trip created!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [tripCreated]);
+
   function handleSubmit(event: any) {
     openModal();
 
@@ -127,20 +211,13 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
-          toast.success("Trip created!", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          localStorage.setItem("tripCreated", "true");
+          window.location.reload();
         }
       })
       .catch((err) => {
         console.log(err);
-        toast.error("A trip already exists on that day!", {
+        toast.error("A trip already exists during that period", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,

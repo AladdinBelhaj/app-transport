@@ -86,6 +86,7 @@ const Calendar = () => {
         isOpen={isModalOpen}
         closeModal={closeModal}
         clickedDate={clickedDate}
+        setInitialEvents={setInitialEvents}
       />
     </div>
   );
