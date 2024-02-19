@@ -15,6 +15,7 @@ module.exports = app => {
 
    
     router.post("/create",events.createEvent);
-
+    router.get("/:transporterId",events.getEventsData);
+    
     app.use('/api/events', router);
 };

@@ -17,3 +17,24 @@ exports.createEvent = async (req, res) => {
         res.status(500).send({ message: "An error occurred while creating the event." });
     }
 };
+
+
+exports.getEventsData = async (req, res) => {
+    try {
+        const transporterId = req.params.transporterId; // Assuming the user ID is passed as a parameter in the URL
+
+        // Retrieve the user data from the database
+        const event = await Events.findOne({
+            where: { id: transporterId },
+        });
+
+        if (!event) {
+            return res.status(404).send({ message: "Event not found." });
+        }
+
+        // Return the user data
+        res.status(200).send(event);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};

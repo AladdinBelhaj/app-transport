@@ -150,6 +150,14 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
           progress: undefined,
         });
       });
+    axios
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/create`, post)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
