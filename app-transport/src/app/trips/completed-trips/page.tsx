@@ -6,7 +6,7 @@ const CompletedTrips = () => {
   return (
     <>
       <DefaultLayout>
-        <Breadcrumb pageName="Completed Trips"></Breadcrumb>
+        <Breadcrumb pageName="Completed Trips" />
       </DefaultLayout>
     </>
   );

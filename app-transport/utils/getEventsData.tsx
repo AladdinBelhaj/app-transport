@@ -18,7 +18,7 @@ export const useEventsData = () => {
 
           return {
             title: event.title,
-            start: startDate.toISOString(), // Convert back to ISO string format
+            start: startDate.toISOString(),
             end: event.end,
             resourceId: event.resourceId,
           };
