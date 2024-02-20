@@ -95,12 +95,6 @@ const ReadTripModal: React.FC<ModalProps> = ({
                   Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD
                   storage, Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US.
                 </dd>
-                <dt className="text-gray-900 mb-2 font-semibold leading-none dark:text-white">
-                  Category
-                </dt>
-                <dd className="text-gray-500 dark:text-gray-400 mb-4 font-light sm:mb-5">
-                  Electronics/PC
-                </dd>
               </dl>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3 sm:space-x-4">
@@ -124,11 +118,32 @@ const ReadTripModal: React.FC<ModalProps> = ({
                     </svg>
                     Edit
                   </button>
+                  {/* <button
+                    type="button"
+                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                  >
+                    Start Trip
+                  </button> */}
                   <button
                     type="button"
-                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-white px-5 py-2.5 text-sm font-medium hover:text-modal-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
                   >
-                    Preview
+                    <svg
+                      aria-hidden="true"
+                      className="-ml-1 mr-1 inline-block h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      ></path>
+                    </svg>
+                    Start Trip
                   </button>
                 </div>
                 <button
