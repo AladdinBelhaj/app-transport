@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import UpdateTripModal from "./UpdateTripModal";
 
 interface Trip {
   id: number;
@@ -27,13 +28,19 @@ const ReadTripModal: React.FC<ModalProps> = ({
   closeModal,
   selectedTrip,
 }) => {
-  // State to track the visibility of the modal
   const [modalOpen, setModalOpen] = useState(false);
-
-  // Function to handle closing the modal
   const handleCloseModal = () => {
     setModalOpen(false);
     closeModal();
+  };
+
+  const [isUpdateModalOpen, setUpdateIsModalOpen] = useState(false);
+
+  const closeUpdateModal = () => {
+    setUpdateIsModalOpen(false);
+  };
+  const openUpdateModal = () => {
+    setUpdateIsModalOpen(true);
   };
 
   return (
@@ -90,17 +97,21 @@ const ReadTripModal: React.FC<ModalProps> = ({
                   Details
                 </dt>
                 <dd className="text-gray-500 dark:text-gray-400 mb-4 font-light sm:mb-5">
-                  Standard glass, 3.8GHz 8-core 10th-generation Intel Core i7
-                  processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory,
-                  Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD
-                  storage, Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US.
+                  {selectedTrip?.description
+                    ? selectedTrip.description
+                    : "No description"}
                 </dd>
               </dl>
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3 sm:space-x-4">
                   <button
                     type="button"
                     className="inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
+                    onClick={() => {
+                      handleCloseModal();
+                      openUpdateModal();
+                    }}
                   >
                     <svg
                       aria-hidden="true"
@@ -116,7 +127,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                         clipRule="evenodd"
                       />
                     </svg>
-                    Edit
+                    Edit Trip
                   </button>
                   {/* <button
                     type="button"
@@ -170,6 +181,10 @@ const ReadTripModal: React.FC<ModalProps> = ({
           </div>
         </div>
       )}
+      <UpdateTripModal
+        isOpen={isUpdateModalOpen}
+        closeModal={closeUpdateModal}
+      ></UpdateTripModal>
     </div>
   );
 };
