@@ -17,7 +17,7 @@ interface Trip {
   updatedAt: string;
 }
 
-export const useTripData = (id: number) => {
+export const useSingleTripData = (id: number) => {
   const [tripData, setTripData] = useState<Trip[] | null>(null);
 
   useEffect(() => {

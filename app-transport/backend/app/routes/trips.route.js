@@ -17,6 +17,6 @@ module.exports = app => {
    
     router.post("/create", verifyTrip.checkDuplicateTrip, trips.createTrip);
     router.get("/:transporterId",trips.getTripData);
-
+    router.get("/single/:id",trips.getSingleTripData);
     app.use('/api/trips', router);
 };
