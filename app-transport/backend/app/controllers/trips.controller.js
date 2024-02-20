@@ -14,7 +14,8 @@ exports.createTrip = async (req, res) => {
             arrivDate: req.body.arrivDate,
             maxWeight: req.body.maxWeight,
             description:req.body.description,
-            transporterId: req.body.transporterId
+            transporterId: req.body.transporterId,
+            status: "pending"
         });
         res.status(201).send({ message: "Trip created successfully!" });
     } catch (err) {

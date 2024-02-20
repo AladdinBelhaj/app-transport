@@ -16,49 +16,22 @@ interface Trip {
   maxWeight: string;
   description: string;
   transporterId: string;
+  status: string;
   createdAt: string;
   updatedAt: string;
 }
 
-const CompletedTrips = () => {
+const CurrentTrips = () => {
   const tripData = useTripData();
 
   if (!tripData) {
     // Render loading state or return null
     return <div>Loading...</div>;
   }
-
-  // const packageData: Package[] = [
-  //   {
-  //     name: "Free package",
-  //     price: 0.0,
-  //     invoiceDate: `Jan 13,2023`,
-  //     status: "Paid",
-  //   },
-  //   {
-  //     name: "Standard Package",
-  //     price: 59.0,
-  //     invoiceDate: `Jan 13,2023`,
-  //     status: "Paid",
-  //   },
-  //   {
-  //     name: "Business Package",
-  //     price: 99.0,
-  //     invoiceDate: `Jan 13,2023`,
-  //     status: "Unpaid",
-  //   },
-  //   {
-  //     name: "Standard Package",
-  //     price: 59.0,
-  //     invoiceDate: `Jan 13,2023`,
-  //     status: "Pending",
-  //   },
-  // ];
-
   return (
     <>
       <DefaultLayout>
-        <Breadcrumb pageName="Completed Trips" />
+        <Breadcrumb pageName="Current Trips" />
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="max-w-full overflow-x-auto">
             <table className="w-full table-auto">
@@ -212,4 +185,4 @@ const CompletedTrips = () => {
   );
 };
 
-export default CompletedTrips;
+export default CurrentTrips;

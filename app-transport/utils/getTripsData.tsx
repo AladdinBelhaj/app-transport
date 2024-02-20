@@ -12,6 +12,7 @@ interface Trip {
   maxWeight: string;
   description: string;
   transporterId: string;
+  status: string;
   createdAt: string;
   updatedAt: string;
 }
