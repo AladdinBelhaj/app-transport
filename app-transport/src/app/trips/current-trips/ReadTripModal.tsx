@@ -1,35 +1,24 @@
-"use client";
 import React, { useState } from "react";
 
-const ReadTripModal = () => {
+interface ModalProps {
+  isOpen: boolean;
+  closeModal: () => void;
+}
+
+const ReadTripModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   // State to track the visibility of the modal
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Function to handle opening the modal
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
   // Function to handle closing the modal
-  const closeModal = () => {
+  const handleCloseModal = () => {
     setModalOpen(false);
+    closeModal(); // Call the parent component's closeModal function
   };
 
   return (
     <div>
-      <div className="m-5 flex justify-center">
-        <button
-          id="readProductButton"
-          className="block rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
-          type="button"
-          onClick={openModal} // Call openModal function when button is clicked
-        >
-          Show read modal
-        </button>
-      </div>
-
       {/* Main modal */}
-      {modalOpen && ( // Render the modal only if modalOpen state is true
+      {isOpen && ( // Render the modal only if isOpen prop is true
         <div
           id="readProductModal"
           tabIndex={-1}
@@ -39,6 +28,7 @@ const ReadTripModal = () => {
         >
           <div
             className="fixed inset-0 bg-black opacity-50" // Close the modal if clicked outside
+            onClick={handleCloseModal} // Call handleCloseModal function when clicked outside the modal
           ></div>
           <div className="relative h-full w-full max-w-xl p-4 md:h-auto">
             {/* Modal content */}
@@ -53,7 +43,7 @@ const ReadTripModal = () => {
                   <button
                     type="button"
                     className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 inline-flex rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
-                    onClick={closeModal} // Call closeModal function when close button is clicked
+                    onClick={handleCloseModal} // Call handleCloseModal function when close button is clicked
                   >
                     <svg
                       aria-hidden="true"
@@ -131,7 +121,7 @@ const ReadTripModal = () => {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0v-6zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                       clipRule="evenodd"
                     />
                   </svg>

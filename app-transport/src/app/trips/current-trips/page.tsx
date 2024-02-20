@@ -2,8 +2,10 @@
 import React from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { Package } from "@/types/package";
 import { useTripData } from "../../../../utils/getTripsData";
+import { useState } from "react";
+import { useEffect } from "react";
+import ReadTripModal from "./ReadTripModal";
 
 interface Trip {
   id: number;
@@ -24,10 +26,20 @@ interface Trip {
 const CurrentTrips = () => {
   const tripData = useTripData();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   if (!tripData) {
     // Render loading state or return null
     return <div>Loading...</div>;
   }
+
   return (
     <>
       <DefaultLayout>
@@ -63,7 +75,7 @@ const CurrentTrips = () => {
               <tbody>
                 {tripData &&
                   tripData.map((trip: Trip, key: any) => (
-                    <tr key={key}>
+                    <tr key={trip.id}>
                       <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                         <h5 className="font-medium text-black dark:text-white">
                           {trip.departCountry}
@@ -95,19 +107,22 @@ const CurrentTrips = () => {
                       <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                         <p
                           className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                            trip.maxWeight === "Paid"
+                            trip.status === "Paid"
                               ? "bg-success text-success"
-                              : trip.maxWeight === "Unpaid"
+                              : trip.maxWeight === "Pending"
                                 ? "bg-danger text-danger"
                                 : "bg-warning text-warning"
                           }`}
                         >
-                          {trip.maxWeight}
+                          {trip.status}
                         </p>
                       </td>
                       <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                         <div className="flex items-center space-x-3.5">
-                          <button className="hover:text-primary">
+                          <button
+                            className="hover:text-primary "
+                            onClick={openModal}
+                          >
                             <svg
                               className="fill-current"
                               width="18"
@@ -180,6 +195,7 @@ const CurrentTrips = () => {
             </table>
           </div>
         </div>
+        <ReadTripModal isOpen={isModalOpen} closeModal={closeModal} />
       </DefaultLayout>
     </>
   );
