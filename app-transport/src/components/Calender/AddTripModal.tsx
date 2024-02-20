@@ -33,27 +33,27 @@ const AddTripModal: React.FC<AddTripModalProps> = ({
   };
 
   // Define modal options
-  const modalOptions: ModalOptions = {
-    placement: "center",
-    backdrop: "dynamic",
-    backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
-    closable: true,
-    onHide: () => {
-      console.log("modal is hidden");
-    },
-    onShow: () => {
-      console.log("modal is shown");
-    },
-    onToggle: () => {
-      console.log("modal has been toggled");
-    },
-  };
+  // const modalOptions: ModalOptions = {
+  //   placement: "center",
+  //   backdrop: "dynamic",
+  //   backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
+  //   closable: true,
+  //   onHide: () => {
+  //     console.log("modal is hidden");
+  //   },
+  //   onShow: () => {
+  //     console.log("modal is shown");
+  //   },
+  //   onToggle: () => {
+  //     console.log("modal has been toggled");
+  //   },
+  // };
 
   // Define instance options
-  const instanceOptions: InstanceOptions = {
-    id: "modalEl",
-    override: true,
-  };
+  // const instanceOptions: InstanceOptions = {
+  //   id: "modalEl",
+  //   override: true,
+  // };
 
   // Function to initialize the modal when the component mounts
   // useEffect(() => {

@@ -27,18 +27,18 @@ exports.createTrip = async (req, res) => {
 
 exports.getTripData = async (req, res) => {
     try {
-        const transporterId = req.params.transporterId; // Assuming the user ID is passed as a parameter in the URL
+        const transporterId = req.params.transporterId; // Assuming the trip ID is passed as a parameter in the URL
 
 
-        const user = await Trips.findAll({
+        const trip = await Trips.findAll({
             where: { transporterId: transporterId },
         });
 
-        if (!user) {
+        if (!trip) {
             return res.status(404).send({ message: "Trip not found." });
         }
 
-        res.status(200).send(user);
+        res.status(200).send(trip);
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
@@ -47,9 +47,9 @@ exports.getTripData = async (req, res) => {
 
 exports.getSingleTripData = async (req, res) => {
     try {
-        const tripId = req.params.id; // Assuming the user ID is passed as a parameter in the URL
+        const tripId = req.params.id; // Assuming the trip ID is passed as a parameter in the URL
 
-        // Retrieve the user data from the database
+        // Retrieve the trip data from the database
         const trip = await Trips.findOne({
             where: { id: tripId },
         });
@@ -58,8 +58,65 @@ exports.getSingleTripData = async (req, res) => {
             return res.status(404).send({ message: "Trip not found." });
         }
 
-        // Return the user data
+        // Return the trip data
         res.status(200).send(trip);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
+
+
+
+
+
+
+exports.updateTripData = async (req, res) => {
+    try {
+        const tripId = req.params.tripId;
+
+        const trip = await Trips.findOne({
+            where: { id: tripId }
+        });
+
+        if (!trip) {
+            return res.status(404).send({ message: "Trip not found." });
+        }
+
+        const updatedFields = {};
+        if (req.body.departCountry) {
+            updatedFields.departCountry = req.body.departCountry;
+        }
+        if (req.body.departState) {
+            updatedFields.departState = req.body.departState;
+        }
+        if (req.body.destCountry) {
+            updatedFields.destCountry = req.body.destCountry;
+        }
+        
+        if(req.body.desState){
+            updatedFields.desState = req.body.desState;
+        }
+
+        if(req.body.arrivDate){
+            updatedFields.arrivDate = req.body.arrivDate;
+        }
+        if(req.body.departDate){
+            updatedFields.departDate = req.body.departDate;
+        }
+        if(req.body.maxWeight){
+            updatedFields.maxWeight = req.body.maxWeight;
+        }
+        if(req.body.description){
+            updatedFields.description = req.body.description;
+        }
+
+        // Update trip data
+        await Trips.update(updatedFields, {
+            where: { id: tripId }
+        }).then(data => console.log(data));
+
+        // Return a success message
+        res.status(200).send({ message: "Trip data updated successfully." });
     } catch (err) {
         res.status(500).send({ message: err.message });
     }

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-interface Trip {
+interface TripSingle {
   id: number;
   departCountry: string;
   departState: string;
   destCountry: string;
   desState: string;
-  departDate: string;
-  arrivDate: string;
+  departDate: Date;
+  arrivDate: Date;
   maxWeight: string;
   description: string;
   transporterId: string;
@@ -18,12 +18,12 @@ interface Trip {
 }
 
 export const useSingleTripData = (id: number) => {
-  const [tripData, setTripData] = useState<Trip[] | null>(null);
+  const [tripData, setTripData] = useState<TripSingle | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
+        const response = await axios.get<TripSingle>(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/single/${id}`,
         );
         setTripData(response.data);
