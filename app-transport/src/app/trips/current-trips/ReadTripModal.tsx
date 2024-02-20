@@ -1,18 +1,39 @@
 import React, { useState } from "react";
 
+interface Trip {
+  id: number;
+  departCountry: string;
+  departState: string;
+  destCountry: string;
+  desState: string;
+  departDate: string;
+  arrivDate: string;
+  maxWeight: string;
+  description: string;
+  transporterId: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
+  selectedTrip: Trip | null;
 }
 
-const ReadTripModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
+const ReadTripModal: React.FC<ModalProps> = ({
+  isOpen,
+  closeModal,
+  selectedTrip,
+}) => {
   // State to track the visibility of the modal
   const [modalOpen, setModalOpen] = useState(false);
 
   // Function to handle closing the modal
   const handleCloseModal = () => {
     setModalOpen(false);
-    closeModal(); // Call the parent component's closeModal function
+    closeModal();
   };
 
   return (
@@ -36,8 +57,10 @@ const ReadTripModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
               {/* Modal header */}
               <div className="mb-4 flex justify-between rounded-t sm:mb-5">
                 <div className="text-gray-900 text-lg dark:text-white md:text-xl">
-                  <h3 className="font-semibold ">Apple iMac 27”</h3>
-                  <p className="font-bold">$2999</p>
+                  <h3 className="font-semibold ">
+                    Trip to {selectedTrip?.destCountry}
+                  </h3>
+                  <p className="text-sm font-bold">{selectedTrip?.desState}</p>
                 </div>
                 <div>
                   <button

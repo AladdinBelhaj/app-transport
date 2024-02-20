@@ -27,14 +27,17 @@ const CurrentTrips = () => {
   const tripData = useTripData();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const openModal = (trip: Trip) => {
+    setSelectedTrip(trip);
+    setIsModalOpen(true);
+    console.log(trip);
+  };
+
   if (!tripData) {
     // Render loading state or return null
     return <div>Loading...</div>;
@@ -121,7 +124,7 @@ const CurrentTrips = () => {
                         <div className="flex items-center space-x-3.5">
                           <button
                             className="hover:text-primary "
-                            onClick={openModal}
+                            onClick={() => openModal(trip)}
                           >
                             <svg
                               className="fill-current"
@@ -195,7 +198,11 @@ const CurrentTrips = () => {
             </table>
           </div>
         </div>
-        <ReadTripModal isOpen={isModalOpen} closeModal={closeModal} />
+        <ReadTripModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          selectedTrip={selectedTrip}
+        />
       </DefaultLayout>
     </>
   );
