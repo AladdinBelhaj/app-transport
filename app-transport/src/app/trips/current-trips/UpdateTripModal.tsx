@@ -1,15 +1,60 @@
 "use client";
 import React from "react";
 import { useState } from "react";
+import SelectCountry from "@/components/Calender/SelectCountry";
+import DatePickerOne from "@/components/Calender/DatepickerOne";
+import DatePickerTwo from "@/components/Calender/DatepickerTwo";
+
+interface Trip {
+  id: number;
+  departCountry: string;
+  departState: string;
+  destCountry: string;
+  desState: string;
+  departDate: string;
+  arrivDate: string;
+  maxWeight: string;
+  description: string;
+  transporterId: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface UpdateModalProps {
   isOpen: boolean;
   closeModal: () => void;
+  selectedTrip: Trip | null;
 }
 
 const UpdateTripModal: React.FC<UpdateModalProps> = ({
   isOpen,
   closeModal,
+  selectedTrip,
 }) => {
+  const id = localStorage.getItem("id");
+  const [post, setPost] = useState({
+    departCountry: "",
+    departState: "",
+    destCountry: "",
+    desState: "",
+    departDate: selectedTrip?.departDate,
+    //  clickedDate.toLocaleDateString("en-US", {
+    //   month: "short",
+    //   day: "2-digit",
+    //   year: "numeric",
+    // }),
+    arrivDate: "",
+    maxWeight: "",
+    description: "",
+    transporterId: id,
+  });
+
+  const handleInput = (name: string, event: any) => {
+    setPost({ ...post, [name]: event });
+    console.log(post);
+  };
+
   const [modalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -61,9 +106,15 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
               {/* Modal body */}
               <form action="#">
                 <div className="mb-4 grid gap-4 sm:grid-cols-2">
-                  {/* <SelectCountry />
-                <DatePickerOne />
-                <DatePickerTwo /> */}
+                  <SelectCountry handleInput={handleInput} />
+                  <DatePickerOne
+                    clickedDate={clickedDate}
+                    handleInput={handleInput}
+                  />
+                  <DatePickerTwo
+                    handleInput={handleInput}
+                    clickedDate={clickedDate}
+                  />
                   <div>
                     <label
                       htmlFor="weight"
