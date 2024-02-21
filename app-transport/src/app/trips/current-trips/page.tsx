@@ -35,6 +35,7 @@ const CurrentTrips = () => {
   const openModal = (trip: Trip) => {
     setSelectedTrip(trip);
     setIsModalOpen(true);
+    localStorage.setItem("trip", JSON.stringify(trip));
     console.log(trip);
   };
 

@@ -300,7 +300,12 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
   selectedTrip,
 }) => {
   const id = localStorage.getItem("id");
-  const tripData = useSingleTripData(selectedTrip?.id || 0);
+  let tripData: any;
+  const storedTripString = localStorage.getItem("trip");
+  if (storedTripString) {
+    tripData = JSON.parse(storedTripString);
+    // Use the storedTrip object as needed
+  }
   const clickedDate = tripData?.departDate
     ? new Date(tripData.departDate).toLocaleDateString("en-US", {
         month: "short",
@@ -317,30 +322,40 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
       })
     : "";
 
+  console.log("Trip Data:", tripData);
+
   const [post, setPost] = useState({
     departCountry: tripData?.departCountry || "",
     departState: tripData?.departState || "",
     destCountry: tripData?.destCountry || "",
     desState: tripData?.desState || "",
-    departDate: clickedDate || "",
-    arrivDate: arrivalDate || "",
+    departDate: tripData?.departDate || null,
+    arrivDate: tripData?.arrivDate || null,
     maxWeight: tripData?.maxWeight || "",
     description: "",
     transporterId: id || "",
   });
+  console.log("Trip Data:", tripData);
+  console.log("Post State:", post);
 
   const handleInput = (name: string, event: any) => {
     setPost((prevPost) => ({ ...prevPost, [name]: event }));
     console.log(post);
-    console.log(tripData);
   };
+  useEffect(() => {
+    console.log("Post state updated:", post);
+    console.log(tripData);
+  }, [post]);
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     closeModal();
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/update`, post)
+      .put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
+        post,
+      )
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
@@ -370,11 +385,57 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
       });
   }
 
-  const isFormValid = () => {
-    const departDateObj = new Date(post.departDate);
-    const arrivDateObj = new Date(post?.arrivDate);
+  // const isFormValid = () => {
+  //   if (
+  //     post.departCountry == "" ||
+  //     post.departState == "" ||
+  //     post.departDate == null ||
+  //     post.arrivDate == null ||
+  //     post.destCountry == "" ||
+  //     post.desState == ""
+  //   ) {
+  //     return false;
+  //   } else if (
+  //     post?.departDate &&
+  //     post?.arrivDate &&
+  //     post?.arrivDate <= post?.departDate
+  //   ) {
+  //     return false;
+  //   } else if (
+  //     post?.departDate &&
+  //     !post?.arrivDate &&
+  //     tripData?.arrivDate &&
+  //     post?.departDate >= tripData?.arrivDate
+  //   ) {
+  //     return false;
+  //   } else if (
+  //     post?.departDate &&
+  //     !post?.arrivDate &&
+  //     tripData?.arrivDate &&
+  //     post?.departDate >= tripData?.arrivDate
+  //   ) {
+  //     return false;
+  //   } else if (
+  //     !post?.departDate &&
+  //     post?.arrivDate &&
+  //     tripData?.arrivDate &&
+  //     tripData?.departDate >= post?.arrivDate
+  //   ) {
+  //     return false;
+  //   } else if (
+  //     post?.departDate &&
+  //     !post?.arrivDate &&
+  //     tripData?.arrivDate &&
+  //     post?.departDate < tripData?.arrivDate
+  //   ) {
+  //     return true;
+  //   } else {
+  //     return true;
+  //   }
+  // };
 
-    return arrivDateObj > departDateObj;
+  const isFormValid = () => {
+    return true;
   };
 
   return (
