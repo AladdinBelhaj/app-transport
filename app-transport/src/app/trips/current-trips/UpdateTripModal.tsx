@@ -274,6 +274,10 @@ import SelectCountry from "./SelectCountry";
 import DatePickerOne from "./DatepickerOne";
 import DatePickerTwo from "./DatepickerTwo";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 interface UpdateModalProps {
   isOpen: boolean;
   closeModal: () => void;
@@ -284,6 +288,7 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
   closeModal,
 }) => {
   const [formData, setFormData] = useState({
+    id: "",
     departCountry: "",
     departState: "",
     destCountry: "",
@@ -308,6 +313,7 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
     } else {
       // Reset formData when modal is closed
       setFormData({
+        id: "",
         departCountry: "",
         departState: "",
         destCountry: "",
@@ -330,8 +336,73 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
     console.log(formData);
   };
 
+  const isFormValid = () => {
+    const departDateObj = new Date(formData.departDate);
+    const arrivDateObj = new Date(formData.arrivDate);
+
+    return arrivDateObj > departDateObj;
+  };
+
+  const [tripCreated, setTripCreated] = useState(false);
+
+  useEffect(() => {
+    // Check if a trip has been created
+    const tripCreatedStorage = localStorage.getItem("tripCreated");
+    if (tripCreatedStorage === "true") {
+      // Clear the flag in localStorage
+      localStorage.removeItem("tripCreated");
+      // Set the state to trigger the toast
+      setTripCreated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Show the toast when tripCreated state changes
+    if (tripCreated) {
+      toast.success("Updated trip!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [tripCreated]);
+
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    closeModal();
+
+    axios
+      .put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${formData.id}`,
+        formData,
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          localStorage.setItem("tripCreated", "true");
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to update trip", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  }
+
   return (
     <>
+      <ToastContainer></ToastContainer>
       {isOpen && (
         <div
           id="modalEl"
@@ -416,7 +487,7 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
                       rows={4}
                       className="text-gray-900 bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-500 focus:ring-modal-500 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                       placeholder="Write trip description here"
-                      defaultValue={""}
+                      defaultValue={formData.description}
                       onChange={(e) =>
                         handleInput("description", e.target.value)
                       }
@@ -425,7 +496,11 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
                 </div>
                 <button
                   type="submit"
-                  className="inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
+                  className={`inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800 focus:ring-4${
+                    !isFormValid() && "cursor-not-allowed opacity-50"
+                  }`}
+                  disabled={!isFormValid()}
+                  onClick={handleSubmit}
                 >
                   <svg
                     className="-ml-1 mr-1 h-6 w-6"
