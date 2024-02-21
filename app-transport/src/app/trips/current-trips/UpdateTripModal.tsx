@@ -374,7 +374,10 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
 
               <form>
                 <div className="mb-4 grid gap-4 sm:grid-cols-2">
-                  <SelectCountry />
+                  <SelectCountry
+                    handleInput={handleInput}
+                    formData={formData}
+                  />
                   <DatePickerOne />
                   <DatePickerTwo />
                   <div>

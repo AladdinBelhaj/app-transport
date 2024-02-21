@@ -857,19 +857,36 @@ interface TripSingle {
   updatedAt: string;
 }
 
-interface SelectCountryProps {}
+interface SelectCountryProps {
+  formData: {
+    departCountry: string;
+    departState: string;
+    destCountry: string;
+    destState: string;
+    departDate: string;
+    arrivDate: string;
+    maxWeight: string;
+    description: string;
+    transporterId: string;
+  };
+  handleInput: (name: string, event: any) => void;
+}
 
-const SelectCountry: React.FC<SelectCountryProps> = ({}) => {
+const SelectCountry: React.FC<SelectCountryProps> = ({
+  handleInput,
+  formData,
+}) => {
   const [countries, setCountries] = useState<Country[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDepartureCountry, setSelectedDepartureCountry] =
-    useState<string>();
-  const [selectedDepartureState, setSelectedDepartureState] =
-    useState<string>();
+    useState<string>(formData.departCountry);
+  const [selectedDepartureState, setSelectedDepartureState] = useState<string>(
+    formData.departState,
+  );
   const [selectedDestinationCountry, setSelectedDestinationCountry] =
-    useState<string>();
+    useState<string>(formData.destCountry);
   const [selectedDestinationState, setSelectedDestinationState] =
-    useState<string>();
+    useState<string>(formData.destState);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -896,6 +913,7 @@ const SelectCountry: React.FC<SelectCountryProps> = ({}) => {
     setSelectedDepartureCountry(e.target.value);
     // Reset selected state when a new country is selected
     setSelectedDepartureState("");
+    handleInput("departCountry", e.target.value);
   };
 
   // Function to handle state selection for departure
@@ -903,6 +921,7 @@ const SelectCountry: React.FC<SelectCountryProps> = ({}) => {
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setSelectedDepartureState(e.target.value);
+    handleInput("departState", e.target.value);
   };
 
   // Function to handle country selection for destination
@@ -912,6 +931,7 @@ const SelectCountry: React.FC<SelectCountryProps> = ({}) => {
     setSelectedDestinationCountry(e.target.value);
     // Reset selected state when a new country is selected
     setSelectedDestinationState("");
+    handleInput("destCountry", e.target.value);
   };
 
   // Function to handle state selection for destination
@@ -919,6 +939,7 @@ const SelectCountry: React.FC<SelectCountryProps> = ({}) => {
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setSelectedDestinationState(e.target.value);
+    handleInput("desState", e.target.value);
   };
 
   return (
