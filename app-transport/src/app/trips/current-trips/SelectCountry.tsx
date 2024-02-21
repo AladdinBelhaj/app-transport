@@ -841,28 +841,12 @@ type Country = {
   cities: string[]; // Change to cities for states
 };
 
-interface TripSingle {
-  id: number;
-  departCountry: string;
-  departState: string;
-  destCountry: string;
-  desState: string;
-  departDate: Date;
-  arrivDate: Date;
-  maxWeight: string;
-  description: string;
-  transporterId: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface SelectCountryProps {
   formData: {
     departCountry: string;
     departState: string;
     destCountry: string;
-    destState: string;
+    desState: string;
     departDate: string;
     arrivDate: string;
     maxWeight: string;
@@ -886,7 +870,7 @@ const SelectCountry: React.FC<SelectCountryProps> = ({
   const [selectedDestinationCountry, setSelectedDestinationCountry] =
     useState<string>(formData.destCountry);
   const [selectedDestinationState, setSelectedDestinationState] =
-    useState<string>(formData.destState);
+    useState<string>(formData.desState);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -905,6 +889,13 @@ const SelectCountry: React.FC<SelectCountryProps> = ({
 
     fetchCountries();
   }, []);
+
+  useEffect(() => {
+    setSelectedDepartureCountry(formData.departCountry);
+    setSelectedDepartureState(formData.departState);
+    setSelectedDestinationCountry(formData.destCountry);
+    setSelectedDestinationState(formData.desState);
+  }, [formData]);
 
   // Function to handle country selection for departure
   const handleDepartureCountryChange = (
