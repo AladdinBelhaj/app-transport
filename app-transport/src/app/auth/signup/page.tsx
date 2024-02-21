@@ -196,13 +196,12 @@ const Register = () => {
                 <div className="mt-6 text-center">
                   <p>
                     Already have an account?{" "}
-                    {/* <Link href="/auth/signin"
-                     className="text-primary">
+                    <Link href="/auth/signin" className="text-primary">
                       Sign in
-                    </Link> */}
-                    <a href="#" className="text-primary">
+                    </Link>
+                    {/* <a href="#" className="text-primary">
                       Sign in
-                    </a>
+                    </a> */}
                   </p>
                 </div>
               </form>
