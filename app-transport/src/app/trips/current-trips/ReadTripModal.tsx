@@ -42,7 +42,6 @@ const ReadTripModal: React.FC<ModalProps> = ({
   const openUpdateModal = () => {
     setUpdateIsModalOpen(true);
   };
-
   return (
     <div>
       {/* Main modal */}
@@ -184,7 +183,6 @@ const ReadTripModal: React.FC<ModalProps> = ({
       <UpdateTripModal
         isOpen={isUpdateModalOpen}
         closeModal={closeUpdateModal}
-        selectedTrip={selectedTrip}
       ></UpdateTripModal>
     </div>
   );

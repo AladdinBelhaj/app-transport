@@ -29,16 +29,17 @@ const CurrentTrips = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
   const openModal = (trip: Trip) => {
     setSelectedTrip(trip);
     setIsModalOpen(true);
     localStorage.setItem("trip", JSON.stringify(trip));
+    window.dispatchEvent(new Event("storage"));
     console.log(trip);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   if (!tripData) {
     // Render loading state or return null
     return <div>Loading...</div>;
