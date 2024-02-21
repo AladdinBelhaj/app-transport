@@ -101,14 +101,32 @@
 import React, { useEffect } from "react";
 import flatpickr from "flatpickr";
 
-interface DatePickerTwoProps {}
-const DatePickerTwo: React.FC<DatePickerTwoProps> = ({}) => {
+interface DatePickerTwoProps {
+  formData: {
+    departCountry: string;
+    departState: string;
+    destCountry: string;
+    desState: string;
+    departDate: string;
+    arrivDate: string;
+    maxWeight: string;
+    description: string;
+    transporterId: string;
+  };
+  handleInput: (name: string, event: any) => void;
+}
+const DatePickerTwo: React.FC<DatePickerTwoProps> = ({
+  handleInput,
+  formData,
+}) => {
   useEffect(() => {
+    const defaultDate = new Date(formData.arrivDate);
     flatpickr(".element", {
       mode: "single",
       static: true,
       monthSelectorType: "static",
       minDate: "today",
+      defaultDate: defaultDate,
       dateFormat: "M j, Y",
       prevArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
@@ -118,7 +136,7 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({}) => {
         // Parse the dateStr into a Date object
         const selectedDate = new Date(dateStr);
         // Add one day to the selected date
-        selectedDate.setDate(selectedDate.getDate() + 1);
+        selectedDate.setDate(selectedDate.getDate());
         // Convert the modified date back to a string
         const modifiedDateStr = selectedDate.toLocaleDateString("en-US", {
           month: "short",
@@ -126,9 +144,10 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({}) => {
           year: "numeric",
         });
         // Pass the modified dateStr representing the latest selected date to handleInput as arrivDate
+        handleInput("arrivDate", modifiedDateStr);
       },
     });
-  }, []);
+  });
 
   return (
     <div>

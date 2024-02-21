@@ -93,17 +93,34 @@
 import flatpickr from "flatpickr";
 import { useEffect } from "react";
 
-interface DatePickerOneProps {}
+interface DatePickerOneProps {
+  formData: {
+    departCountry: string;
+    departState: string;
+    destCountry: string;
+    desState: string;
+    departDate: string;
+    arrivDate: string;
+    maxWeight: string;
+    description: string;
+    transporterId: string;
+  };
+  handleInput: (name: string, event: any) => void;
+}
 
-const DatePickerOne: React.FC<DatePickerOneProps> = ({}) => {
+const DatePickerOne: React.FC<DatePickerOneProps> = ({
+  handleInput,
+  formData,
+}) => {
   useEffect(() => {
+    const defaultDate = new Date(formData.departDate);
     flatpickr(".form-datepicker", {
       mode: "single",
       static: true,
       monthSelectorType: "static",
       dateFormat: "M j, Y",
       minDate: "today",
-      // defaultDate: clickedDate,
+      defaultDate: defaultDate,
       prevArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
       nextArrow:
@@ -120,9 +137,10 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({}) => {
           year: "numeric",
         });
         // Pass the modified dateStr representing the latest selected date to handleInput as arrivDate
+        handleInput("departDate", modifiedDateStr);
       },
     });
-  }, []);
+  });
 
   return (
     <div>
@@ -137,15 +155,7 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({}) => {
           id="firstDate"
           className="form-datepicker bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
           placeholder="mm/dd/yyyy"
-          // value={
-          //   clickedDate
-          //     ? new Intl.DateTimeFormat("en-US", {
-          //         month: "short",
-          //         day: "2-digit",
-          //         year: "numeric",
-          //       }).format(clickedDate)
-          //     : ""
-          // }
+          // value={formData.departDate}
           data-class="flatpickr-right"
           required
           // onChange={(e) => {

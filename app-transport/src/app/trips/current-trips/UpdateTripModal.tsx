@@ -378,8 +378,14 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
                     handleInput={handleInput}
                     formData={formData}
                   />
-                  <DatePickerOne />
-                  <DatePickerTwo />
+                  <DatePickerOne
+                    handleInput={handleInput}
+                    formData={formData}
+                  />
+                  <DatePickerTwo
+                    handleInput={handleInput}
+                    formData={formData}
+                  />
                   <div>
                     <label
                       htmlFor="weight"
