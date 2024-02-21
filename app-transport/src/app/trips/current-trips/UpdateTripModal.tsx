@@ -388,7 +388,7 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
       })
       .catch((err) => {
         console.error(err);
-        toast.error("Failed to update trip", {
+        toast.error("A trip already exists during that period!", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
