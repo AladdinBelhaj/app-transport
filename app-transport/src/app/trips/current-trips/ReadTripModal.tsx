@@ -55,7 +55,6 @@ const ReadTripModal: React.FC<ModalProps> = ({
         >
           <div
             className="fixed inset-0 bg-black opacity-50" // Close the modal if clicked outside
-            onClick={handleCloseModal} // Call handleCloseModal function when clicked outside the modal
           ></div>
           <div className="relative h-full w-full max-w-xl p-4 md:h-auto">
             {/* Modal content */}
