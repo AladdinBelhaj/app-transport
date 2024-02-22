@@ -6,7 +6,7 @@ import { useTripData } from "../../../../utils/getTripsData";
 import { useState } from "react";
 import { useEffect } from "react";
 import ReadTripModal from "./ReadTripModal";
-
+import axios from "axios";
 interface Trip {
   id: number;
   departCountry: string;
@@ -44,7 +44,8 @@ const CurrentTrips = () => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const openDeleteModal = () => {
+  const openDeleteModal = (trip: Trip) => {
+    setSelectedTrip(trip);
     setIsDeleteModalOpen(true);
   };
 
@@ -56,6 +57,34 @@ const CurrentTrips = () => {
     // Render loading state or return null
     return <div>Loading...</div>;
   }
+
+  const handleDelete = async () => {
+    try {
+      if (!selectedTrip) return;
+
+      // Make a request to delete the trip
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip.id}`,
+      );
+
+      if (response.status === 200) {
+        // Trip deleted successfully
+        console.log("Trip deleted successfully");
+        // Close the delete modal
+        closeDeleteModal();
+        // Refresh the trip data
+        // You can implement a function to refetch trip data from the server
+        // Or you can remove the deleted trip from the local state
+      } else {
+        // Handle error if deletion fails
+        console.error("Failed to delete trip");
+      }
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+    }
+  };
+
+  // Rest of your component code...
 
   return (
     <>
@@ -160,7 +189,7 @@ const CurrentTrips = () => {
                           </button>
                           <button
                             className="hover:text-primary"
-                            onClick={openDeleteModal}
+                            onClick={() => openDeleteModal(trip)}
                           >
                             <svg
                               className="fill-current"
@@ -214,7 +243,7 @@ const CurrentTrips = () => {
               <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
                 <button
                   type="button"
-                  onClick={closeDeleteModal} // Close modal on click
+                  onClick={closeDeleteModal}
                   className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
                 >
                   <svg
@@ -259,6 +288,7 @@ const CurrentTrips = () => {
                   <button
                     type="submit"
                     className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                    onClick={handleDelete}
                   >
                     <svg
                       aria-hidden="true"

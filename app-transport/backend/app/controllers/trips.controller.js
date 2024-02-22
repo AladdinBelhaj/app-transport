@@ -121,3 +121,29 @@ exports.updateTripData = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+
+exports.deleteTrip = async (req, res) => {
+    try {
+        const tripId = req.params.tripId;
+
+        // Check if the trip exists
+        const trip = await Trips.findOne({
+            where: { id: tripId }
+        });
+
+        if (!trip) {
+            return res.status(404).send({ message: "Trip not found." });
+        }
+
+        // Delete the trip from the database
+        await Trips.destroy({
+            where: { id: tripId }
+        });
+
+        // Return a success message
+        res.status(200).send({ message: "Trip deleted successfully." });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
