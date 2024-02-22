@@ -41,15 +41,21 @@ const CurrentTrips = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   if (!tripData) {
     // Render loading state or return null
     return <div>Loading...</div>;
   }
-
-  const toggleModal = () => {
-    const modal = document.getElementById("deleteModal");
-    modal?.classList.toggle("hidden");
-  };
 
   return (
     <>
@@ -154,7 +160,7 @@ const CurrentTrips = () => {
                           </button>
                           <button
                             className="hover:text-primary"
-                            onClick={toggleModal}
+                            onClick={openDeleteModal}
                           >
                             <svg
                               className="fill-current"
@@ -182,25 +188,6 @@ const CurrentTrips = () => {
                               />
                             </svg>
                           </button>
-                          {/* <button className="hover:text-primary">
-                            <svg
-                              className="fill-current"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 18 18"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M16.8754 11.6719C16.5379 11.6719 16.2285 11.9531 16.2285 12.3187V14.8219C16.2285 15.075 16.0316 15.2719 15.7785 15.2719H2.22227C1.96914 15.2719 1.77227 15.075 1.77227 14.8219V12.3187C1.77227 11.9812 1.49102 11.6719 1.12539 11.6719C0.759766 11.6719 0.478516 11.9531 0.478516 12.3187V14.8219C0.478516 15.7781 1.23789 16.5375 2.19414 16.5375H15.7785C16.7348 16.5375 17.4941 15.7781 17.4941 14.8219V12.3187C17.5223 11.9531 17.2129 11.6719 16.8754 11.6719Z"
-                                fill=""
-                              />
-                              <path
-                                d="M8.55074 12.3469C8.66324 12.4594 8.83199 12.5156 9.00074 12.5156C9.16949 12.5156 9.31012 12.4594 9.45074 12.3469L13.4726 8.43752C13.7257 8.1844 13.7257 7.79065 13.5007 7.53752C13.2476 7.2844 12.8539 7.2844 12.6007 7.5094L9.64762 10.4063V2.1094C9.64762 1.7719 9.36637 1.46252 9.00074 1.46252C8.66324 1.46252 8.35387 1.74377 8.35387 2.1094V10.4063L5.40074 7.53752C5.14762 7.2844 4.75387 7.31252 4.50074 7.53752C4.24762 7.79065 4.27574 8.1844 4.50074 8.43752L8.55074 12.3469Z"
-                                fill=""
-                              />
-                            </svg>
-                          </button> */}
                         </div>
                       </td>
                     </tr>
@@ -214,71 +201,85 @@ const CurrentTrips = () => {
           closeModal={closeModal}
           selectedTrip={selectedTrip}
         />
-        <div></div>
-        <div
-          id="deleteModal"
-          tabIndex={-1}
-          aria-hidden="true"
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden"
-          style={{ zIndex: 9999, backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-        >
-          <div className="relative w-full max-w-md">
-            {/* Modal content */}
-            <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
-              <button
-                type="button"
-                onClick={toggleModal}
-                className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
-              >
+        {isDeleteModalOpen && (
+          <div
+            id="deleteModal"
+            tabIndex={-1}
+            aria-hidden="true"
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden"
+            style={{ zIndex: 9999, backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+          >
+            <div className="relative w-full max-w-md">
+              {/* Modal content */}
+              <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
+                <button
+                  type="button"
+                  onClick={closeDeleteModal} // Close modal on click
+                  className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="h-5 w-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
                 <svg
+                  className="text-gray-400 dark:text-gray-500 mx-auto mb-3.5 h-11 w-11"
                   aria-hidden="true"
-                  className="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="sr-only">Close modal</span>
-              </button>
-              <svg
-                className="text-gray-400 dark:text-gray-500 mx-auto mb-3.5 h-11 w-11"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <p className="text-gray-500 dark:text-gray-300 mb-4">
-                Are you sure you want to delete this item?
-              </p>
-              <div className="flex items-center justify-center space-x-4">
-                <button
-                  onClick={toggleModal}
-                  type="button"
-                  className="text-gray-500 border-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600 rounded-lg border bg-white px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:hover:text-white"
-                >
-                  No, cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
-                >
-                  Yes, Im sure
-                </button>
+                <p className="text-gray-500 dark:text-gray-300 mb-4">
+                  Are you sure you want to delete this trip?
+                </p>
+                <div className="flex items-center justify-center space-x-4">
+                  <button
+                    type="button"
+                    className="text-gray-500 border-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600 rounded-lg border bg-white px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:hover:text-white"
+                    onClick={closeDeleteModal} // Close modal on click
+                  >
+                    No, cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      className="-ml-1 mr-1.5 h-5 w-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0v-6zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </DefaultLayout>
     </>
   );

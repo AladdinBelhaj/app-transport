@@ -155,7 +155,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                     Start Trip
                   </button>
                 </div>
-                <button
+                {/* <button
                   type="button"
                   className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
                 >
@@ -173,7 +173,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                     />
                   </svg>
                   Delete
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
