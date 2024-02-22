@@ -121,6 +121,7 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({
 }) => {
   useEffect(() => {
     const defaultDate = new Date(formData.arrivDate);
+    defaultDate.setDate(defaultDate.getDate() - 1); // Subtract one day
     flatpickr(".element", {
       mode: "single",
       static: true,

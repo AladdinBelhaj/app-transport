@@ -114,6 +114,7 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
 }) => {
   useEffect(() => {
     const defaultDate = new Date(formData.departDate);
+    defaultDate.setDate(defaultDate.getDate() - 1); // Subtract one day
     flatpickr(".form-datepicker", {
       mode: "single",
       static: true,
@@ -126,11 +127,10 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({
       nextArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
       onChange: function (selectedDates, dateStr, instance) {
-        // Parse the dateStr into a Date object
         const selectedDate = new Date(dateStr);
-        // Add one day to the selected date
+
         selectedDate.setDate(selectedDate.getDate() + 1);
-        // Convert the modified date back to a string
+
         const modifiedDateStr = selectedDate.toLocaleDateString("en-US", {
           month: "short",
           day: "2-digit",
