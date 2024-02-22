@@ -137,7 +137,7 @@ const DatePickerTwo: React.FC<DatePickerTwoProps> = ({
         // Parse the dateStr into a Date object
         const selectedDate = new Date(dateStr);
         // Add one day to the selected date
-        selectedDate.setDate(selectedDate.getDate());
+        selectedDate.setDate(selectedDate.getDate() + 1);
         // Convert the modified date back to a string
         const modifiedDateStr = selectedDate.toLocaleDateString("en-US", {
           month: "short",

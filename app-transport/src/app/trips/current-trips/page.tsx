@@ -7,6 +7,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ReadTripModal from "./ReadTripModal";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 interface Trip {
   id: number;
   departCountry: string;
@@ -53,36 +56,61 @@ const CurrentTrips = () => {
     setIsDeleteModalOpen(false);
   };
 
+  const [tripCreated, setTripCreated] = useState(false);
+
+  useEffect(() => {
+    const tripCreatedStorage = localStorage.getItem("tripCreated");
+    if (tripCreatedStorage === "true") {
+      localStorage.removeItem("tripCreated");
+      setTripCreated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Show the toast when tripCreated state changes
+    if (tripCreated) {
+      toast.success("Deleted trip!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [tripCreated]);
+
+  function handleDelete(event: React.FormEvent) {
+    closeDeleteModal();
+    axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          localStorage.setItem("tripCreated", "true");
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("A trip already exists during that period!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+  }
+
   if (!tripData) {
     // Render loading state or return null
     return <div>Loading...</div>;
   }
-
-  const handleDelete = async () => {
-    try {
-      if (!selectedTrip) return;
-
-      // Make a request to delete the trip
-      const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip.id}`,
-      );
-
-      if (response.status === 200) {
-        // Trip deleted successfully
-        console.log("Trip deleted successfully");
-        // Close the delete modal
-        closeDeleteModal();
-        // Refresh the trip data
-        // You can implement a function to refetch trip data from the server
-        // Or you can remove the deleted trip from the local state
-      } else {
-        // Handle error if deletion fails
-        console.error("Failed to delete trip");
-      }
-    } catch (error) {
-      console.error("Error deleting trip:", error);
-    }
-  };
 
   // Rest of your component code...
 
@@ -230,6 +258,7 @@ const CurrentTrips = () => {
           closeModal={closeModal}
           selectedTrip={selectedTrip}
         />
+        <ToastContainer></ToastContainer>
         {isDeleteModalOpen && (
           <div
             id="deleteModal"
