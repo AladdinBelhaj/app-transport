@@ -35,3 +35,26 @@ export const useUserData = (): UserData | null => {
 
   return userData;
 };
+
+export const useUserDataById = (userId: string): UserData | null => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${userId}`,
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (userId) {
+      fetchData();
+    }
+  }, [userId]);
+
+  return userData;
+};

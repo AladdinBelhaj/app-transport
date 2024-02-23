@@ -48,7 +48,7 @@ export const useAllTripsData = () => {
     const fetchAllTrips = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/all`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/`,
         );
         setAllTripsData(response.data);
       } catch (error) {
