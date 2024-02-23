@@ -20,6 +20,7 @@ module.exports = app => {
     router.get("/single/:id",trips.getSingleTripData);
     router.put("/:tripId", verifyUpdateTrip.checkDuplicateTrip, trips.updateTripData);
     router.delete("/:tripId", trips.deleteTrip);
+    router.get('/', trips.getAllTrips);
 
 
     app.use('/api/trips', router);

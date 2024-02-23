@@ -2,7 +2,7 @@ const db = require('../models/index');
 const Trips = db.trips;
 const Op = db.Sequelize.Op;
 const config = require("../config/auth.config")
-
+const sequelize = require("../models/index")
 exports.createTrip = async (req, res) => {
     try {
         await Trips.create({
@@ -149,7 +149,8 @@ exports.deleteTrip = async (req, res) => {
 };
 
 
-exports.getAllTripsData = async (req, res) => {
+
+exports.getAllTrips = async (req, res) => {
     try {
         // Retrieve all trips data from the database
         const allTrips = await Trips.findAll();
