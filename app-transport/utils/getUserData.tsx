@@ -6,6 +6,7 @@ interface UserData {
   phone: string;
   email: string;
   username: string;
+  role: string;
   bio: string;
   isFirstLogin: string;
   picture: string;

@@ -50,6 +50,7 @@ exports.signup = async (req, res) => {
     Users.create({
         fullname: req.body.fullname,
         email: req.body.email,
+        role: req.body.role,
         password: bcrypt.hashSync(password, salt),
         isFirstLogin: "1",
         picture: "app/uploads/images/default.png"
@@ -111,7 +112,6 @@ exports.signin = async (req, res) => {
 
 
 
-
         // const response = NextResponse.json({
         //     message:"Success login!",
         //     success:true
@@ -143,11 +143,11 @@ exports.signin = async (req, res) => {
             fullname: user.fullname,
             email: user.email,
             phone: user.phone,
-            // role: authorities[0],
+            role: user.role,
             accessToken: token,
             picture: user.picture,
             isFirstLogin: user.isFirstLogin
-            // permission: permissionn
+            
         });
     } catch (err) {
         res.status(500).send({ message: err.message });
