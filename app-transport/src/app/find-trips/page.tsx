@@ -1,8 +1,10 @@
-"use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useAllTripsData } from "../../../utils/getTripsData";
-import { useState, useEffect } from "react";
+import { fetchTransporterData } from "../../../utils/fetchTransporterData"; // Import the fetchTransporterData function
+
 interface Trip {
   id: number;
   departCountry: string;
@@ -18,6 +20,7 @@ interface Trip {
   createdAt: string;
   updatedAt: string;
 }
+
 const FindTripsPage = () => {
   const tripData = useAllTripsData();
   const [transporterNames, setTransporterNames] = useState<{
@@ -27,14 +30,18 @@ const FindTripsPage = () => {
   useEffect(() => {
     if (tripData) {
       tripData.forEach((trip) => {
-        fetchTransporterData(trip.transporterId).then((transporterData) => {
-          if (transporterData) {
-            setTransporterNames((prevTransporterNames) => ({
-              ...prevTransporterNames,
-              [trip.transporterId]: transporterData.name,
-            }));
-          }
-        });
+        const transporterId = trip.transporterId;
+        if (transporterId) {
+          // Call fetchTransporterData function
+          fetchTransporterData(transporterId).then((transporterData: any) => {
+            if (transporterData) {
+              setTransporterNames((prevTransporterNames) => ({
+                ...prevTransporterNames,
+                [transporterId]: transporterData.name,
+              }));
+            }
+          });
+        }
       });
     }
   }, [tripData]);
