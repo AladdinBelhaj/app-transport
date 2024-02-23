@@ -1,16 +1,20 @@
+"use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "Next.js Profile | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Profile page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-};
+import { useUserData } from "../../../utils/getUserData";
+import axios from "axios";
+// export const metadata: Metadata = {
+//   title: "Next.js Profile | TailAdmin - Next.js Dashboard Template",
+//   description:
+//     "This is Next.js Profile page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+// };
 
 const Profile = () => {
+  const userData = useUserData();
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-242.5">
@@ -70,16 +74,15 @@ const Profile = () => {
           <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
             <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
               <div className="relative drop-shadow-2">
-                <Image
-                  src={"/images/user/user-06.png"}
-                  width={160}
-                  height={160}
-                  style={{
-                    width: "auto",
-                    height: "auto",
-                  }}
-                  alt="profile"
-                />
+                <div className="avatar">
+                  <div className="w-42 rounded-full">
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
+                      className="h-full w-full rounded-full"
+                      alt="profile"
+                    />
+                  </div>
+                </div>
                 <label
                   htmlFor="profile"
                   className="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
@@ -116,7 +119,7 @@ const Profile = () => {
             </div>
             <div className="mt-4">
               <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-                Danish Heilium
+                {userData?.fullname}
               </h3>
               <p className="font-medium">Ui/Ux Designer</p>
               <div className="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
@@ -144,13 +147,11 @@ const Profile = () => {
                 <h4 className="font-semibold text-black dark:text-white">
                   About Me
                 </h4>
-                <p className="mt-4.5">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Pellentesque posuere fermentum urna, eu condimentum mauris
-                  tempus ut. Donec fermentum blandit aliquet. Etiam dictum
-                  dapibus ultricies. Sed vel aliquet libero. Nunc a augue
-                  fermentum, pharetra ligula sed, aliquam lacus.
-                </p>
+                {userData?.bio ? (
+                  <p className="mt-4.5">{userData.bio}</p>
+                ) : (
+                  <p className="mt-4.5">User has no bio</p>
+                )}
               </div>
 
               <div className="mt-6.5">
