@@ -40,3 +40,26 @@ export const useTripData = () => {
 
   return tripData;
 };
+
+export const useAllTripsData = () => {
+  const [allTripsData, setAllTripsData] = useState<Trip[] | null>(null);
+
+  useEffect(() => {
+    const fetchAllTrips = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/all`,
+        );
+        setAllTripsData(response.data);
+      } catch (error) {
+        console.error("Error fetching all trips data:", error);
+      }
+    };
+
+    fetchAllTrips();
+
+    return () => {};
+  }, []);
+
+  return allTripsData;
+};
