@@ -147,3 +147,16 @@ exports.deleteTrip = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+
+exports.getAllTripsData = async (req, res) => {
+    try {
+        // Retrieve all trips data from the database
+        const allTrips = await Trips.findAll();
+
+        // Return all trips data
+        res.status(200).send(allTrips);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
