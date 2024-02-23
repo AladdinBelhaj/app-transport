@@ -56,19 +56,22 @@ const CurrentTrips = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const [tripCreated, setTripCreated] = useState(false);
+  const [tripCreatedDel, setTripCreatedDel] = useState(false);
 
   useEffect(() => {
-    const tripCreatedStorage = localStorage.getItem("tripCreated");
+    // Check if a trip has been created
+    const tripCreatedStorage = localStorage.getItem("tripCreatedDel");
     if (tripCreatedStorage === "true") {
-      localStorage.removeItem("tripCreated");
-      setTripCreated(true);
+      // Clear the flag in localStorage
+      localStorage.removeItem("tripCreatedDel");
+      // Set the state to trigger the toast
+      setTripCreatedDel(true);
     }
   }, []);
 
   useEffect(() => {
     // Show the toast when tripCreated state changes
-    if (tripCreated) {
+    if (tripCreatedDel) {
       toast.success("Deleted trip!", {
         position: "top-center",
         autoClose: 5000,
@@ -79,7 +82,7 @@ const CurrentTrips = () => {
         progress: undefined,
       });
     }
-  }, [tripCreated]);
+  }, [tripCreatedDel]);
 
   function handleDelete(event: React.FormEvent) {
     closeDeleteModal();
@@ -89,7 +92,7 @@ const CurrentTrips = () => {
       )
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem("tripCreated", "true");
+          localStorage.setItem("tripCreatedDel", "true");
           window.location.reload();
         }
       })
@@ -118,9 +121,11 @@ const CurrentTrips = () => {
     <>
       <DefaultLayout>
         <Breadcrumb pageName="Current Trips" />
+
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="max-w-full overflow-x-auto">
             <table className="w-full table-auto">
+              <ToastContainer></ToastContainer>
               <thead>
                 <tr className="bg-gray-2 text-left dark:bg-meta-4">
                   <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
@@ -258,7 +263,7 @@ const CurrentTrips = () => {
           closeModal={closeModal}
           selectedTrip={selectedTrip}
         />
-        <ToastContainer></ToastContainer>
+
         {isDeleteModalOpen && (
           <div
             id="deleteModal"
