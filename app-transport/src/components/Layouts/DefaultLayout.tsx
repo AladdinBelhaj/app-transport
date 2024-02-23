@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, ReactNode } from "react";
-import Sidebar from "@/components/Sidebar";
+import SidebarTransporter from "@/components/SidebarTransporter";
 import Header from "@/components/Header";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import { useUserData } from "../../../utils/getUserData";
 import { useEffect } from "react";
 import SidebarFirstLogin from "@/components/SidebarFirstLogin";
+import SidebarClient from "../SidebarClient";
 export default function DefaultLayout({
   children,
 }: {
@@ -13,10 +14,10 @@ export default function DefaultLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const storedData = localStorage.getItem("data");
-  let userData:any;
+  let userData: any;
   if (storedData) {
     userData = JSON.parse(storedData);
-}
+  }
 
   const [isFirstLogin, setIsFirstLogin] = useState(userData?.isFirstLogin);
 
@@ -40,7 +41,7 @@ export default function DefaultLayout({
               setSidebarOpen={setSidebarOpen}
             />
           ) : (
-            <Sidebar
+            <SidebarTransporter
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
             />
