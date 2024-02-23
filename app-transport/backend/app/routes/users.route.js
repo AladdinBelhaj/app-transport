@@ -19,6 +19,7 @@ module.exports = app => {
     router.get("/:userId",users.getUserData);
     router.put("/:userId",users.updateUserData);
     router.put("/imageData/:userId",users.upload,users.uploadImage)
+    router.get("/transporters/:transporterId",users.getUserDataById);
 
     app.use('/api/users', router);
 };

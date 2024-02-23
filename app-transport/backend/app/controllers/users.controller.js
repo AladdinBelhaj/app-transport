@@ -249,3 +249,25 @@ exports.uploadImage = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
+
+
+
+exports.getUserDataById = async (req, res) => {
+    try {
+        const transporterId = req.params.transporterId;
+
+        // Retrieve the user data from the database
+        const user = await Users.findOne({
+            where: { id: transporterId },
+        });
+
+        if (!user) {
+            return res.status(404).send({ message: "User not found." });
+        }
+
+        // Return the user data
+        res.status(200).send(user);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
