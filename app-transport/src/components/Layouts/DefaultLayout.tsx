@@ -20,10 +20,12 @@ export default function DefaultLayout({
   }
 
   const [isFirstLogin, setIsFirstLogin] = useState(userData?.isFirstLogin);
+  const [role, setRole] = useState(userData?.role);
 
   useEffect(() => {
     setIsFirstLogin(userData?.isFirstLogin);
-  }, [userData?.isFirstLogin]);
+    setRole(userData?.role);
+  }, [userData?.isFirstLogin, userData?.role]);
 
   if (isFirstLogin === null) {
     return <div>Loading...</div>;
@@ -40,12 +42,18 @@ export default function DefaultLayout({
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
             />
+          ) : role === "client" ? (
+            <SidebarClient
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
           ) : (
             <SidebarTransporter
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
             />
           )}
+
           {/* <!-- ===== Sidebar End ===== --> */}
 
           {/* <!-- ===== Content Area Start ===== --> */}
