@@ -1,47 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 import SelectDepCountry from "./SelectDepCountry";
 import SelectDestCountry from "./SelectDestCountry";
 import DatePicker from "./DatePicker";
-const Filter = () => {
+
+interface FilterProps {
+  applyFilters: (filters: FilterValues) => void; // Define the type for applyFilters
+}
+
+interface FilterValues {
+  departureCountry: string;
+  destinationCountry: string;
+  startDate: string; // Adjust the type as per your requirement
+}
+
+const Filter: React.FC<FilterProps> = ({ applyFilters }) => {
+  const [departureCountry, setDepartureCountry] = useState("");
+  const [destinationCountry, setDestinationCountry] = useState("");
+  const [startDate, setStartDate] = useState("");
+
+  const handleApplyFilters = () => {
+    // Call the applyFilters function with selected filter values
+    const filters: FilterValues = {
+      departureCountry,
+      destinationCountry,
+      startDate,
+    };
+    applyFilters(filters);
+  };
+
+  const handleResetFilters = () => {
+    // Reset filter state
+    setDepartureCountry("");
+    setDestinationCountry("");
+    setStartDate("");
+    // Reset filters on parent component
+    applyFilters({
+      departureCountry: "",
+      destinationCountry: "",
+      startDate: "",
+    });
+  };
+
   return (
     <div className="m-2 max-w-screen-2xl">
       <div className="border-gray-200  rounded-xl border bg-white p-6 shadow-lg">
         <h2 className="text-lg font-bold text-stone-700">Apply filters</h2>
         <p className="mt-1 text-sm">Use filters to further refine search</p>
-        {/* <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"> */}
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <div className="flex flex-col">
             {/* departure */}
-            <SelectDepCountry></SelectDepCountry>
+            <SelectDepCountry
+              selectedCountry={departureCountry}
+              onCountryChange={(value: string) => setDepartureCountry(value)}
+            />
           </div>
           <div className="flex flex-col">
-            <SelectDestCountry></SelectDestCountry>
+            <SelectDestCountry
+              selectedCountry={destinationCountry}
+              onCountryChange={(value: string) => setDestinationCountry(value)}
+            />
           </div>
           <div className="flex flex-col">
-            <DatePicker></DatePicker>
+            <DatePicker
+              selectedDate={startDate}
+              onChange={(date: string) => setStartDate(date)}
+            />
           </div>
-          {/* <div className="flex flex-col">
-            <label
-              htmlFor="status"
-              className="text-sm font-medium text-stone-600"
-            >
-              Status
-            </label>
-            <select
-              id="status"
-              className="border-gray-200 mt-2 block w-full rounded-md border px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            >
-              <option>Dispached Out</option>
-              <option>In Warehouse</option>
-              <option>Being Brought In</option>
-            </select>
-          </div> */}
         </div>
         <div className="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">
-          <button className="bg-gray-200 text-gray-600 rounded-lg px-8 py-2 font-medium outline-none hover:opacity-90 focus:ring active:scale-95">
+          <button
+            onClick={handleResetFilters}
+            className="bg-gray-200 text-gray-600 rounded-lg px-8 py-2 font-medium outline-none hover:opacity-90 focus:ring active:scale-95"
+          >
             Reset
           </button>
-          <button className="rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none hover:opacity-90 focus:ring active:scale-95">
+          <button
+            onClick={handleApplyFilters}
+            className="rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none hover:opacity-90 focus:ring active:scale-95"
+          >
             Search
           </button>
         </div>

@@ -9,13 +9,18 @@ type Country = {
   cities: string[]; // Change to cities for states
 };
 
-interface SelectCountryProps {}
+interface SelectCountryProps {
+  selectedCountry: string; // Prop for passing the selected country value
+  onCountryChange: (country: string) => void; // Prop for handling country change
+}
 
-const SelectDepCountry: React.FC<SelectCountryProps> = ({}) => {
+const SelectDepCountry: React.FC<SelectCountryProps> = ({
+  selectedCountry,
+  onCountryChange,
+}) => {
   const [countries, setCountries] = useState<Country[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDepartureCountry, setSelectedDepartureCountry] =
-    useState<string>();
+
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -38,7 +43,7 @@ const SelectDepCountry: React.FC<SelectCountryProps> = ({}) => {
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const selectedCountry = e.target.value;
-    setSelectedDepartureCountry(selectedCountry);
+    onCountryChange(selectedCountry);
   };
 
   return (
@@ -54,7 +59,7 @@ const SelectDepCountry: React.FC<SelectCountryProps> = ({}) => {
           id="departure"
           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
           onChange={handleDepartureCountryChange}
-          value={selectedDepartureCountry}
+          value={selectedCountry}
           required
         >
           <option value="" disabled>

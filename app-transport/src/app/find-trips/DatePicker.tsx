@@ -1,22 +1,54 @@
 import flatpickr from "flatpickr";
 import { useEffect } from "react";
 
-interface DatePickerOneProps {}
+interface DatePickerOneProps {
+  selectedDate: string; // Prop for passing the selected date value
+  onChange: (date: string) => void; // Prop for handling date change
+}
 
-const DatePickerOne: React.FC<DatePickerOneProps> = ({}) => {
+const DatePickerOne: React.FC<DatePickerOneProps> = ({
+  selectedDate,
+  onChange,
+}) => {
   useEffect(() => {
-    flatpickr(".form-datepicker", {
+    const datePicker = flatpickr(".form-datepicker", {
       mode: "single",
       static: true,
       monthSelectorType: "static",
       dateFormat: "M j, Y",
       minDate: "today",
+      defaultDate: selectedDate, // Set the default selected date
       prevArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
       nextArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
-    });
-  });
+      onChange: (selectedDates: Date[]) => {
+        // Call the onChange callback with the selected date
+        onChange(selectedDates[0].toISOString());
+      },
+    }) as flatpickr.Instance | flatpickr.Instance[];
+
+    if (Array.isArray(datePicker)) {
+      // Handle multiple instances
+      datePicker.forEach((instance) => {
+        instance.setDate(selectedDate);
+      });
+    } else {
+      // Handle single instance
+      datePicker.setDate(selectedDate);
+    }
+
+    // Return a cleanup function to destroy the flatpickr instance when the component unmounts
+    return () => {
+      if (Array.isArray(datePicker)) {
+        datePicker.forEach((instance) => {
+          instance.destroy();
+        });
+      } else {
+        datePicker.destroy();
+      }
+    };
+  }, [selectedDate, onChange]);
   return (
     <div>
       <label
