@@ -43,7 +43,7 @@ const SelectDestCountry: React.FC<SelectCountryProps> = ({
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const selectedCountry = e.target.value;
-    onCountryChange(selectedCountry);
+    onCountryChange(selectedCountry); // Pass the selected country to the parent component
   };
 
   return (

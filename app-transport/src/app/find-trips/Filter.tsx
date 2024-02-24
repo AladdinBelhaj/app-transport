@@ -1,3 +1,4 @@
+// filter.tsx
 import React, { useState } from "react";
 import SelectDepCountry from "./SelectDepCountry";
 import SelectDestCountry from "./SelectDestCountry";
@@ -5,6 +6,7 @@ import DatePicker from "./DatePicker";
 
 interface FilterProps {
   applyFilters: (filters: FilterValues) => void; // Define the type for applyFilters
+  resetFilters: () => void;
 }
 
 interface FilterValues {
@@ -13,7 +15,7 @@ interface FilterValues {
   startDate: string; // Adjust the type as per your requirement
 }
 
-const Filter: React.FC<FilterProps> = ({ applyFilters }) => {
+const Filter: React.FC<FilterProps> = ({ applyFilters, resetFilters }) => {
   const [departureCountry, setDepartureCountry] = useState("");
   const [destinationCountry, setDestinationCountry] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -34,16 +36,12 @@ const Filter: React.FC<FilterProps> = ({ applyFilters }) => {
     setDestinationCountry("");
     setStartDate("");
     // Reset filters on parent component
-    applyFilters({
-      departureCountry: "",
-      destinationCountry: "",
-      startDate: "",
-    });
+    resetFilters();
   };
 
   return (
     <div className="m-2 max-w-screen-2xl">
-      <div className="border-gray-200  rounded-xl border bg-white p-6 shadow-lg">
+      <div className="border-gray-200 rounded-xl border bg-white p-6 shadow-lg">
         <h2 className="text-lg font-bold text-stone-700">Apply filters</h2>
         <p className="mt-1 text-sm">Use filters to further refine search</p>
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

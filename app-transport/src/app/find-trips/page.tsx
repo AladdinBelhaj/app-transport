@@ -1,11 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+// page.tsx
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useAllTripsData } from "../../../utils/getTripsData";
-import { fetchTransporterData } from "../../../utils/fetchTransporterData"; // Import the fetchTransporterData function
+import { fetchTransporterData } from "../../../utils/fetchTransporterData";
 import Link from "next/link";
 import Filter from "./Filter";
+
 interface Trip {
   id: number;
   departCountry: string;
@@ -22,11 +24,25 @@ interface Trip {
   updatedAt: string;
 }
 
+interface FilterValues {
+  departureCountry: string;
+  destinationCountry: string;
+  startDate: string;
+}
+
 const FindTripsPage = () => {
-  const tripData = useAllTripsData();
+  const allTripData = useAllTripsData();
+  const [tripData, setTripData] = useState<Trip[]>([]);
+  const [filteredTripData, setFilteredTripData] = useState<Trip[]>([]);
   const [transporterNames, setTransporterNames] = useState<{
     [key: string]: string;
   }>({});
+
+  useEffect(() => {
+    if (allTripData) {
+      setTripData(allTripData);
+    }
+  }, [allTripData]);
 
   useEffect(() => {
     if (tripData) {
@@ -49,13 +65,36 @@ const FindTripsPage = () => {
     }
   }, [tripData]);
 
-  console.log("Trip data:", tripData);
+  console.log("All Trip data:", allTripData);
+  console.log("Filtered Trip data:", filteredTripData);
   console.log("Transporter names:", transporterNames);
+
+  const applyFilters = (filters: FilterValues) => {
+    console.log(filters.departureCountry);
+    console.log(filters.destinationCountry);
+    console.log(filters.startDate);
+    const tripsToFilter = allTripData || [];
+    const filteredTrips = tripsToFilter.filter((trip) => {
+      return (
+        (!filters.departureCountry ||
+          trip.departCountry === filters.departureCountry) &&
+        (!filters.destinationCountry ||
+          trip.destCountry === filters.destinationCountry)
+        // (!filters.startDate || trip.startDate === filters.startDate)
+      );
+    });
+    setFilteredTripData(filteredTrips);
+  };
+
+  const resetFilters = () => {
+    // Reset filters and display all trips
+    setFilteredTripData([]);
+  };
 
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Find Trips" />
-      <Filter applyFilters={() => {}} />
+      <Filter applyFilters={applyFilters} resetFilters={resetFilters} />
 
       <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
@@ -86,15 +125,14 @@ const FindTripsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {tripData &&
-                tripData.map((trip: Trip, key: any) => (
+              {(filteredTripData.length > 0 ? filteredTripData : tripData).map(
+                (trip: Trip) => (
                   <tr key={trip.id}>
                     <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                       <h5 className="font-medium text-black dark:text-white">
                         {transporterNames[trip.transporterId]}
                       </h5>
                       <p className="text-sm">
-                        {" "}
                         <Link
                           href={`/profile/${trip.transporterId}`}
                           className="text-blue-500 hover:underline"
@@ -154,7 +192,16 @@ const FindTripsPage = () => {
                       </div>
                     </td>
                   </tr>
-                ))}
+                ),
+              )}
+              {/* {((filteredTripData.length === 0 && tripData.length === 0) ||
+                (filteredTripData.length === 0 && tripData.length > 0)) && (
+                // <tr>
+                //   <td colSpan={7} className="text-center">
+                //     No trips found.
+                //   </td>
+                // </tr>
+              )} */}
             </tbody>
           </table>
         </div>
