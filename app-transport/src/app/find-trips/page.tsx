@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useAllTripsData } from "../../../utils/getTripsData";
 import { fetchTransporterData } from "../../../utils/fetchTransporterData"; // Import the fetchTransporterData function
 import Link from "next/link";
+import Filter from "./Filter";
 interface Trip {
   id: number;
   departCountry: string;
@@ -54,6 +55,8 @@ const FindTripsPage = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Find Trips" />
+      <Filter></Filter>
+
       <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
