@@ -84,7 +84,7 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     try {
-    const salt = await bcrypt.genSaltSync(8);
+        const salt = await bcrypt.genSaltSync(8);
         const user = await Users.findOne({
             where: {
                 email: req.body.email
@@ -147,7 +147,7 @@ exports.signin = async (req, res) => {
             accessToken: token,
             picture: user.picture,
             isFirstLogin: user.isFirstLogin
-            
+
         });
     } catch (err) {
         res.status(500).send({ message: err.message });
@@ -161,7 +161,7 @@ exports.getUserData = async (req, res) => {
         // Retrieve the user data from the database
         const user = await Users.findOne({
             where: { id: userId },
-            include:Role
+            include: Role
         });
 
         if (!user) {
@@ -197,18 +197,18 @@ exports.updateUserData = async (req, res) => {
         if (req.body.phone) {
             updatedFields.phone = req.body.phone;
         }
-        
-        if(req.body.isFirstLogin){
+
+        if (req.body.isFirstLogin) {
             updatedFields.isFirstLogin = req.body.isFirstLogin;
         }
 
-        if(req.body.username){
+        if (req.body.username) {
             updatedFields.username = req.body.username;
         }
-        if(req.body.picture){
+        if (req.body.picture) {
             updatedFields.picture = req.body.picture;
         }
-        if(req.body.bio){
+        if (req.body.bio) {
             updatedFields.bio = req.body.bio;
         }
 
@@ -226,28 +226,28 @@ exports.updateUserData = async (req, res) => {
 
 
 exports.uploadImage = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const imageData = req.file.path;
+    try {
+        const userId = req.params.userId;
+        const imageData = req.file.path;
 
-    // Find the user by ID
-    const user = await Users.findOne({
-      where: { id: userId }
-    });
+        // Find the user by ID
+        const user = await Users.findOne({
+            where: { id: userId }
+        });
 
-    if (!user) {
-      return res.status(404).send({ message: 'User not found.' });
+        if (!user) {
+            return res.status(404).send({ message: 'User not found.' });
+        }
+
+        // Update the user's picture field with the uploaded image data
+        await Users.update({ picture: imageData }, {
+            where: { id: userId }
+        });
+
+        res.status(200).send({ message: 'Image uploaded successfully.' });
+    } catch (error) {
+        res.status(500).send({ message: error.message });
     }
-
-    // Update the user's picture field with the uploaded image data
-    await Users.update({ picture: imageData }, {
-      where: { id: userId }
-    });
-
-    res.status(200).send({ message: 'Image uploaded successfully.' });
-  } catch (error) {
-    res.status(500).send({ message: error.message });
-  }
 };
 
 
@@ -271,3 +271,4 @@ exports.getUserDataById = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+

@@ -1,10 +1,10 @@
+"use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useAllTripsData } from "../../../utils/getTripsData";
 import { fetchTransporterData } from "../../../utils/fetchTransporterData"; // Import the fetchTransporterData function
-
+import Link from "next/link";
 interface Trip {
   id: number;
   departCountry: string;
@@ -32,19 +32,24 @@ const FindTripsPage = () => {
       tripData.forEach((trip) => {
         const transporterId = trip.transporterId;
         if (transporterId) {
-          // Call fetchTransporterData function
-          fetchTransporterData(transporterId).then((transporterData: any) => {
-            if (transporterData) {
+          fetchTransporterData(transporterId)
+            .then((transporterData: any) => {
+              console.log("Transporter data:", transporterData);
               setTransporterNames((prevTransporterNames) => ({
                 ...prevTransporterNames,
-                [transporterId]: transporterData.name,
+                [transporterId]: transporterData.fullname,
               }));
-            }
-          });
+            })
+            .catch((error) => {
+              console.error("Error fetching transporter data:", error);
+            });
         }
       });
     }
   }, [tripData]);
+
+  console.log("Trip data:", tripData);
+  console.log("Transporter names:", transporterNames);
 
   return (
     <DefaultLayout>
@@ -55,9 +60,12 @@ const FindTripsPage = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
+                  Transporter
+                </th>
+                <th className="px-4 py-4 font-medium text-black dark:text-white">
                   Departure
                 </th>
-                <th className="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
+                <th className="px-4 py-4 font-medium text-black dark:text-white">
                   Start Date
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
@@ -70,9 +78,6 @@ const FindTripsPage = () => {
                   Weight Left
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Status
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
                   Actions
                 </th>
               </tr>
@@ -83,11 +88,24 @@ const FindTripsPage = () => {
                   <tr key={trip.id}>
                     <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                       <h5 className="font-medium text-black dark:text-white">
+                        {transporterNames[trip.transporterId]}
+                      </h5>
+                      <p className="text-sm">
+                        {" "}
+                        <Link
+                          href={`/profile/${trip.transporterId}`}
+                          className="text-blue-500 hover:underline"
+                        >
+                          Visit Profile
+                        </Link>
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                      <h5 className="font-medium text-black dark:text-white">
                         {trip.departCountry}
                       </h5>
                       <p className="text-sm">{trip.departState}</p>
                     </td>
-
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       <h5 className="font-medium dark:text-white">
                         {trip.departDate.slice(0, 10)}
@@ -109,20 +127,7 @@ const FindTripsPage = () => {
                         {trip.maxWeight}
                       </h5>
                     </td>
-                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                      <p
-                        className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                          trip.status === "Paid"
-                            ? "bg-success text-success"
-                            : trip.maxWeight === "Pending"
-                              ? "bg-danger text-danger"
-                              : "bg-warning text-warning"
-                        }`}
-                      >
-                        {trip.status}
-                      </p>
-                    </td>
-                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark xl:pl-8">
                       <div className="flex items-center space-x-3.5">
                         <button className="hover:text-primary">
                           <svg
