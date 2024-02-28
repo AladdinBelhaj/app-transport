@@ -70,8 +70,8 @@ const ApplyTrip = () => {
                   Add a new product
                 </h2>
                 <form action="#">
-                  <div className="grid gap-4 sm:grid-cols-3 sm:gap-6">
-                    <div className="sm:col-span-3">
+                  <div className="grid gap-4 sm:grid-cols-4 sm:gap-6">
+                    <div className="sm:col-span-4">
                       <label
                         htmlFor="name"
                         className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
@@ -88,38 +88,15 @@ const ApplyTrip = () => {
                       />
                     </div>
                     <div className="w-full">
-                      {/* <div
-                        className="inline-flex rounded-md shadow-sm"
-                        role="group"
-                      >
-                        <button
-                          type="button"
-                          className="text-gray-900 border-gray-900 focus:ring-gray-500 dark:hover:bg-gray-700 rounded-s-lg border bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white focus:z-10 focus:bg-black focus:text-white focus:ring-2 dark:border-white dark:text-white dark:hover:text-white dark:focus:bg-black"
-                        >
-                          Profile
-                        </button>
-                        <button
-                          type="button"
-                          className="text-gray-900 border-gray-900 focus:ring-gray-500 dark:hover:bg-gray-700 border-b border-t bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white focus:z-10 focus:bg-black focus:text-white focus:ring-2 dark:border-white dark:text-white dark:hover:text-white dark:focus:bg-black"
-                        >
-                          Settings
-                        </button>
-                        <button
-                          type="button"
-                          className="text-gray-900 border-gray-900 focus:ring-gray-500 dark:hover:bg-gray-700 rounded-e-lg border bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white focus:z-10 focus:bg-black focus:text-white focus:ring-2 dark:border-white dark:text-white dark:hover:text-white dark:focus:bg-black"
-                        >
-                          Downloads
-                        </button>
-                      </div> */}
                       <div className="w-full">
                         <label
                           htmlFor="length"
                           className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
                         >
-                          Length (in cm)
+                          Length (cm)
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           name="length"
                           id="length"
                           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
@@ -133,10 +110,10 @@ const ApplyTrip = () => {
                         htmlFor="width"
                         className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
                       >
-                        Width (in cm)
+                        Width (cm)
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         name="width"
                         id="width"
                         className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
@@ -149,47 +126,103 @@ const ApplyTrip = () => {
                         htmlFor="height"
                         className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
                       >
-                        Height (in cm)
-                      </label>
-                      <input
-                        type="text"
-                        name="height"
-                        id="height"
-                        className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
-                        placeholder="$2999"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="item-weight"
-                        className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
-                      >
-                        Item Weight (kg)
+                        Height (cm)
                       </label>
                       <input
                         type="number"
-                        name="item-weight"
-                        id="item-weight"
+                        name="height"
+                        id="height"
                         className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
-                        placeholder={"12"}
+                        placeholder="Enter height"
                         required
                       />
                     </div>
-                    <div className="sm:col-span-2">
+                    <div className="w-full">
                       <label
-                        htmlFor="description"
+                        htmlFor="weight"
                         className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
                       >
-                        Description
+                        Item weight (kg)
                       </label>
-                      <textarea
-                        id="description"
-                        rows={8}
-                        className="text-gray-900 bg-gray-50 border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-500 focus:ring-modal-500 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
-                        placeholder="Your description here"
-                        defaultValue={""}
+                      <input
+                        type="number"
+                        name="weight"
+                        id="weight"
+                        className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
+                        placeholder="Enter height"
+                        required
                       />
+                    </div>
+                    {/* <div className="sm:col-span-3">
+                      <label className="text-gray-900 mb-2 block text-sm font-medium dark:text-white">
+                        Item Weight (kg)
+                      </label>
+                      <div
+                        className="inline-flex rounded-md shadow-sm"
+                        role="group"
+                      >
+                        <button
+                          type="button"
+                          className="text-gray-900 border-gray-900 focus:ring-gray-500 dark:hover:bg-gray-700 rounded-s-lg border bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white focus:z-10 focus:bg-black focus:text-white focus:ring-2 dark:border-white dark:text-white dark:hover:text-white dark:focus:bg-black"
+                        >
+                          -10kg
+                        </button>
+                        <button
+                          type="button"
+                          className="text-gray-900 border-gray-900 focus:ring-gray-500 dark:hover:bg-gray-700 border-b border-t bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white focus:z-10 focus:bg-black focus:text-white focus:ring-2 dark:border-white dark:text-white dark:hover:text-white dark:focus:bg-black"
+                        >
+                          10 to 50kg
+                        </button>
+                        <button
+                          type="button"
+                          className="text-gray-900 border-gray-900 focus:ring-gray-500 dark:hover:bg-gray-700 rounded-e-lg border bg-transparent px-4 py-2 text-sm font-medium hover:bg-black hover:text-white focus:z-10 focus:bg-black focus:text-white focus:ring-2 dark:border-white dark:text-white dark:hover:text-white dark:focus:bg-black"
+                        >
+                          +50kg
+                        </button>
+                      </div>
+                    </div> */}
+                    <div className="sm:col-span-4">
+                      <label className="text-gray-900 mb-2 block text-sm font-medium dark:text-white">
+                        Item Image
+                      </label>
+                      <div className="flex w-full items-center justify-center">
+                        <label
+                          htmlFor="dropzone-file"
+                          className="border-gray-300 bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed"
+                        >
+                          <div className="flex flex-col items-center justify-center pb-6 pt-5">
+                            <svg
+                              className="text-gray-500 dark:text-gray-400 mb-4 h-8 w-8"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 20 16"
+                            >
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                              />
+                            </svg>
+                            <p className="text-gray-500 dark:text-gray-400 mb-2 text-sm">
+                              <span className="font-semibold">
+                                Click to upload
+                              </span>{" "}
+                              or drag and drop
+                            </p>
+                            <p className="text-gray-500 dark:text-gray-400 text-xs">
+                              SVG, PNG, JPG or GIF (MAX. 800x400px)
+                            </p>
+                          </div>
+                          <input
+                            id="dropzone-file"
+                            type="file"
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
                     </div>
                   </div>
                   <button
