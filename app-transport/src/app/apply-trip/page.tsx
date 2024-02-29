@@ -5,6 +5,13 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 const ApplyTrip = () => {
   const [accordions, setAccordions] = useState([{ id: 0 }]);
+  const [inputs, setInputs] = useState({
+    name: "",
+    length: "",
+    width: "",
+    height: "",
+    weight: "",
+  });
 
   const addAccordion = () => {
     const newAccordion = {
@@ -20,6 +27,18 @@ const ApplyTrip = () => {
       );
       setAccordions(updatedAccordions);
     }
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const [inputField, accordionIndex] = name.split("-"); // Parse accordion index from the input name
+    const updatedInputs = { ...inputs, [inputField]: value };
+    setInputs(updatedInputs);
+  };
+
+  const isAnyInputEmpty = () => {
+    console.log("Inputs:", inputs); // Log input values
+    return Object.values(inputs).some((value) => value === "");
   };
 
   return (
@@ -42,7 +61,7 @@ const ApplyTrip = () => {
             Click to open this one and close others
           </label>
           <div className="collapse-content">
-            <div className="border-gray-200 dark:border-gray-700 dark:bg-gray-900 border border-b-0 bg-white">
+            <div className="border-gray-200 dark:border-gray-700 border border-b-0 bg-white">
               <section className="dark:bg-gray-900 bg-white">
                 <div className="mx-auto max-w-2xl px-4 py-8 lg:py-16">
                   <h2 className="text-gray-900 mb-4 text-xl font-bold dark:text-white">
@@ -61,8 +80,10 @@ const ApplyTrip = () => {
                           type="text"
                           name={`name-${accordion.id}`}
                           id={`name-${accordion.id}`}
+                          defaultValue={inputs.name}
                           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                           placeholder="Type product name"
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
@@ -77,8 +98,10 @@ const ApplyTrip = () => {
                           type="number"
                           name={`length-${accordion.id}`}
                           id={`length-${accordion.id}`}
+                          defaultValue={inputs.length}
                           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                           placeholder="Enter length"
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
@@ -93,8 +116,10 @@ const ApplyTrip = () => {
                           type="number"
                           name={`width-${accordion.id}`}
                           id={`width-${accordion.id}`}
+                          defaultValue={inputs.width}
                           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                           placeholder="Enter width"
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
@@ -109,8 +134,10 @@ const ApplyTrip = () => {
                           type="number"
                           name={`height-${accordion.id}`}
                           id={`height-${accordion.id}`}
+                          defaultValue={inputs.height}
                           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                           placeholder="Enter height"
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
@@ -125,8 +152,10 @@ const ApplyTrip = () => {
                           type="number"
                           name={`weight-${accordion.id}`}
                           id={`weight-${accordion.id}`}
+                          defaultValue={inputs.weight}
                           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
                           placeholder="Enter weight"
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
@@ -191,12 +220,25 @@ const ApplyTrip = () => {
           )}
         </div>
       ))}
-      <button
-        className="mt-5 rounded bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600"
-        onClick={addAccordion}
-      >
-        Add Object
-      </button>
+      <div className="mt-5 flex justify-end">
+        <button
+          className="rounded bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600"
+          onClick={addAccordion}
+        >
+          Add Object
+        </button>
+        <button
+          className={`ml-4 rounded bg-green-500 px-4 py-2 font-semibold text-white hover:bg-green-600 ${
+            isAnyInputEmpty() ? "cursor-not-allowed opacity-50" : ""
+          }`}
+          onClick={() => {
+            // Apply functionality
+          }}
+          disabled={isAnyInputEmpty()}
+        >
+          Apply
+        </button>
+      </div>
     </DefaultLayout>
   );
 };
