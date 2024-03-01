@@ -83,7 +83,7 @@ const ApplyTrip: React.FC = () => {
       {accordions.map((accordion, index) => (
         <div
           key={accordion.id}
-          className="collapse collapse-plus relative bg-base-200"
+          className="collapse collapse-plus relative mb-3 bg-base-100"
         >
           <input
             type="radio"
@@ -94,7 +94,7 @@ const ApplyTrip: React.FC = () => {
             htmlFor={`accordion-${accordion.id}`}
             className="collapse-title text-xl font-medium"
           >
-            Click to open this one and close others
+            Object #{accordion.id + 1}
           </label>
           <div className="collapse-content">
             <div className="border-gray-200 dark:border-gray-700 border border-b-0 bg-white">
@@ -271,7 +271,7 @@ const ApplyTrip: React.FC = () => {
           )}
         </div>
       ))}
-      <div className="mt-5 flex justify-end">
+      <div className="mt-5 flex justify-start">
         <button
           className="rounded bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600"
           onClick={addAccordion}
