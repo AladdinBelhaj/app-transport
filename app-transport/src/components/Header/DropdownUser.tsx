@@ -7,7 +7,6 @@ import { useUserData } from "../../../utils/getUserData";
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-
   const userData = useUserData();
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -30,14 +29,13 @@ const DropdownUser = () => {
 
   // close if the esc key is pressed
   useEffect(() => {
-    console.log(userData);
+    // console.log(userData);
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;
       setDropdownOpen(false);
     };
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
-    
   });
 
   const router = useRouter();
@@ -61,13 +59,15 @@ const DropdownUser = () => {
           <span className="block text-xs">UX Designer</span>
         </span>
         <div className="avatar">
-                      <div className="w-14 rounded-full">
-                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
-                          width={55}
-                          height={55}
-                          alt="User" />
-                      </div>
-                    </div>
+          <div className="w-14 rounded-full">
+            <img
+              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${userData?.picture}`}
+              width={55}
+              height={55}
+              alt="User"
+            />
+          </div>
+        </div>
 
         <svg
           className="hidden fill-current sm:block"

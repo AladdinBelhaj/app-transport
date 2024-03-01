@@ -397,6 +397,158 @@
 
 // export default ApplyTrip;
 
+// "use client";
+// import React, { useState } from "react";
+// import DefaultLayout from "@/components/Layouts/DefaultLayout";
+// import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+
+// interface Accordion {
+//   id: number;
+// }
+
+// interface Input {
+//   [key: string]: string;
+// }
+
+// const ApplyTrip: React.FC = () => {
+//   const [accordions, setAccordions] = useState<Accordion[]>([{ id: 0 }]);
+//   const [inputs, setInputs] = useState<Input[]>([]); // Initialize with an empty array
+
+//   const addAccordion = () => {
+//     const newAccordion = { id: accordions.length };
+//     setAccordions([...accordions, newAccordion]);
+//     // Initialize the input value for the new accordion
+//     setInputs([...inputs, { [`name-${newAccordion.id}`]: "" }]);
+//   };
+
+//   const deleteAccordion = (index: number) => {
+//     if (index > 0) {
+//       const updatedAccordions = accordions.filter(
+//         (accordion) => accordion.id !== index,
+//       );
+//       setAccordions(updatedAccordions);
+
+//       const updatedInputs = inputs.filter((_, i) => i !== index);
+//       setInputs(updatedInputs);
+//     }
+//   };
+
+//   const handleInputChange = (
+//     event: React.ChangeEvent<HTMLInputElement>,
+//     accordionIndex: number,
+//   ) => {
+//     const { name, value } = event.target;
+//     const updatedInputs = [...inputs];
+//     updatedInputs[accordionIndex] = {
+//       ...updatedInputs[accordionIndex],
+//       [name]: value,
+//     };
+//     setInputs(updatedInputs);
+//   };
+
+//   const isFormValid = () => {
+//     // Check if there are any input values
+//     if (inputs.length === 0) {
+//       return false;
+//     }
+//     // Check if all input values are not empty
+//     return inputs.every(
+//       (input, index) => input[`name-${index}`]?.trim() !== "",
+//     );
+//   };
+
+//   return (
+//     <DefaultLayout>
+//       <Breadcrumb pageName="Apply Trip" />
+//       {accordions.map((accordion, index) => (
+//         <div
+//           key={accordion.id}
+//           className="collapse collapse-plus relative bg-base-200"
+//         >
+//           <input
+//             type="radio"
+//             name="my-accordion-3"
+//             id={`accordion-${accordion.id}`}
+//           />
+//           <label
+//             htmlFor={`accordion-${accordion.id}`}
+//             className="collapse-title text-xl font-medium"
+//           >
+//             Click to open this one and close others
+//           </label>
+//           <div className="collapse-content">
+//             <div className="border-gray-200 dark:border-gray-700 border border-b-0 bg-white">
+//               <section className="dark:bg-gray-900 bg-white">
+//                 <div className="mx-auto max-w-2xl px-4 py-8 lg:py-16">
+//                   <h2 className="text-gray-900 mb-4 text-xl font-bold dark:text-white">
+//                     Add a new product
+//                   </h2>
+//                   <form action="#">
+//                     <div className="grid gap-4 sm:grid-cols-4 sm:gap-6">
+//                       <div className="sm:col-span-4">
+//                         <label
+//                           htmlFor={`name-${accordion.id}`}
+//                           className="text-gray-900 mb-2 block text-sm font-medium dark:text-white"
+//                         >
+//                           Product Name
+//                         </label>
+//                         <input
+//                           type="text"
+//                           name={`name-${accordion.id}`}
+//                           id={`name-${accordion.id}`}
+//                           defaultValue={inputs[index]?.[`name-${index}`] || ""} // Handle case when defaultValue is undefined
+//                           className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-modal-600 focus:ring-modal-600 dark:text-white dark:focus:border-modal-500 dark:focus:ring-modal-500"
+//                           placeholder="Type product name"
+//                           onChange={(e) => handleInputChange(e, index)}
+//                           required
+//                         />
+//                       </div>
+//                       {/* Other input fields */}
+//                     </div>
+//                   </form>
+//                 </div>
+//               </section>
+//               <hr className="border-gray-200 dark:border-gray-700" />
+//             </div>
+//           </div>
+//           {index > 0 && (
+//             <button
+//               key={`delete-${accordion.id}`}
+//               className="delete-button absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white"
+//               onClick={() => deleteAccordion(accordion.id)}
+//             >
+//               X
+//             </button>
+//           )}
+//         </div>
+//       ))}
+//       <div className="mt-5 flex justify-end">
+//         <button
+//           className="rounded bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600"
+//           onClick={addAccordion}
+//         >
+//           Add Object
+//         </button>
+//         <button
+//           className={`ml-4 rounded px-4 py-2 font-semibold text-white ${
+//             !isFormValid()
+//               ? "cursor-not-allowed bg-green-200"
+//               : "bg-green-500 hover:bg-green-600"
+//           }`}
+//           onClick={() => {
+//             // Apply functionality
+//           }}
+//           disabled={!isFormValid()} // Disable if form is not valid
+//         >
+//           Apply
+//         </button>
+//       </div>
+//     </DefaultLayout>
+//   );
+// };
+
+// export default ApplyTrip;
+
 "use client";
 import React, { useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -412,10 +564,12 @@ interface Input {
 
 const ApplyTrip: React.FC = () => {
   const [accordions, setAccordions] = useState<Accordion[]>([{ id: 0 }]);
-  const [inputs, setInputs] = useState<Input[]>([]); // Initialize with an empty array
+  // const [inputs, setInputs] = useState<Input[]>([]); // Initialize with an empty array
+  const [inputs, setInputs] = useState<Input[]>([{ "name-0": "" }]);
 
   const addAccordion = () => {
     const newAccordion = { id: accordions.length };
+    console.log("Added accordion with id:", newAccordion.id);
     setAccordions([...accordions, newAccordion]);
     // Initialize the input value for the new accordion
     setInputs([...inputs, { [`name-${newAccordion.id}`]: "" }]);
@@ -452,8 +606,8 @@ const ApplyTrip: React.FC = () => {
       return false;
     }
     // Check if all input values are not empty
-    return inputs.every(
-      (input, index) => input[`name-${index}`]?.trim() !== "",
+    return inputs.every((input) =>
+      Object.values(input).some((value) => value.trim() !== ""),
     );
   };
 
