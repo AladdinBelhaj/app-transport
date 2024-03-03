@@ -1,12 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
     const Offers = sequelize.define("offers", {
         objects: {
-            type: Sequelize.ARRAY
-        },
-        totalWeight: {
-            type: Sequelize.STRING
-        },
-
+            type: Sequelize.JSON // Using JSON data type for objects
+        }
     });
     return Offers;
 };

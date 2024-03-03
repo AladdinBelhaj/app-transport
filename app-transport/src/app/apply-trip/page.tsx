@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-
+import axios from "axios";
 interface Accordion {
   id: number;
 }
@@ -76,6 +76,29 @@ const ApplyTrip: React.FC = () => {
       Object.values(input).every((value) => value.trim() !== ""),
     );
   };
+  function handleSubmit(event: any) {
+    event.preventDefault();
+    console.log(inputs);
+    axios
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/create`, {
+        objects: inputs,
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          // Handle success
+          console.log("Offer created successfully:", response.data);
+          // Perform any additional actions after successful offer creation
+        } else {
+          // Handle other status codes if needed
+          console.log("Unexpected status code:", response.status);
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error creating offer:", error);
+        // Optionally display an error message to the user
+      });
+  }
 
   return (
     <DefaultLayout>
@@ -284,9 +307,7 @@ const ApplyTrip: React.FC = () => {
               ? "cursor-not-allowed bg-green-200"
               : "bg-green-500 hover:bg-green-600"
           }`}
-          onClick={() => {
-            // Apply functionality
-          }}
+          onClick={handleSubmit}
           disabled={!isFormValid()} // Disable if form is not valid
         >
           Apply
