@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Trip {
   id: number;
@@ -31,6 +32,13 @@ const ReadTripModal: React.FC<ModalProps> = ({
   const handleCloseModal = () => {
     setModalOpen(false);
     closeModal();
+  };
+
+  const router = useRouter();
+
+  const handleApply = () => {
+    localStorage.setItem("currentTripId", JSON.stringify(selectedTrip?.id));
+    router.push("/apply-trip");
   };
 
   return (
@@ -94,7 +102,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3 sm:space-x-4">
-                  <button
+                  {/* <button
                     type="button"
                     className="inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
                     onClick={() => {
@@ -116,7 +124,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                       />
                     </svg>
                     Edit Trip
-                  </button>
+                  </button> */}
                   {/* <button
                     type="button"
                     className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
@@ -126,6 +134,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                   <button
                     type="button"
                     className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    onClick={handleApply}
                   >
                     <svg
                       aria-hidden="true"
@@ -142,7 +151,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                         d="M14 5l7 7m0 0l-7 7m7-7H3"
                       ></path>
                     </svg>
-                    Start Trip
+                    Apply to Trip
                   </button>
                 </div>
                 {/* <button
