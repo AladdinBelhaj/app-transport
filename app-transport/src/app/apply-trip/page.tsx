@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import axios from "axios";
+import CurrentTrips from "../trips/current-trips/page";
 interface Accordion {
   id: number;
 }
@@ -76,6 +77,7 @@ const ApplyTrip: React.FC = () => {
       Object.values(input).every((value) => value.trim() !== ""),
     );
   };
+  const tripId = localStorage.getItem("currentTripId");
   const id = localStorage.getItem("id");
   function handleSubmit(event: any) {
     event.preventDefault();
@@ -84,6 +86,7 @@ const ApplyTrip: React.FC = () => {
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/create`, {
         userId: id,
         objects: inputs,
+        tripId: tripId,
       })
       .then((response) => {
         if (response.status === 201) {
