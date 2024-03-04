@@ -80,11 +80,12 @@ const ApplyTrip: React.FC = () => {
   const currentTripString = localStorage.getItem("currentTrip");
 
   let tripId: any;
+  let transporterId: any;
 
   if (currentTripString !== null) {
     const currentTrip = JSON.parse(currentTripString);
     tripId = currentTrip?.id;
-    const transporterId = currentTrip?.transporterId;
+    transporterId = currentTrip?.transporterId;
   }
   const id = localStorage.getItem("id");
   function handleSubmit(event: any) {
@@ -95,6 +96,7 @@ const ApplyTrip: React.FC = () => {
         userId: id,
         objects: inputs,
         tripId: tripId,
+        transporterId: transporterId,
       })
       .then((response) => {
         if (response.status === 201) {

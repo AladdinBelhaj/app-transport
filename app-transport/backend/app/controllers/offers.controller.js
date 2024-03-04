@@ -1,5 +1,5 @@
 const db = require('../models/index');
-const Offers = db.offers; // Assuming you have an Offers model defined in your models/index.js file
+const Offers = db.offers; 
 const Op = db.Sequelize.Op;
 
 exports.createOffer = async (req, res) => {
