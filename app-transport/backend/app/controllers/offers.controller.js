@@ -6,7 +6,8 @@ exports.createOffer = async (req, res) => {
     try {
         // Create a new offer in the database
         const offer = await Offers.create({
-            objects: req.body.objects
+            objects: req.body.objects,
+            userId: req.body.userId
         });
 
         res.status(201).send({ message: "Offer created successfully!", offer });

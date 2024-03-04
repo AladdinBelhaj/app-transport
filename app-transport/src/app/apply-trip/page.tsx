@@ -76,11 +76,13 @@ const ApplyTrip: React.FC = () => {
       Object.values(input).every((value) => value.trim() !== ""),
     );
   };
+  const id = localStorage.getItem("id");
   function handleSubmit(event: any) {
     event.preventDefault();
     console.log(inputs);
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/create`, {
+        userId: id,
         objects: inputs,
       })
       .then((response) => {
