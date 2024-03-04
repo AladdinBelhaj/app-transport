@@ -6,6 +6,7 @@ import { useAllTripsData } from "../../../utils/getTripsData";
 import { fetchTransporterData } from "../../../utils/fetchTransporterData";
 import Link from "next/link";
 import Filter from "./Filter";
+import ReadTripModal from "./ReadTripModal";
 
 interface Trip {
   id: number;
@@ -31,6 +32,23 @@ interface FilterValues {
 
 const FindTripsPage = () => {
   const allTripData = useAllTripsData();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
+
+  const openModal = (trip: Trip) => {
+    setSelectedTrip(trip);
+    setIsModalOpen(true);
+    localStorage.setItem("trip", JSON.stringify(trip));
+    window.dispatchEvent(new Event("storage"));
+    console.log(trip);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const [tripData, setTripData] = useState<Trip[]>([]);
   const [filteredTripData, setFilteredTripData] = useState<Trip[]>([]);
   const [transporterNames, setTransporterNames] = useState<{
@@ -208,7 +226,10 @@ const FindTripsPage = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark xl:pl-8">
                       <div className="flex items-center space-x-3.5">
-                        <button className="hover:text-primary">
+                        <button
+                          onClick={() => openModal(trip)}
+                          className="hover:text-primary"
+                        >
                           <svg
                             className="fill-current"
                             width="18"
@@ -236,6 +257,11 @@ const FindTripsPage = () => {
           )}
         </div>
       </div>
+      <ReadTripModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        selectedTrip={selectedTrip}
+      ></ReadTripModal>
     </DefaultLayout>
   );
 };
