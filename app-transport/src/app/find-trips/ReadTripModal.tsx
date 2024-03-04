@@ -37,8 +37,8 @@ const ReadTripModal: React.FC<ModalProps> = ({
   const router = useRouter();
 
   const handleApply = () => {
-    localStorage.removeItem("currenTripId");
-    localStorage.setItem("currentTripId", JSON.stringify(selectedTrip?.id));
+    localStorage.removeItem("currentTrip");
+    localStorage.setItem("currentTrip", JSON.stringify(selectedTrip));
     router.push("/apply-trip");
   };
 

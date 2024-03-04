@@ -77,7 +77,15 @@ const ApplyTrip: React.FC = () => {
       Object.values(input).every((value) => value.trim() !== ""),
     );
   };
-  const tripId = localStorage.getItem("currentTripId");
+  const currentTripString = localStorage.getItem("currentTrip");
+
+  let tripId: any;
+
+  if (currentTripString !== null) {
+    const currentTrip = JSON.parse(currentTripString);
+    tripId = currentTrip?.id;
+    const transporterId = currentTrip?.transporterId;
+  }
   const id = localStorage.getItem("id");
   function handleSubmit(event: any) {
     event.preventDefault();
