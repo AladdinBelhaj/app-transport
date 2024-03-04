@@ -8,6 +8,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         tripId:{
             type: Sequelize.STRING
+        },
+        transporterId:{
+            type: Sequelize.STRING
         }
     });
     return Offers;

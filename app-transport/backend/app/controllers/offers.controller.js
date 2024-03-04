@@ -8,7 +8,8 @@ exports.createOffer = async (req, res) => {
         const offer = await Offers.create({
             objects: req.body.objects,
             userId: req.body.userId,
-            tripId: req.body.tripId
+            tripId: req.body.tripId,
+            transporterId: req.body.transporterId
         });
 
         res.status(201).send({ message: "Offer created successfully!", offer });
