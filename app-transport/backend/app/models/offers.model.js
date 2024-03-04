@@ -5,6 +5,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         userId:{
             type: Sequelize.STRING
+        },
+        tripId:{
+            type: Sequelize.STRING
         }
     });
     return Offers;
