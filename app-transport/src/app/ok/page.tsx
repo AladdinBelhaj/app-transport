@@ -1,89 +1,240 @@
-"use client";
-import React from "react";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
-const Page = () => {
-  const toggleModal = () => {
-    const modal = document.getElementById("deleteModal");
-    modal?.classList.toggle("hidden");
-  };
+import { Metadata } from "next";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
+import Link from "next/link";
 
+export const metadata: Metadata = {
+  title: "Next.js Form Layout | TailAdmin - Next.js Dashboard Template",
+  description:
+    "This is Next.js Form Layout page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+};
+
+const FormLayout = () => {
   return (
-    <div>
-      <div className="m-5 flex justify-center">
-        <button
-          id="deleteButton"
-          onClick={toggleModal}
-          className="block rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
-          type="button"
-        >
-          Show delete confirmation
-        </button>
-      </div>
-      <div
-        id="deleteModal"
-        tabIndex={-1}
-        aria-hidden="true"
-        className="fixed left-0 right-0 top-0 z-50 hidden h-modal w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
-      >
-        <div className="relative h-full w-full max-w-md p-4 md:h-auto">
-          {/* Modal content */}
-          <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
-            <button
-              type="button"
-              onClick={toggleModal}
-              className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
-            >
-              <svg
-                aria-hidden="true"
-                className="h-5 w-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="sr-only">Close modal</span>
-            </button>
-            <svg
-              className="text-gray-400 dark:text-gray-500 mx-auto mb-3.5 h-11 w-11"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <p className="text-gray-500 dark:text-gray-300 mb-4">
-              Are you sure you want to delete this item?
-            </p>
-            <div className="flex items-center justify-center space-x-4">
-              <button
-                onClick={toggleModal}
-                type="button"
-                className="text-gray-500 border-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600 rounded-lg border bg-white px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:hover:text-white"
-              >
-                No, cancel
-              </button>
-              <button
-                type="submit"
-                className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
-              >
-                Yes, Im sure
-              </button>
+    <DefaultLayout>
+      <Breadcrumb pageName="FormLayout" />
+
+      <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        <div className="flex flex-col gap-9">
+          {/* <!-- Contact Form --> */}
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Contact Form
+              </h3>
             </div>
+            <form action="#">
+              <div className="p-6.5">
+                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      First name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter your first name"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div className="w-full xl:w-1/2">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Last name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter your last name"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Email <span className="text-meta-1">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Select subject"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <SelectGroupOne />
+
+                <div className="mb-6">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Message
+                  </label>
+                  <textarea
+                    rows={6}
+                    placeholder="Type your message"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  ></textarea>
+                </div>
+
+                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-9">
+          {/* <!-- Sign In Form --> */}
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Sign In Form
+              </h3>
+            </div>
+            <form action="#">
+              <div className="p-6.5">
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Enter password"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="mb-5.5 mt-5 flex items-center justify-between">
+                  <label htmlFor="formCheckbox" className="flex cursor-pointer">
+                    <div className="relative pt-0.5">
+                      <input
+                        type="checkbox"
+                        id="formCheckbox"
+                        className="taskCheckbox sr-only"
+                      />
+                      <div className="box mr-3 flex h-5 w-5 items-center justify-center rounded border border-stroke dark:border-strokedark">
+                        <span className="text-white opacity-0">
+                          <svg
+                            className="fill-current"
+                            width="10"
+                            height="7"
+                            viewBox="0 0 10 7"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M9.70685 0.292804C9.89455 0.480344 10 0.734667 10 0.999847C10 1.26503 9.89455 1.51935 9.70685 1.70689L4.70059 6.7072C4.51283 6.89468 4.2582 7 3.9927 7C3.72721 7 3.47258 6.89468 3.28482 6.7072L0.281063 3.70701C0.0986771 3.5184 -0.00224342 3.26578 3.785e-05 3.00357C0.00231912 2.74136 0.10762 2.49053 0.29326 2.30511C0.4789 2.11969 0.730026 2.01451 0.992551 2.01224C1.25508 2.00996 1.50799 2.11076 1.69683 2.29293L3.9927 4.58607L8.29108 0.292804C8.47884 0.105322 8.73347 0 8.99896 0C9.26446 0 9.51908 0.105322 9.70685 0.292804Z"
+                              fill=""
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <p>Remember me</p>
+                  </label>
+
+                  <Link
+                    href="#"
+                    className="text-sm text-primary hover:underline"
+                  >
+                    Forget password?
+                  </Link>
+                </div>
+
+                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                  Sign In
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* <!-- Sign Up Form --> */}
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Sign Up Form
+              </h3>
+            </div>
+            <form action="#">
+              <div className="p-6.5">
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Enter password"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="mb-5.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Re-type Password
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Re-enter password"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                  Sign Up
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
+    </DefaultLayout>
   );
 };
 
-export default Page;
+export default FormLayout;

@@ -5,6 +5,10 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import axios from "axios";
 import CurrentTrips from "../trips/current-trips/page";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 interface Accordion {
   id: number;
 }
@@ -89,6 +93,31 @@ const ApplyTrip: React.FC = () => {
     tripId = currentTrip?.id;
     transporterId = currentTrip?.transporterId;
   }
+
+  const [offerCreated, setOfferCreated] = useState(false);
+
+  useEffect(() => {
+    const offerCreatedStorage = localStorage.getItem("offerCreated");
+    if (offerCreatedStorage === "true") {
+      localStorage.removeItem("offerCreated");
+      setOfferCreated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (offerCreated) {
+      toast.success("Applied to trip!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [offerCreated]);
+
   const id = localStorage.getItem("id");
   function handleSubmit(event: any) {
     event.preventDefault();
@@ -102,6 +131,8 @@ const ApplyTrip: React.FC = () => {
       })
       .then((response) => {
         if (response.status === 201) {
+          localStorage.setItem("offerCreated", "true");
+          router.push("/");
           console.log("Offer created successfully:", response.data);
         } else {
           console.log("Unexpected status code:", response.status);
@@ -110,7 +141,6 @@ const ApplyTrip: React.FC = () => {
       .catch((error) => {
         console.error("Error creating offer:", error);
       });
-    router.push("/");
   }
 
   return (
@@ -133,6 +163,7 @@ const ApplyTrip: React.FC = () => {
             Object #{accordion.id + 1}
           </label>
           <div className="collapse-content">
+            <ToastContainer />
             <div className="border-gray-200 dark:border-gray-700 border border-b-0 bg-white">
               <section className="dark:bg-gray-900 bg-white">
                 <div className="mx-auto max-w-2xl px-4 py-8 lg:py-16">
