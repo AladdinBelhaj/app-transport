@@ -4,6 +4,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import axios from "axios";
 import CurrentTrips from "../trips/current-trips/page";
+import { useRouter } from "next/navigation";
 interface Accordion {
   id: number;
 }
@@ -13,6 +14,7 @@ interface Input {
 }
 
 const ApplyTrip: React.FC = () => {
+  const router = useRouter();
   const [accordions, setAccordions] = useState<Accordion[]>([{ id: 0 }]);
   const [inputs, setInputs] = useState<Input[]>([
     {
@@ -100,19 +102,15 @@ const ApplyTrip: React.FC = () => {
       })
       .then((response) => {
         if (response.status === 201) {
-          // Handle success
           console.log("Offer created successfully:", response.data);
-          // Perform any additional actions after successful offer creation
         } else {
-          // Handle other status codes if needed
           console.log("Unexpected status code:", response.status);
         }
       })
       .catch((error) => {
-        // Handle error
         console.error("Error creating offer:", error);
-        // Optionally display an error message to the user
       });
+    router.push("/");
   }
 
   return (
