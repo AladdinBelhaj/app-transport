@@ -13,7 +13,7 @@ module.exports = app => {
 
    
     router.post("/create", offers.createOffer);
-
+    router.get("/:transporterId",offers.getOfferData);
 
 
     app.use('/api/offers', router);

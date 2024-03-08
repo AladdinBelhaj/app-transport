@@ -291,19 +291,19 @@ const Offers = () => {
 
         <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
           <div className="col-span-3 flex items-center">
-            <p className="font-medium">Product Name</p>
+            <p className="font-medium">Object Name</p>
           </div>
-          <div className="col-span-2 hidden items-center sm:flex">
-            <p className="font-medium">Category</p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="font-medium">Price</p>
+          <div className="col-span-1 hidden items-center sm:flex">
+            <p className="font-medium">Width</p>
           </div>
           <div className="col-span-1 flex items-center">
-            <p className="font-medium">Sold</p>
+            <p className="font-medium">Length</p>
           </div>
           <div className="col-span-1 flex items-center">
-            <p className="font-medium">Profit</p>
+            <p className="font-medium">Heigth</p>
+          </div>
+          <div className="col-span-1 flex items-center">
+            <p className="font-medium">Weight</p>
           </div>
         </div>
 
@@ -330,24 +330,29 @@ const Offers = () => {
                 </p>
               </div>
             </div>
-            <div className="col-span-2 hidden items-center sm:flex">
+            <div className="col-span-1 hidden items-center sm:flex">
               <p className="text-sm text-black dark:text-white">
-                {product.category}
+                {product.category} cm
               </p>
             </div>
             <div className="col-span-1 flex items-center">
               <p className="text-sm text-black dark:text-white">
-                ${product.price}
+                ${product.price} cm
               </p>
             </div>
             <div className="col-span-1 flex items-center">
               <p className="text-sm text-black dark:text-white">
-                {product.sold}
+                {product.sold} cm
               </p>
             </div>
             <div className="col-span-1 flex items-center">
+              <p className="text-sm text-black dark:text-white">
+                {product.sold} cm
+              </p>
+            </div>
+            {/* <div className="col-span-1 flex items-center">
               <p className="text-sm text-meta-3">${product.profit}</p>
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
