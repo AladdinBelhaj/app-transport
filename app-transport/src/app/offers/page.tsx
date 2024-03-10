@@ -689,10 +689,59 @@ const Offers = () => {
               </h4>
             </div>
 
-            {/* Render offer details */}
             <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-              {/* Render object details */}
+              <div className="col-span-3 flex items-center">
+                <p className="font-medium">Object</p>
+              </div>
+              <div className="col-span-1 hidden items-center sm:flex">
+                <p className="font-medium">Width</p>
+              </div>
+              <div className="col-span-1 flex items-center">
+                <p className="font-medium">Length</p>
+              </div>
+              <div className="col-span-1 flex items-center">
+                <p className="font-medium">Height</p>
+              </div>
+              <div className="col-span-1 flex items-center">
+                <p className="font-medium">Weight</p>
+              </div>
             </div>
+
+            {JSON.parse(offer.objects).map((object: any, index: number) => (
+              <div
+                className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
+                key={index}
+              >
+                {/* Render offer details */}
+                <div className="col-span-3 flex items-center">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <p className="text-sm text-black dark:text-white">
+                      {object[`name-${index}`]}
+                    </p>
+                  </div>
+                </div>
+                <div className="col-span-1 hidden items-center sm:flex">
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`width-${index}`]} cm
+                  </p>
+                </div>
+                <div className="col-span-1 flex items-center">
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`length-${index}`]} cm
+                  </p>
+                </div>
+                <div className="col-span-1 flex items-center">
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`height-${index}`]} cm
+                  </p>
+                </div>
+                <div className="col-span-1 flex items-center">
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`weight-${index}`]} kg
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         );
       })}
@@ -716,6 +765,51 @@ const Offers = () => {
         </div>
       )}
     </DefaultLayout>
+
+    // <DefaultLayout>
+    //   <Breadcrumb pageName="Current Offers" />
+    //   {offerData.map((offer: any, offerIndex: number) => {
+    //     const tripData = tripDataMap[offer.tripId];
+    //     const userData = userDataMap[offer.userId];
+    //     return (
+    //       <div
+    //         className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
+    //         key={offerIndex}
+    //       >
+    //         <div className="px-4 py-6 md:px-6 xl:px-7.5">
+    //           <h4 className="text-xl font-semibold text-black dark:text-white">
+    //             {tripData?.departCountry}{" "}
+    //             {userData ? `${userData.fullname}'s Products` : "Top Products"}
+    //           </h4>
+    //         </div>
+
+    //         {/* Render offer details */}
+    //         <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+    //           {/* Render object details */}
+    //         </div>
+    //       </div>
+    //     );
+    //   })}
+    //   {isModalOpen && (
+    //     <div
+    //       className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden"
+    //       style={{ zIndex: 9999 }}
+    //     >
+    //       <div
+    //         ref={modalRef}
+    //         className="fixed inset-0 bg-black bg-opacity-50"
+    //         onClick={closeModal}
+    //       ></div>
+    //       <div className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-transparent p-4 shadow-lg">
+    //         <img
+    //           src={selectedImage}
+    //           alt="Selected Product"
+    //           className="h-65 w-full object-contain"
+    //         />
+    //       </div>
+    //     </div>
+    //   )}
+    // </DefaultLayout>
   );
 };
 
