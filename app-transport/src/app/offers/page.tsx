@@ -682,11 +682,27 @@ const Offers = () => {
             className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
             key={offerIndex}
           >
-            <div className="px-4 py-6 md:px-6 xl:px-7.5">
-              <h4 className="text-xl font-semibold text-black dark:text-white">
-                {tripData?.departCountry}{" "}
-                {userData ? `${userData.fullname}'s Products` : "Top Products"}
-              </h4>
+            <div className="flex items-center justify-between px-4 py-6 md:px-6 xl:px-7.5">
+              <div>
+                <h4 className="text-xl font-semibold text-black dark:text-white">
+                  {tripData?.departCountry} to {tripData?.destCountry}
+                  <span className="text-sm font-light">
+                    {" "}
+                    (Weight Left: {tripData.maxWeight} kg)
+                  </span>
+                </h4>
+                <p className="text-sm font-normal">
+                  Offer by {userData?.fullname}
+                </p>
+              </div>
+              <div className="space-x-4">
+                <button className="rounded-md bg-green-500 px-4 py-2 text-white">
+                  Accept Offer
+                </button>
+                <button className="rounded-md bg-red-500 px-4 py-2 text-white">
+                  Reject Offer
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
