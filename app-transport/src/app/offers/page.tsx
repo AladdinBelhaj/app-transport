@@ -525,6 +525,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Link from "next/link";
 
 interface TripData {
   id: number;
@@ -543,6 +544,7 @@ interface TripData {
 }
 
 interface UserData {
+  id: string;
   fullname: string;
   phone: string;
   email: string;
@@ -688,11 +690,17 @@ const Offers = () => {
                   {tripData?.departCountry} to {tripData?.destCountry}
                   <span className="text-sm font-light">
                     {" "}
-                    (Weight Left: {tripData.maxWeight} kg)
+                    (Weight Left: {tripData?.maxWeight} kg)
                   </span>
                 </h4>
                 <p className="text-sm font-normal">
-                  Offer by {userData?.fullname}
+                  Offer by{" "}
+                  <Link
+                    href={`/profile/${userData?.id}`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    {userData?.fullname}
+                  </Link>
                 </p>
               </div>
               <div className="space-x-4">
