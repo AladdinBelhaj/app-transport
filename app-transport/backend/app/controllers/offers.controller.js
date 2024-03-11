@@ -37,3 +37,24 @@ exports.getOfferData = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+
+
+exports.deleteOffer = async (req, res) => {
+    try {
+        const offerId = req.params.offerId; 
+
+
+        const deletedCount = await Offers.destroy({
+            where: { id: offerId }
+        });
+
+        if (deletedCount === 0) {
+            return res.status(404).send({ message: "Offer not found." });
+        }
+
+        res.status(200).send({ message: "Offer deleted successfully!" });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
