@@ -15,6 +15,7 @@ module.exports = app => {
     router.post("/create", offers.createOffer);
     router.get("/:transporterId",offers.getOfferData);
     router.delete("/:offerId", offers.deleteOffer);
+    router.put("/:offerId", offers.updateOffer);
 
     app.use('/api/offers', router);
 };

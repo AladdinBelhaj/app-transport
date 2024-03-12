@@ -9,7 +9,8 @@ exports.createOffer = async (req, res) => {
             objects: req.body.objects,
             userId: req.body.userId,
             tripId: req.body.tripId,
-            transporterId: req.body.transporterId
+            transporterId: req.body.transporterId,
+            status: "pending"
         });
 
         res.status(201).send({ message: "Offer created successfully!", offer });
@@ -54,6 +55,48 @@ exports.deleteOffer = async (req, res) => {
         }
 
         res.status(200).send({ message: "Offer deleted successfully!" });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
+
+
+exports.updateOffer = async (req, res) => {
+    try {
+        const offerId = req.params.offerId;
+
+        const offer = await Offers.findOne({
+            where: { id: offerId }
+        });
+
+        if (!offer) {
+            return res.status(404).send({ message: "Offer not found." });
+        }
+
+        const updatedFields = {};
+        if (req.body.objects) {
+            updatedFields.objects = req.body.objects;
+        }
+        if (req.body.userId) {
+            updatedFields.userId = req.body.userId;
+        }
+        if (req.body.tripId) {
+            updatedFields.tripId = req.body.tripId;
+        }
+        if (req.body.transporterId) {
+            updatedFields.transporterId = req.body.transporterId;
+        }
+        if (req.body.status) {
+            updatedFields.status = req.body.status;
+        }
+
+        // Update offer data
+        await Offers.update(updatedFields, {
+            where: { id: offerId }
+        });
+
+        // Return a success message
+        res.status(200).send({ message: "Offer data updated successfully." });
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
