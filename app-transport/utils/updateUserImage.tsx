@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-
 interface UpdateUserImage {
   fullname?: string;
   phone?: string;
@@ -12,25 +11,22 @@ interface UpdateUserImage {
 }
 
 export const useUpdateUserImage = (): ((data: FormData) => Promise<void>) => {
-    const id = localStorage.getItem("id");
+  const id = localStorage.getItem("id");
 
   const updateUserImage = async (data: FormData) => {
     try {
-        console.log("data: ", data)
+      console.log("data: ", data);
       if (id) {
-
         const config: AxiosRequestConfig = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                // Add your other headers here if needed
-            },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         };
 
-        
         await axios.put(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/imageData/${id}`,
           data,
-          config
+          config,
         );
       } else {
         throw new Error("User ID is not available.");

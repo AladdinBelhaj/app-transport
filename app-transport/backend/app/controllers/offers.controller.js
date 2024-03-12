@@ -2,6 +2,44 @@ const db = require('../models/index');
 const Offers = db.offers; 
 const Op = db.Sequelize.Op;
 
+
+
+
+
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: async (req, file, cb) => {
+        cb(null, './app/uploads/offers')
+
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+
+exports.upload = multer({
+    storage: storage,
+    limits: { fileSize: '5242880' },
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png|gif/
+        const mimeType = fileTypes.test(file.mimetype)
+        const extname = fileTypes.test(path.extname(file.originalname))
+        if (mimeType && extname) {
+            return cb(null, true)
+
+        } else {
+            return cb('Give proper files formate to upload : jpeg|jpg|png|gif')
+        }
+    }
+}).single('picture')
+
+
+
+
+
 exports.createOffer = async (req, res) => {
     try {
         // Create a new offer in the database
@@ -99,5 +137,30 @@ exports.updateOffer = async (req, res) => {
         res.status(200).send({ message: "Offer data updated successfully." });
     } catch (err) {
         res.status(500).send({ message: err.message });
+    }
+};
+
+
+exports.uploadImage = async (req, res) => {
+    try {
+        const offerId = req.params.offerId;
+        const imageData = req.file.path;
+
+        const offer = await Offers.findOne({
+            where: { id: offerId }
+        });
+
+        if (!offer) {
+            return res.status(404).send({ message: 'Offer not found.' });
+        }
+
+        // Update the offer's picture field with the uploaded image data
+        await Offers.update({ picture: imageData }, {
+            where: { id: offerId }
+        });
+
+        res.status(200).send({ message: 'Image uploaded successfully.' });
+    } catch (error) {
+        res.status(500).send({ message: error.message });
     }
 };

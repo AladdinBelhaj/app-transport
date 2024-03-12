@@ -1031,6 +1031,21 @@ const Offers = () => {
                   {/* Render offer details */}
                   <div className="col-span-3 flex items-center">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                      <div
+                        className="h-15 w-17.5 cursor-pointer rounded-md"
+                        onClick={() =>
+                          openModal(
+                            `${process.env.NEXT_PUBLIC_BACKEND_URL}/${offer.picture}`,
+                          )
+                        }
+                      >
+                        <img
+                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${offer.picture}`}
+                          width={60}
+                          height={50}
+                          alt="Product"
+                        />
+                      </div>
                       <p className="text-sm text-black dark:text-white">
                         {object[`name-${index}`]}
                       </p>

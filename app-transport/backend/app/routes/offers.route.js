@@ -16,6 +16,9 @@ module.exports = app => {
     router.get("/:transporterId",offers.getOfferData);
     router.delete("/:offerId", offers.deleteOffer);
     router.put("/:offerId", offers.updateOffer);
+    router.put("/imageData/:offerId",offers.upload,offers.uploadImage)
+
+
 
     app.use('/api/offers', router);
 };
