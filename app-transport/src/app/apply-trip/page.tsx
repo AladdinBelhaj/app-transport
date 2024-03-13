@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
+import { useUpdateOfferImage } from "../../../utils/updateOfferImage";
+
 interface Accordion {
   id: number;
 }
@@ -142,6 +144,7 @@ const ApplyTrip: React.FC = () => {
         console.error("Error creating offer:", error);
       });
   }
+  const updateOfferImage = useUpdateOfferImage();
 
   return (
     <DefaultLayout>
@@ -316,6 +319,9 @@ const ApplyTrip: React.FC = () => {
                               id={`dropzone-file-${accordion.id}`}
                               type="file"
                               className="hidden"
+                              accept="image/*"
+                              name="picture"
+                              // onChange={handleInputImageChange}
                             />
                           </label>
                         </div>

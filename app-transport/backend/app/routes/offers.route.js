@@ -14,6 +14,7 @@ module.exports = app => {
    
     router.post("/create", offers.createOffer);
     router.get("/:transporterId",offers.getOfferData);
+    router.get("/users/:userId",offers.getOfferDataUser);
     router.delete("/:offerId", offers.deleteOffer);
     router.put("/:offerId", offers.updateOffer);
     router.put("/imageData/:offerId",offers.upload,offers.uploadImage)

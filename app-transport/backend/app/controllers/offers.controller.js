@@ -62,7 +62,6 @@ exports.getOfferData = async (req, res) => {
     try {
         const transporterId = req.params.transporterId; // Assuming the trip ID is passed as a parameter in the URL
 
-
         const offer = await Offers.findAll({
             where: { transporterId: transporterId },
         });
@@ -77,6 +76,24 @@ exports.getOfferData = async (req, res) => {
     }
 };
 
+
+exports.getOfferDataUser = async (req, res) => {
+    try {
+        const userId = req.params.userId; // Assuming the trip ID is passed as a parameter in the URL
+
+        const offer = await Offers.findAll({
+            where: { userId: userId },
+        });
+
+        if (!offer) {
+            return res.status(404).send({ message: "Offer not found." });
+        }
+
+        res.status(200).send(offer);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
 
 
 exports.deleteOffer = async (req, res) => {
