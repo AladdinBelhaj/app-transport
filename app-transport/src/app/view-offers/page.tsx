@@ -390,29 +390,24 @@ const ViewOffers = () => {
       )}
       {/* End Delete Modal */}
 
-      {offerData
-        .filter(
-          (offer: any) =>
-            offer.status !== "accepted" && offer.status !== "rejected",
-        )
-        .map((offer: any, offerIndex: number) => {
-          const tripData = tripDataMap[offer.tripId];
-          const userData = userDataMap[offer.userId];
-          return (
-            <div
-              className="dark:border-stroked mb-10 rounded-sm border border-stroke bg-white shadow-default"
-              key={offerIndex}
-            >
-              <div className="flex items-center justify-between px-4 py-6 md:px-6 xl:px-7.5">
-                <div>
-                  <h4 className="text-xl font-semibold text-black dark:text-white">
-                    {tripData?.departCountry} to {tripData?.destCountry}
-                    <span className="text-sm font-light">
-                      {" "}
-                      (Weight Left: {tripData?.maxWeight} kg)
-                    </span>
-                  </h4>
-                  {/* <p className="text-sm font-normal">
+      {offerData.map((offer: any, offerIndex: number) => {
+        const tripData = tripDataMap[offer.tripId];
+        const userData = userDataMap[offer.userId];
+        return (
+          <div
+            className="dark:border-stroked mb-10 rounded-sm border border-stroke bg-white shadow-default"
+            key={offerIndex}
+          >
+            <div className="flex items-center justify-between px-4 py-6 md:px-6 xl:px-7.5">
+              <div>
+                <h4 className="text-xl font-semibold text-black dark:text-white">
+                  {tripData?.departCountry} to {tripData?.destCountry}
+                  <span className="text-sm font-light">
+                    {" "}
+                    (Weight Left: {tripData?.maxWeight} kg)
+                  </span>
+                </h4>
+                {/* <p className="text-sm font-normal">
                     Offer by{" "}
                     <Link
                       href={`/profile/${userData?.id}`}
@@ -421,97 +416,97 @@ const ViewOffers = () => {
                       {userData?.fullname}
                     </Link>
                   </p> */}
-                </div>
               </div>
+            </div>
 
-              <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+            <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+              <div className="col-span-3 flex items-center">
+                <p className="font-medium">Object</p>
+              </div>
+              <div className="col-span-1 hidden items-center sm:flex">
+                <p className="font-medium">Width</p>
+              </div>
+              <div className="col-span-1 flex items-center">
+                <p className="font-medium">Length</p>
+              </div>
+              <div className="col-span-1 flex items-center">
+                <p className="font-medium">Height</p>
+              </div>
+              <div className="col-span-1 flex items-center">
+                <p className="font-medium">Weight</p>
+              </div>
+              <div className="col-span-1 flex items-center">
+                <p className="font-medium">Status</p>
+              </div>
+            </div>
+
+            {JSON.parse(offer.objects).map((object: any, index: number) => (
+              <div
+                className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
+                key={index}
+              >
+                {/* Render offer details */}
                 <div className="col-span-3 flex items-center">
-                  <p className="font-medium">Object</p>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div
+                      className="h-15 w-17.5 cursor-pointer rounded-md"
+                      onClick={() =>
+                        openModal(
+                          `${process.env.NEXT_PUBLIC_BACKEND_URL}/${offer.picture}`,
+                        )
+                      }
+                    >
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${offer.picture}`}
+                        width={60}
+                        height={50}
+                        alt="Product"
+                      />
+                    </div>
+                    <p className="text-sm text-black dark:text-white">
+                      {object[`name-${index}`]}
+                    </p>
+                  </div>
                 </div>
                 <div className="col-span-1 hidden items-center sm:flex">
-                  <p className="font-medium">Width</p>
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`width-${index}`]} cm
+                  </p>
                 </div>
                 <div className="col-span-1 flex items-center">
-                  <p className="font-medium">Length</p>
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`length-${index}`]} cm
+                  </p>
                 </div>
                 <div className="col-span-1 flex items-center">
-                  <p className="font-medium">Height</p>
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`height-${index}`]} cm
+                  </p>
                 </div>
                 <div className="col-span-1 flex items-center">
-                  <p className="font-medium">Weight</p>
+                  <p className="text-sm text-black dark:text-white">
+                    {object[`weight-${index}`]} kg
+                  </p>
                 </div>
                 <div className="col-span-1 flex items-center">
-                  <p className="font-medium">Status</p>
+                  <p
+                    className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
+                      offer.status === "accepted"
+                        ? "bg-success text-success"
+                        : offer.status === "rejected"
+                          ? "bg-danger text-danger"
+                          : "bg-warning text-warning"
+                    }`}
+                  >
+                    {offer.status}
+                  </p>
                 </div>
               </div>
-
-              {JSON.parse(offer.objects).map((object: any, index: number) => (
-                <div
-                  className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
-                  key={index}
-                >
-                  {/* Render offer details */}
-                  <div className="col-span-3 flex items-center">
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                      <div
-                        className="h-15 w-17.5 cursor-pointer rounded-md"
-                        onClick={() =>
-                          openModal(
-                            `${process.env.NEXT_PUBLIC_BACKEND_URL}/${offer.picture}`,
-                          )
-                        }
-                      >
-                        <img
-                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${offer.picture}`}
-                          width={60}
-                          height={50}
-                          alt="Product"
-                        />
-                      </div>
-                      <p className="text-sm text-black dark:text-white">
-                        {object[`name-${index}`]}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-span-1 hidden items-center sm:flex">
-                    <p className="text-sm text-black dark:text-white">
-                      {object[`width-${index}`]} cm
-                    </p>
-                  </div>
-                  <div className="col-span-1 flex items-center">
-                    <p className="text-sm text-black dark:text-white">
-                      {object[`length-${index}`]} cm
-                    </p>
-                  </div>
-                  <div className="col-span-1 flex items-center">
-                    <p className="text-sm text-black dark:text-white">
-                      {object[`height-${index}`]} cm
-                    </p>
-                  </div>
-                  <div className="col-span-1 flex items-center">
-                    <p className="text-sm text-black dark:text-white">
-                      {object[`weight-${index}`]} kg
-                    </p>
-                  </div>
-                  <div className="col-span-1 flex items-center">
-                    <p
-                      className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                        tripData?.status === "Accepted"
-                          ? "bg-success text-success"
-                          : tripData?.status === "Rejected"
-                            ? "bg-danger text-danger"
-                            : "bg-warning text-warning"
-                      }`}
-                    >
-                      {tripData?.status}
-                    </p>
-                  </div>
-                </div>
-                // </div>
-              ))}
-            </div>
-          );
-        })}
+              // </div>
+            ))}
+          </div>
+        );
+      })}
       {isModalOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden"

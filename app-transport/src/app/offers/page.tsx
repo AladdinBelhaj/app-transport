@@ -753,7 +753,7 @@ const Offers = () => {
 
       axios
         .put(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToAcceptId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToDeleteId}`,
           { status: "rejected" },
         )
         .then((response) => {
