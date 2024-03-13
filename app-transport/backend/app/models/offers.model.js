@@ -15,9 +15,9 @@ module.exports = (sequelize, Sequelize) => {
         status:{
             type: Sequelize.STRING
         },
-        picture: {
-            type: Sequelize.STRING
-        },
+        // picture: {
+        //     type: Sequelize.STRING
+        // },
     });
     return Offers;
 };

@@ -158,6 +158,31 @@ exports.updateOffer = async (req, res) => {
 };
 
 
+// exports.uploadImage = async (req, res) => {
+//     try {
+//         const offerId = req.params.offerId;
+//         const imageData = req.file.path;
+
+//         const offer = await Offers.findOne({
+//             where: { id: offerId }
+//         });
+
+//         if (!offer) {
+//             return res.status(404).send({ message: 'Offer not found.' });
+//         }
+
+//         // Update the offer's picture field with the uploaded image data
+//         await Offers.update({ objects: {picture: imageData }}, {
+//             where: { id: offerId }
+//         });
+
+//         res.status(200).send({ message: 'Image uploaded successfully.' });
+//     } catch (error) {
+//         res.status(500).send({ message: error.message });
+//     }
+// };
+
+
 exports.uploadImage = async (req, res) => {
     try {
         const offerId = req.params.offerId;
@@ -171,8 +196,17 @@ exports.uploadImage = async (req, res) => {
             return res.status(404).send({ message: 'Offer not found.' });
         }
 
-        // Update the offer's picture field with the uploaded image data
-        await Offers.update({ picture: imageData }, {
+        // Retrieve the existing objects JSON from the database
+        let existingObjects = offer.objects ? JSON.parse(offer.objects) : {};
+
+        // Append the picture field with the uploaded image data
+        existingObjects.picture = imageData;
+
+        // Convert the modified objects back to JSON
+        const updatedObjects = JSON.stringify(existingObjects);
+
+        // Update the offer's objects field with the modified objects JSON
+        await Offers.update({ objects: updatedObjects }, {
             where: { id: offerId }
         });
 

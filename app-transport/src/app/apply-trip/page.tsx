@@ -121,47 +121,22 @@ const ApplyTrip: React.FC = () => {
   }, [offerCreated]);
 
   const updateOfferImage = useUpdateOfferImage();
-
-  // const handleInputImageChange = (file: { target: { files: any } }) => {
-  //   const reader = new FileReader();
-  //   const { files } = file.target;
-  //   if (files && files.length !== 0) {
-  //     // reader.onload = () => setImgSrc(reader.result ||undfine)
-  //     reader.readAsDataURL(files[0]);
-  //     formDataToSend.append("picture", files[0]);
-  //     setFormData({ ...formData, picture: files[0] });
-  //     // updateOfferImage(formDataToSend);
-  //     // if (reader.result !== null) {
-  //     //     setInputValue(reader.result)
-  //     // }
-  //   }
-  // };
   const [formData, setFormData] = useState(new FormData());
 
   const handleInputImageChange = (file: { target: { files: any } }) => {
     const reader = new FileReader();
     const { files } = file.target;
     if (files && files.length !== 0) {
-      // Log the selected file
       console.log("Selected file:", files[0]);
 
-      // Read the selected file using FileReader
       reader.onload = () => {
-        // Log the result of FileReader
         console.log("FileReader result:", reader.result);
-
-        // Create a new FormData object
         const updatedFormData = new FormData();
-
-        // Append the image data to the FormData object
         updatedFormData.set("picture", files[0]);
         console.log(updatedFormData);
-
-        // Update state with the updated FormData object directly
         setFormData(updatedFormData);
       };
 
-      // Start reading the file
       reader.readAsDataURL(files[0]);
     }
   };
@@ -401,6 +376,7 @@ const ApplyTrip: React.FC = () => {
               ? "cursor-not-allowed bg-green-200"
               : "bg-green-500 hover:bg-green-600"
           }`}
+          // onClick={handleSubmit}
           onClick={handleSubmit}
           disabled={!isFormValid()} // Disable if form is not valid
         >
