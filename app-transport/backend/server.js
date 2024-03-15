@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+
 const db = require("./app/models/index");
 const setupRoutes = require("./app/routes/routesetup.route");
 const setupStaticRoutes = require("./app/routes/filespath.route");

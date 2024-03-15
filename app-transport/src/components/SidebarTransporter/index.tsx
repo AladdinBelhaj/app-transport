@@ -233,7 +233,7 @@ const SidebarTransporter = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           />
                         </svg>
                       </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
+
                       <div
                         className={`translate transform overflow-hidden ${
                           !open && "hidden"
@@ -253,11 +253,11 @@ const SidebarTransporter = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                         </ul>
                       </div>
-                      {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
                   );
                 }}
               </SidebarLinkGroup>
+              {/* <!-- Dropdown Menu End --> */}
               {/* <!-- Menu Item Trips --> */}
 
               {/* <!-- Menu Item Tables --> */}

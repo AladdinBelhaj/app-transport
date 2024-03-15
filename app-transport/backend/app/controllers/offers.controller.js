@@ -20,6 +20,22 @@ const storage = multer.diskStorage({
 })
 
 
+// exports.upload = multer({
+//     storage: storage,
+//     limits: { fileSize: '5242880' },
+//     fileFilter: (req, file, cb) => {
+//         const fileTypes = /jpeg|jpg|png|gif/
+//         const mimeType = fileTypes.test(file.mimetype)
+//         const extname = fileTypes.test(path.extname(file.originalname))
+//         if (mimeType && extname) {
+//             return cb(null, true)
+
+//         } else {
+//             return cb('Give proper files formate to upload : jpeg|jpg|png|gif')
+//         }
+//     }
+// }).single('picture')
+
 exports.upload = multer({
     storage: storage,
     limits: { fileSize: '5242880' },
@@ -34,7 +50,7 @@ exports.upload = multer({
             return cb('Give proper files formate to upload : jpeg|jpg|png|gif')
         }
     }
-}).single('picture')
+}).array('picture',5)
 
 
 
@@ -163,6 +179,7 @@ exports.updateOffer = async (req, res) => {
 //         const offerId = req.params.offerId;
 //         const imageData = req.file.path;
 
+//         // Find the offer by ID
 //         const offer = await Offers.findOne({
 //             where: { id: offerId }
 //         });
@@ -171,8 +188,8 @@ exports.updateOffer = async (req, res) => {
 //             return res.status(404).send({ message: 'Offer not found.' });
 //         }
 
-//         // Update the offer's picture field with the uploaded image data
-//         await Offers.update({ objects: {picture: imageData }}, {
+
+//         await Offers.update({ picture: imageData }, {
 //             where: { id: offerId }
 //         });
 
@@ -182,12 +199,12 @@ exports.updateOffer = async (req, res) => {
 //     }
 // };
 
-
 exports.uploadImage = async (req, res) => {
     try {
         const offerId = req.params.offerId;
-        const imageData = req.file.path;
+        const imagePaths = req.files.map(file => file.path);
 
+        // Find the offer by ID
         const offer = await Offers.findOne({
             where: { id: offerId }
         });
@@ -196,21 +213,12 @@ exports.uploadImage = async (req, res) => {
             return res.status(404).send({ message: 'Offer not found.' });
         }
 
-        // Retrieve the existing objects JSON from the database
-        let existingObjects = offer.objects ? JSON.parse(offer.objects) : {};
-
-        // Append the picture field with the uploaded image data
-        existingObjects.picture = imageData;
-
-        // Convert the modified objects back to JSON
-        const updatedObjects = JSON.stringify(existingObjects);
-
-        // Update the offer's objects field with the modified objects JSON
-        await Offers.update({ objects: updatedObjects }, {
+        // Update the offer with multiple image paths
+        await Offers.update({ picture: imagePaths }, {
             where: { id: offerId }
         });
 
-        res.status(200).send({ message: 'Image uploaded successfully.' });
+        res.status(200).send({ message: 'Images uploaded successfully.' });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

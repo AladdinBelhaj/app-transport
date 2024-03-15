@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const Offers = sequelize.define("offers", {
         objects: {
-            type: Sequelize.JSON // Using JSON data type for objects
+            type: Sequelize.JSON
         },
         userId:{
             type: Sequelize.STRING
@@ -15,9 +15,9 @@ module.exports = (sequelize, Sequelize) => {
         status:{
             type: Sequelize.STRING
         },
-        // picture: {
-        //     type: Sequelize.STRING
-        // },
+        picture:{
+            type: Sequelize.JSON
+        },
     });
     return Offers;
 };
