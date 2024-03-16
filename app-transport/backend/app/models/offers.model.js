@@ -18,6 +18,9 @@ module.exports = (sequelize, Sequelize) => {
         picture:{
             type: Sequelize.JSON
         },
+        pictureIds:{
+            type: Sequelize.ARRAY
+        },
     });
     return Offers;
 };
