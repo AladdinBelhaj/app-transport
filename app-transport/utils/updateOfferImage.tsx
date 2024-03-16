@@ -7,7 +7,11 @@ export const useUpdateOfferImage = (): ((
   const updateOfferImage = async (offerId: string, data: FormData) => {
     try {
       console.log("data: ", data);
-      const config: AxiosRequestConfig = {};
+      const config: AxiosRequestConfig = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
 
       await axios.put(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/imageData/${offerId}`,

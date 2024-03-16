@@ -518,20 +518,42 @@ const ApplyTrip: React.FC = () => {
   const updateOfferImage = useUpdateOfferImage();
   const [formData, setFormData] = useState(new FormData());
 
-  const handleInputImageChange = (file: { target: { files: any } }) => {
+  // const handleInputImageChange = (
+  //   file: { target: { files: any } },
+  //   accordionId: number,
+  // ) => {
+  //   const reader = new FileReader();
+  //   const { files } = file.target;
+  //   if (files && files.length !== 0) {
+  //     console.log("Selected file:", files[0]);
+
+  //     reader.onload = () => {
+  //       console.log("FileReader result:", reader.result);
+  //       formData.append(`picture`, files[0]);
+  //     };
+  //     console.log(formData);
+  //     reader.readAsDataURL(files[0]);
+  //   }
+  // };
+  const [uploadedImages, setUploadedImages] = useState<number[]>([]);
+  const handleInputImageChange = (
+    file: { target: { files: any } },
+    accordionId: number,
+  ) => {
     const reader = new FileReader();
     const { files } = file.target;
     if (files && files.length !== 0) {
       console.log("Selected file:", files[0]);
-
+      setUploadedImages((prevIds) => [...prevIds, accordionId]);
       reader.onload = () => {
         console.log("FileReader result:", reader.result);
-        formData.append("picture", files[0]);
+        formData.append(`picture`, files[0]);
       };
-
+      console.log(uploadedImages);
       reader.readAsDataURL(files[0]);
     }
   };
+
   const id = localStorage.getItem("id");
   function handleSubmit(event: any) {
     event.preventDefault();
@@ -547,6 +569,17 @@ const ApplyTrip: React.FC = () => {
         if (response.status === 201) {
           console.log("Offer created successfully:", response.data);
           updateOfferImage(response.data.offer.id, formData);
+          axios
+            .put(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${response.data.offer.id}`,
+              { pictureIds: uploadedImages },
+            )
+            .then((response) => {
+              console.log("IDs added successfully");
+            })
+            .catch((error) => {
+              console.error("Error adding ID:", error);
+            });
         } else {
           console.log("Unexpected status code:", response.status);
         }
@@ -731,7 +764,9 @@ const ApplyTrip: React.FC = () => {
                               className="hidden"
                               accept="image/*"
                               name="picture"
-                              onChange={(e) => handleInputImageChange(e)}
+                              onChange={(e) =>
+                                handleInputImageChange(e, accordion.id)
+                              }
                             />
                           </label>
                         </div>

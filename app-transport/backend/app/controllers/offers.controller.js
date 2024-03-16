@@ -160,7 +160,9 @@ exports.updateOffer = async (req, res) => {
         if (req.body.status) {
             updatedFields.status = req.body.status;
         }
-
+        if (req.body.pictureIds) {
+            updatedFields.pictureIds = req.body.pictureIds;
+        }
         // Update offer data
         await Offers.update(updatedFields, {
             where: { id: offerId }
@@ -174,36 +176,11 @@ exports.updateOffer = async (req, res) => {
 };
 
 
-// exports.uploadImage = async (req, res) => {
-//     try {
-//         const offerId = req.params.offerId;
-//         const imageData = req.file.path;
-
-//         // Find the offer by ID
-//         const offer = await Offers.findOne({
-//             where: { id: offerId }
-//         });
-
-//         if (!offer) {
-//             return res.status(404).send({ message: 'Offer not found.' });
-//         }
-
-
-//         await Offers.update({ picture: imageData }, {
-//             where: { id: offerId }
-//         });
-
-//         res.status(200).send({ message: 'Image uploaded successfully.' });
-//     } catch (error) {
-//         res.status(500).send({ message: error.message });
-//     }
-// };
 
 exports.uploadImage = async (req, res) => {
     try {
         const offerId = req.params.offerId;
         const imagePaths = req.files.map(file => file.path);
-
         // Find the offer by ID
         const offer = await Offers.findOne({
             where: { id: offerId }
@@ -213,12 +190,12 @@ exports.uploadImage = async (req, res) => {
             return res.status(404).send({ message: 'Offer not found.' });
         }
 
-        // Update the offer with multiple image paths
+        // Update the offer with the image path and accordion ID
         await Offers.update({ picture: imagePaths }, {
             where: { id: offerId }
         });
 
-        res.status(200).send({ message: 'Images uploaded successfully.' });
+        res.status(200).send({ message: 'Image uploaded successfully.' });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
