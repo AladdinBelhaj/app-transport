@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.JSON
         },
         pictureIds:{
-            type: Sequelize.ARRAY
+            type: Sequelize.JSON
         },
     });
     return Offers;
