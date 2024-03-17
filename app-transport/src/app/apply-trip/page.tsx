@@ -518,23 +518,6 @@ const ApplyTrip: React.FC = () => {
   const updateOfferImage = useUpdateOfferImage();
   const [formData, setFormData] = useState(new FormData());
 
-  // const handleInputImageChange = (
-  //   file: { target: { files: any } },
-  //   accordionId: number,
-  // ) => {
-  //   const reader = new FileReader();
-  //   const { files } = file.target;
-  //   if (files && files.length !== 0) {
-  //     console.log("Selected file:", files[0]);
-
-  //     reader.onload = () => {
-  //       console.log("FileReader result:", reader.result);
-  //       formData.append(`picture`, files[0]);
-  //     };
-  //     console.log(formData);
-  //     reader.readAsDataURL(files[0]);
-  //   }
-  // };
   const [uploadedImages, setUploadedImages] = useState<number[]>([]);
   const handleInputImageChange = (
     file: { target: { files: any } },
@@ -556,6 +539,9 @@ const ApplyTrip: React.FC = () => {
 
   const id = localStorage.getItem("id");
   function handleSubmit(event: any) {
+    const totalWeight = inputs.reduce((acc, input, index) => {
+      return acc + parseFloat(input[`weight-${index}`] || "0");
+    }, 0);
     event.preventDefault();
     console.log(inputs);
     axios
@@ -564,6 +550,7 @@ const ApplyTrip: React.FC = () => {
         objects: inputs,
         tripId: tripId,
         transporterId: transporterId,
+        totalWeight: totalWeight,
       })
       .then((response) => {
         if (response.status === 201) {

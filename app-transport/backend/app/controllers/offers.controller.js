@@ -64,6 +64,7 @@ exports.createOffer = async (req, res) => {
             userId: req.body.userId,
             tripId: req.body.tripId,
             transporterId: req.body.transporterId,
+            totalWeight: req.body.totalWeight,
             status: "pending"
         });
 
