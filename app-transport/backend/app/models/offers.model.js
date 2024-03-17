@@ -15,6 +15,9 @@ module.exports = (sequelize, Sequelize) => {
         status:{
             type: Sequelize.STRING
         },
+       totalWeight:{
+            type: Sequelize.NUMBER
+        },
         picture:{
             type: Sequelize.JSON
         },

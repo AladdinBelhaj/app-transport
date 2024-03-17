@@ -464,9 +464,8 @@ const ViewOffers = () => {
         const userData = userDataMap[offer.userId];
         const pictures = JSON.parse(offer.picture);
         const pictureIds = JSON.parse(offer.pictureIds);
+        let totalWeight = 0;
 
-        // console.log("pictures:", pictures);
-        // console.log("pictureIds:", pictureIds);
         return (
           <div
             className="dark:border-stroked mb-10 rounded-sm border border-stroke bg-white shadow-default"
@@ -481,15 +480,20 @@ const ViewOffers = () => {
                     (Weight Left: {tripData?.maxWeight} kg)
                   </span>
                 </h4>
-                {/* <p className="text-sm font-normal">
-                    Offer by{" "}
-                    <Link
-                      href={`/profile/${userData?.id}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {userData?.fullname}
-                    </Link>
-                  </p> */}
+
+                <div className="col-span-1 flex items-center">
+                  <p
+                    className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
+                      offer.status === "accepted"
+                        ? "bg-success text-success"
+                        : offer.status === "rejected"
+                          ? "bg-danger text-danger"
+                          : "bg-warning text-warning"
+                    }`}
+                  >
+                    {offer.status}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -509,14 +513,15 @@ const ViewOffers = () => {
               <div className="col-span-1 flex items-center">
                 <p className="font-medium">Weight</p>
               </div>
-              <div className="col-span-1 flex items-center">
+              {/* <div className="col-span-1 flex items-center">
                 <p className="font-medium">Status</p>
-              </div>
+              </div> */}
             </div>
 
             {JSON.parse(offer.objects).map((object: any, index: number) => {
               const pictureIndex = pictureIds.indexOf(index);
-
+              const weight = parseFloat(object[`weight-${index}`]);
+              totalWeight += weight; // Add object weight to total weight
               return (
                 <div
                   className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
@@ -567,17 +572,9 @@ const ViewOffers = () => {
                       {object[`weight-${index}`]} kg
                     </p>
                   </div>
-                  <div className="col-span-1 flex items-center">
-                    <p
-                      className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                        offer.status === "accepted"
-                          ? "bg-success text-success"
-                          : offer.status === "rejected"
-                            ? "bg-danger text-danger"
-                            : "bg-warning text-warning"
-                      }`}
-                    >
-                      {offer.status}
+                  <div className="px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+                    <p className="font-medium">
+                      Total Weight: {totalWeight} kg
                     </p>
                   </div>
                 </div>
