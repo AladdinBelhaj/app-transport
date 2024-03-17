@@ -988,7 +988,10 @@ const Offers = () => {
                       className="text-blue-500 hover:underline"
                     >
                       {userData?.fullname}
-                    </Link>
+                    </Link>{" "}
+                  </p>
+                  <p className="text-sm font-light">
+                    Total Weight: {offer.totalWeight} kg
                   </p>
                 </div>
                 <div className="space-x-4">
