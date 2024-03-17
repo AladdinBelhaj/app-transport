@@ -472,14 +472,34 @@ const Offers = () => {
                   <span className="text-sm font-light">
                     Total Weight: {offer.totalWeight} kg
                   </span>
+                  {+offer.totalWeight > +tripData?.maxWeight && (
+                    <div className="mt-2 flex items-center text-red-600">
+                      <svg
+                        className="mr-1 h-5 w-5 fill-current"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Warning: Offer weight exceeds trip weight!
+                    </div>
+                  )}
                 </div>
                 <div className="space-x-4">
                   <button
                     onClick={() => openAcceptModal(offer.id)}
-                    className="rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-700"
+                    className={`rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-700 ${+tripData?.maxWeight < +offer.totalWeight ? "cursor-not-allowed opacity-40" : ""}`}
+                    disabled={+tripData?.maxWeight < +offer.totalWeight}
                   >
                     Accept Offer
                   </button>
+
                   <button
                     onClick={() => openDeleteModal(offer.id)}
                     className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-700"

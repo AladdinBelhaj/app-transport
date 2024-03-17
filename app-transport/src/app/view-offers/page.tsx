@@ -494,6 +494,9 @@ const ViewOffers = () => {
                     {offer.status}
                   </p>
                 </div>
+                <span className="text-sm font-light">
+                  Total Weight: {offer.totalWeight} kg
+                </span>
               </div>
             </div>
 
@@ -570,11 +573,6 @@ const ViewOffers = () => {
                   <div className="col-span-1 flex items-center">
                     <p className="text-sm text-black dark:text-white">
                       {object[`weight-${index}`]} kg
-                    </p>
-                  </div>
-                  <div className="px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-                    <p className="font-medium">
-                      Total Weight: {totalWeight} kg
                     </p>
                   </div>
                 </div>
