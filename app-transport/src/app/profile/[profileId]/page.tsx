@@ -79,7 +79,7 @@ interface ProfileData {
 const Profile = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const id = pathname.split("/")[2]; // Assuming the path is '/profile/1', split by '/' and get the third element which is the ID
+  const id = pathname.split("/")[2];
   console.log(id);
   const [profileData, setProfileData] = useState<ProfileData | null>(null); // Explicitly type profileData
 

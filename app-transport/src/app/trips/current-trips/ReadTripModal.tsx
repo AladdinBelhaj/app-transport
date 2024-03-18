@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import UpdateTripModal from "./UpdateTripModal";
+import { useRouter } from "next/navigation";
 
 interface Trip {
   id: number;
@@ -42,6 +43,12 @@ const ReadTripModal: React.FC<ModalProps> = ({
   const openUpdateModal = () => {
     setUpdateIsModalOpen(true);
   };
+
+  const router = useRouter();
+  const viewOffers = () => {
+    router.push(`/offers/${selectedTrip?.id}`);
+  };
+
   return (
     <div>
       {/* Main modal */}
@@ -133,9 +140,11 @@ const ReadTripModal: React.FC<ModalProps> = ({
                   >
                     Start Trip
                   </button> */}
+
                   <button
                     type="button"
-                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-yellow-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-yellow-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    onClick={viewOffers}
                   >
                     <svg
                       aria-hidden="true"
@@ -143,18 +152,39 @@ const ReadTripModal: React.FC<ModalProps> = ({
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      ></path>
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 16v-5.5A3.5 3.5 0 0 0 7.5 7m3.5 9H4v-5.5A3.5 3.5 0 0 1 7.5 7m3.5 9v4M7.5 7H14m0 0V4h2.5M14 7v3m-3.5 6H20v-6a3 3 0 0 0-3-3m-2 9v4m-8-6.5h1"
+                      />
                     </svg>
-                    Start Trip
+                    View Offers
                   </button>
                 </div>
+                <button
+                  type="button"
+                  className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="-ml-1 mr-1 inline-block h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    ></path>
+                  </svg>
+                  Start Trip
+                </button>
                 {/* <button
                   type="button"
                   className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
