@@ -52,7 +52,7 @@ const ViewOffers = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/users/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${id}`)
       .then((response) => {
         setOfferData(response.data);
         const tripIds = response.data.map((offer: any) => offer.tripId);
