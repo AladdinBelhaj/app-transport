@@ -53,7 +53,6 @@
 // })
 
 
-// Import necessary modules
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -62,11 +61,11 @@ const http = require("http"); // Require HTTP module for socket.io
 const socketIo = require("socket.io"); // Require socket.io module
 
 // Configure CORS
-const corsOptions = {
-    origin: "*"
-};
-app.use(cors(corsOptions));
-
+// const corsOptions = {
+//     origin: "*"
+// };
+// app.use(cors(corsOptions));
+app.use(cors({ origin: 'http://localhost:3000' }));
 // Configure middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -82,8 +81,13 @@ const stripe = require("./app/routes/stripe.route");
 const server = http.createServer(app);
 
 // Initialize socket.io
-const io = socketIo(server);
 
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 // Handle socket connections
 io.on("connection", (socket) => {
     console.log("A user connected"); // Log when a user connects
