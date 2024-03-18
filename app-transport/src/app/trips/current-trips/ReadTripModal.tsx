@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UpdateTripModal from "./UpdateTripModal";
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
 interface Trip {
   id: number;
   departCountry: string;
@@ -47,6 +47,24 @@ const ReadTripModal: React.FC<ModalProps> = ({
   const router = useRouter();
   const viewOffers = () => {
     router.push(`/offers/${selectedTrip?.id}`);
+  };
+
+  const handleStart = (event: React.FormEvent) => {
+    closeModal();
+    if (selectedTrip != null) {
+      selectedTrip.status = "ongoing";
+    }
+    console.log(selectedTrip);
+    console.log(selectedTrip?.id);
+    axios
+      .put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
+        selectedTrip,
+      )
+      .then((response) => {})
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -167,6 +185,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                 <button
                   type="button"
                   className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                  onClick={handleStart}
                 >
                   <svg
                     aria-hidden="true"

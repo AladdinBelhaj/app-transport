@@ -96,7 +96,9 @@ exports.updateTripData = async (req, res) => {
         if(req.body.desState){
             updatedFields.desState = req.body.desState;
         }
-
+        if(req.body.status){
+            updatedFields.status = req.body.status;
+        }
         if(req.body.arrivDate){
             updatedFields.arrivDate = req.body.arrivDate;
         }

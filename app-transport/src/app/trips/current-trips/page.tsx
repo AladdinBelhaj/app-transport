@@ -186,7 +186,7 @@ const CurrentTrips = () => {
                       <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                         <p
                           className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                            trip.status === "Paid"
+                            trip.status === "ongoing"
                               ? "bg-success text-success"
                               : trip.maxWeight === "Pending"
                                 ? "bg-danger text-danger"
@@ -321,7 +321,7 @@ const CurrentTrips = () => {
                   </button>
                   <button
                     type="submit"
-                    className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
+                    className="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
                     onClick={handleDelete}
                   >
                     <svg
