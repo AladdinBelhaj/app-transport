@@ -128,40 +128,72 @@ const ReadTripModal: React.FC<ModalProps> = ({
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3 sm:space-x-4">
-                  <button
-                    type="button"
-                    className="inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
-                    onClick={() => {
-                      handleCloseModal();
-                      openUpdateModal();
-                    }}
-                  >
-                    <svg
-                      aria-hidden="true"
-                      className="-ml-1 mr-1 h-5 w-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
+                  {selectedTrip?.status === "ongoing" ? (
+                    <button
+                      type="button"
+                      className="inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
                     >
-                      <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                      <path
-                        fillRule="evenodd"
-                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Edit Trip
-                  </button>
-                  {/* <button
-                    type="button"
-                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
-                  >
-                    Start Trip
-                  </button> */}
-
+                      {/* <svg
+                        aria-hidden="true"
+                        className="-ml-1 mr-1 h-5 w-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                          clipRule="evenodd"
+                        />
+                      </svg> */}
+                      <svg
+                        aria-hidden="true"
+                        className="-ml-1 mr-1 h-5 w-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"
+                        />
+                      </svg>
+                      Delegate Objects
+                    </button>
+                  ) : (
+                    <div className="flex items-center space-x-3 sm:space-x-4">
+                      <button
+                        type="button"
+                        className="inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
+                        onClick={() => {
+                          handleCloseModal();
+                          openUpdateModal();
+                        }}
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="-ml-1 mr-1 h-5 w-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Edit Trip
+                      </button>
+                    </div>
+                  )}
                   <button
                     type="button"
-                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-yellow-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-yellow-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-yellow-300 px-5 py-2.5  text-sm font-medium text-white hover:bg-yellow-500 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
                     onClick={viewOffers}
                   >
                     <svg
@@ -173,56 +205,78 @@ const ReadTripModal: React.FC<ModalProps> = ({
                     >
                       <path
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M11 16v-5.5A3.5 3.5 0 0 0 7.5 7m3.5 9H4v-5.5A3.5 3.5 0 0 1 7.5 7m3.5 9v4M7.5 7H14m0 0V4h2.5M14 7v3m-3.5 6H20v-6a3 3 0 0 0-3-3m-2 9v4m-8-6.5h1"
                       />
                     </svg>
                     View Offers
                   </button>
                 </div>
-                <button
-                  type="button"
-                  className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
-                  onClick={handleStart}
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="-ml-1 mr-1 inline-block h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                {selectedTrip?.status == "ongoing" ? (
+                  <button
+                    type="button"
+                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-red-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-red-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    // onClick={handleStart}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    ></path>
-                  </svg>
-                  Start Trip
-                </button>
-                {/* <button
-                  type="button"
-                  className="bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="-ml-1 mr-1.5 h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
+                    {/* <svg
+                      aria-hidden="true"
+                      className="-ml-1 mr-1 inline-block h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      ></path>
+                    </svg> */}
+                    <svg
+                      aria-hidden="true"
+                      className="-ml-1 mr-1 inline-block h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                    End Trip
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    onClick={handleStart}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0v-6zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Delete
-                </button> */}
+                    <svg
+                      aria-hidden="true"
+                      className="-ml-1 mr-1 inline-block h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      ></path>
+                    </svg>
+                    Start Trip
+                  </button>
+                )}
               </div>
             </div>
           </div>
