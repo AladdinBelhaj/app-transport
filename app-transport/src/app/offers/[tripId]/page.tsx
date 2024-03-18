@@ -5,7 +5,7 @@ import axios from "axios";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useRouter, usePathname } from "next/navigation";
-
+import Link from "next/link";
 interface TripData {
   id: number;
   departCountry: string;
@@ -159,7 +159,7 @@ const ViewOffers = () => {
   );
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Current Offers" />
+      <Breadcrumb pageName="Accepted Offers" />
       {filteredOffers.map((offer: any, offerIndex: number) => {
         const tripData = tripDataMap[offer.tripId];
         const userData = userDataMap[offer.userId];
@@ -182,7 +182,7 @@ const ViewOffers = () => {
                   </span>
                 </h4>
 
-                <div className="col-span-1 flex items-center">
+                {/* <div className="col-span-1 flex items-center">
                   <p
                     className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
                       offer.status === "accepted"
@@ -194,7 +194,16 @@ const ViewOffers = () => {
                   >
                     {offer.status}
                   </p>
-                </div>
+                </div> */}
+                <p className="text-sm font-normal">
+                  Offer by{" "}
+                  <Link
+                    href={`/profile/${userData?.id}`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    {userData?.fullname}
+                  </Link>{" "}
+                </p>
                 <span className="text-sm font-light">
                   Total Weight: {offer.totalWeight} kg
                 </span>
@@ -217,9 +226,6 @@ const ViewOffers = () => {
               <div className="col-span-1 flex items-center">
                 <p className="font-medium">Weight</p>
               </div>
-              {/* <div className="col-span-1 flex items-center">
-                <p className="font-medium">Status</p>
-              </div> */}
             </div>
 
             {JSON.parse(offer.objects).map((object: any, index: number) => {

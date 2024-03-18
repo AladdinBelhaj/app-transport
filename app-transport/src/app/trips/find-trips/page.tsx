@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { useAllTripsData } from "../../../utils/getTripsData";
-import { fetchTransporterData } from "../../../utils/fetchTransporterData";
+import { useAllTripsData } from "../../../../utils/getTripsData";
+import { fetchTransporterData } from "../../../../utils/fetchTransporterData";
 import Link from "next/link";
 import Filter from "./Filter";
 import ReadTripModal from "./ReadTripModal";
