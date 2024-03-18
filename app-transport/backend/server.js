@@ -1,57 +1,111 @@
+// const express = require("express");
+// const cors = require("cors");
+// const app = express();
+// const bodyParser = require("body-parser");
+// const initial = require("./app/initial/role.initial")
+// const stripe = require("./app/routes/stripe.route");
+
+// var corsOptions = {
+//     origin: "*"
+// };
+
+
+// app.use(cors(corsOptions));
+
+// app.use(express.json());
+
+// app.use(express.urlencoded({ extended: true }));
+
+// app.use(bodyParser.json());
+
+
+
+// const db = require("./app/models/index");
+// const setupRoutes = require("./app/routes/routesetup.route");
+// const setupStaticRoutes = require("./app/routes/filespath.route");
+// // db.sequelize.sync()
+
+
+// // db.sequelize.sync({ force: true }).then(() => {
+// //     console.log("Drop and re-sync db.");
+// // initial();
+// //   });
+
+// // db.sequelize.sync({ alter: true }).then(() => {
+// //     console.log("Drop and re-sync db.");
+// //     initial();
+// // });
+
+// app.get('/', (req, res) => {
+//     res.send('Hello Express');
+// });
+
+// setupRoutes(app);
+// setupStaticRoutes(app);
+// app.use("/api/stripe", stripe);
+
+
+
+// const PORT = process.env.PORT || 8080;
+
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`)
+// })
+
+
+// Import necessary modules
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
-const initial = require("./app/initial/role.initial")
-const stripe = require("./app/routes/stripe.route");
+const http = require("http"); // Require HTTP module for socket.io
+const socketIo = require("socket.io"); // Require socket.io module
 
-var corsOptions = {
+// Configure CORS
+const corsOptions = {
     origin: "*"
 };
-
-
 app.use(cors(corsOptions));
 
+// Configure middleware
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
-
 app.use(bodyParser.json());
 
-
-
+// Import database and routes setup
 const db = require("./app/models/index");
 const setupRoutes = require("./app/routes/routesetup.route");
 const setupStaticRoutes = require("./app/routes/filespath.route");
-// db.sequelize.sync()
+const stripe = require("./app/routes/stripe.route");
 
+// Create HTTP server
+const server = http.createServer(app);
 
-// db.sequelize.sync({ force: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-// initial();
-//   });
+// Initialize socket.io
+const io = socketIo(server);
 
-// db.sequelize.sync({ alter: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-//     initial();
-// });
+// Handle socket connections
+io.on("connection", (socket) => {
+    console.log("A user connected"); // Log when a user connects
 
+    // Example: Send a notification to the client
+    socket.emit("notification", "Welcome to the socket server");
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected");
+    });
+});
+
+// Setup routes
 app.get('/', (req, res) => {
     res.send('Hello Express');
 });
-
 setupRoutes(app);
 setupStaticRoutes(app);
 app.use("/api/stripe", stripe);
 
-
-
+// Set up server to listen on specified port
 const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
-
-
-
-
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

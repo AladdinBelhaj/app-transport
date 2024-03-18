@@ -20,6 +20,7 @@
     "mysql2": "^3.9.1",
     "nodemailer": "^6.9.9",
     "sequelizer": "^1.1.4",
+    "socket.io": "^4.7.5",
     "stripe": "^14.16.0"
   },
   "devDependencies": {
