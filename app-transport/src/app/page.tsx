@@ -14,16 +14,12 @@ import io from "socket.io-client";
 
 export default function Home() {
   useEffect(() => {
-    // Connect to the socket server
-    const socket = io("http://localhost:8080"); // Replace 'http://localhost:8080' with your server's address
+    const socket = io("http://localhost:8080");
 
-    // Listen for socket events
     socket.on("notification", (message) => {
       console.log("Received notification:", message);
-      // Handle the notification as needed
     });
 
-    // Disconnect from the socket server when component unmounts
     return () => {
       socket.disconnect();
     };
