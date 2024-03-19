@@ -1,8 +1,32 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-
+import axios from "axios";
 const Chat = () => {
+  const [userChats, setUserChats] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const userId = localStorage.getItem("id");
+
+  useEffect(() => {
+    const fetchUserChats = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/${userId}`,
+        );
+        setUserChats(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserChats();
+  }, []);
+
+  console.log("USER CHATS: ", userChats);
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Chat" />
