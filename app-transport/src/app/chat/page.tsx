@@ -1,11 +1,20 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import axios from "axios";
+
+interface Chat {
+  id: number;
+  members: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const Chat = () => {
-  const [userChats, setUserChats] = useState([]);
+  const [userChats, setUserChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [usersData, setUsersData] = useState<any[]>([]); // Declare usersData state variable
 
   const userId = localStorage.getItem("id");
 
@@ -23,9 +32,35 @@ const Chat = () => {
     };
 
     fetchUserChats();
-  }, []);
+  }, [userId]); // Include userId in the dependency array to trigger a re-fetch when userId changes
 
-  console.log("USER CHATS: ", userChats);
+  useEffect(() => {
+    const fetchOtherUsersData = async () => {
+      if (!userChats.length) return; // Ensure userChats has data before proceeding
+
+      try {
+        const otherUserIds = userChats
+          .flatMap((chat) => chat.members.split(","))
+          .filter((id) => id !== userId);
+
+        const usersDataPromises = otherUserIds.map((id) =>
+          axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${id}`),
+        );
+
+        const usersDataResponses = await Promise.all(usersDataPromises);
+
+        const usersData = usersDataResponses.map((response) => response.data);
+
+        setUsersData(usersData); // Set usersData state variable
+
+        console.log("Users data:", usersData);
+      } catch (error) {
+        console.error("Error fetching other users data:", error);
+      }
+    };
+
+    fetchOtherUsersData();
+  }, [userChats, userId]); // Include userChats and userId in the dependency array to trigger a re-fetch when they change
 
   return (
     <DefaultLayout>
@@ -92,135 +127,42 @@ const Chat = () => {
               </div>
               <div className="mt-5">
                 <div className="text-gray-400 text-xs font-semibold uppercase">
-                  Team
+                  Users
                 </div>
               </div>
               <div className="mt-2">
                 <div className="-mx-4 flex flex-col">
-                  <div className="relative flex flex-row items-center p-4">
-                    <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
-                      5 min
-                    </div>
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="text-sm font-medium">Cuberto</div>
-                      <div className="w-40 truncate text-xs">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Debitis, doloribus?
+                  {usersData.map((user) => (
+                    <div
+                      key={user.id}
+                      className="relative flex flex-row items-center p-4"
+                    >
+                      <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
+                        5 min
+                      </div>
+                      <img src={user.picture} alt="" />{" "}
+                      {/* Assuming user.picture contains the image URL */}
+                      <div className="ml-3 flex flex-grow flex-col">
+                        <div className="text-sm font-medium">
+                          {user.fullname} {/* Render user's fullname */}
+                        </div>
+                        {/* Render last message example */}
+                        <div className="w-40 truncate text-xs">
+                          Last Message Example
+                        </div>
+                      </div>
+                      {/* Render the count of unread messages */}
+                      <div className="mb-1 ml-2 flex-shrink-0 self-end">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                          5
+                        </span>
                       </div>
                     </div>
-                    <div className="mb-1 ml-2 flex-shrink-0 self-end">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                        5
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-row items-center border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent p-4">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="flex items-center">
-                        <div className="text-sm font-medium">UI Art Design</div>
-                        <div className="ml-2 h-2 w-2 rounded-full bg-green-500" />
-                      </div>
-                      <div className="w-40 truncate text-xs">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Debitis, doloribus?
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-5">
-                <div className="text-gray-400 text-xs font-semibold uppercase">
-                  Personal
+                  ))}
                 </div>
               </div>
               <div className="relative h-full overflow-hidden pt-2">
-                <div className="-mx-4 flex h-full flex-col divide-y overflow-y-auto">
-                  <div className="relative flex flex-row items-center p-4">
-                    <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
-                      2 hours ago
-                    </div>
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="text-sm font-medium">Flo Steinle</div>
-                      <div className="w-40 truncate text-xs">
-                        Good after noon! how can i help you?
-                      </div>
-                    </div>
-                    <div className="mb-1 ml-2 flex-shrink-0 self-end">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                        3
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-row items-center p-4">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="flex items-center">
-                        <div className="text-sm font-medium">Sarah D</div>
-                        <div className="ml-2 h-2 w-2 rounded-full bg-green-500" />
-                      </div>
-                      <div className="w-40 truncate text-xs">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Debitis, doloribus?
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-row items-center p-4">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="flex items-center">
-                        <div className="text-sm font-medium">Sarah D</div>
-                        <div className="ml-2 h-2 w-2 rounded-full bg-green-500" />
-                      </div>
-                      <div className="w-40 truncate text-xs">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Debitis, doloribus?
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-row items-center p-4">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="flex items-center">
-                        <div className="text-sm font-medium">Sarah D</div>
-                        <div className="ml-2 h-2 w-2 rounded-full bg-green-500" />
-                      </div>
-                      <div className="w-40 truncate text-xs">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Debitis, doloribus?
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-row items-center p-4">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="flex items-center">
-                        <div className="text-sm font-medium">Sarah D</div>
-                        <div className="ml-2 h-2 w-2 rounded-full bg-green-500" />
-                      </div>
-                      <div className="w-40 truncate text-xs">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Debitis, doloribus?
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <div className="-mx-4 flex h-full flex-col divide-y overflow-y-auto"></div>
                 <div className="absolute bottom-0 right-0 mr-2">
                   <button className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500 text-white shadow-sm">
                     <svg
@@ -568,3 +510,21 @@ const Chat = () => {
 };
 
 export default Chat;
+
+{
+  /* <div className="flex flex-row items-center border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent p-4">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
+                      T
+                    </div>
+                    <div className="ml-3 flex flex-grow flex-col">
+                      <div className="flex items-center">
+                        <div className="text-sm font-medium">UI Art Design</div>
+                        <div className="ml-2 h-2 w-2 rounded-full bg-green-500" />
+                      </div>
+                      <div className="w-40 truncate text-xs">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Debitis, doloribus?
+                      </div>
+                    </div>
+                  </div> */
+}
