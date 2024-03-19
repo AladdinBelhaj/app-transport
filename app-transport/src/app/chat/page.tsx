@@ -140,7 +140,17 @@ const Chat = () => {
                       <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
                         5 min
                       </div>
-                      <img src={user.picture} alt="" />{" "}
+                      <div className="avatar">
+                        <div className="w-15 rounded-full">
+                          <img
+                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.picture}`}
+                            width={55}
+                            height={55}
+                            alt="User"
+                          />{" "}
+                        </div>
+                      </div>
+
                       {/* Assuming user.picture contains the image URL */}
                       <div className="ml-3 flex flex-grow flex-col">
                         <div className="text-sm font-medium">
