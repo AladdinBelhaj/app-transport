@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { io, Socket } from "socket.io-client";
 
 interface Chat {
   id: number;
@@ -32,14 +33,23 @@ const Chat = () => {
   const [usersData, setUsersData] = useState<any[]>([]); // Declare usersData state variable
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [clickedUser, setClickedUser] = useState<any>(null);
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
-
-  const userId = localStorage.getItem("id") || "";
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [newMessage, setNewMessage] = useState("");
+  const [socket, setSocket] = useState<Socket | null>(null);
 
+  const userId = localStorage.getItem("id") || "";
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:9000");
+    setSocket(newSocket);
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (socket === null) return;
+    socket.emit("addNewUser", currentUser?.id);
+  }, [socket]);
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
