@@ -15,8 +15,11 @@ const Chat = () => {
   const [userChats, setUserChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [usersData, setUsersData] = useState<any[]>([]); // Declare usersData state variable
+  const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+  const [messages, setMessages] = useState(null);
+  const [isMessagesLoading, setMessagesLoading] = useState(null);
 
-  const userId = localStorage.getItem("id");
+  const userId = localStorage.getItem("id") || "";
 
   useEffect(() => {
     const fetchUserChats = async () => {
@@ -32,10 +35,10 @@ const Chat = () => {
     };
 
     fetchUserChats();
-  }, [userId]); // Include userId in the dependency array to trigger a re-fetch when userId changes
+  }, [userId]);
 
   useEffect(() => {
-    const fetchOtherUsersData = async () => {
+    const fetchUsersData = async () => {
       if (!userChats.length) return; // Ensure userChats has data before proceeding
 
       try {
@@ -51,7 +54,7 @@ const Chat = () => {
 
         const usersData = usersDataResponses.map((response) => response.data);
 
-        setUsersData(usersData); // Set usersData state variable
+        setUsersData(usersData);
 
         console.log("Users data:", usersData);
       } catch (error) {
@@ -59,9 +62,19 @@ const Chat = () => {
       }
     };
 
-    fetchOtherUsersData();
-  }, [userChats, userId]); // Include userChats and userId in the dependency array to trigger a re-fetch when they change
+    fetchUsersData();
+  }, [userChats, userId]);
 
+  const handleUserClick = (user: any) => {
+    const chat = userChats.find(
+      (chat) =>
+        chat.members.includes(userId.toString()) &&
+        chat.members.includes(user.id.toString()),
+    );
+    setCurrentChat(chat || null);
+  };
+
+  console.log(currentChat);
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Chat" />
@@ -132,10 +145,16 @@ const Chat = () => {
               </div>
               <div className="mt-2">
                 <div className="-mx-4 flex flex-col">
+                  {/* <div className="flex flex-row items-center border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent p-4"> */}
                   {usersData.map((user) => (
                     <div
                       key={user.id}
-                      className="relative flex flex-row items-center p-4"
+                      className={`relative flex flex-row items-center p-4 ${
+                        currentChat && currentChat.id === user.id
+                          ? "border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent"
+                          : ""
+                      }`}
+                      onClick={() => setCurrentChat(user)}
                     >
                       <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
                         5 min
@@ -147,14 +166,14 @@ const Chat = () => {
                             width={55}
                             height={55}
                             alt="User"
-                          />{" "}
+                          />
                         </div>
                       </div>
 
                       {/* Assuming user.picture contains the image URL */}
                       <div className="ml-3 flex flex-grow flex-col">
                         <div className="text-sm font-medium">
-                          {user.fullname} {/* Render user's fullname */}
+                          {user.fullname}
                         </div>
                         {/* Render last message example */}
                         <div className="w-40 truncate text-xs">
