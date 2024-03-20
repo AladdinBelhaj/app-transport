@@ -48,7 +48,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (socket === null) return;
-    socket.emit("addNewUser", currentUser?.id);
+    socket.emit("addNewUser", userId);
   }, [socket]);
   useEffect(() => {
     const fetchCurrentUser = async () => {
