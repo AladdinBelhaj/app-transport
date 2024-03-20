@@ -11,16 +11,49 @@ interface Chat {
   updatedAt: string;
 }
 
+interface Message {
+  id: number;
+  chatId: string;
+  senderId: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface User {
+  id: number;
+  fullname: string;
+  picture: string;
+}
+
 const Chat = () => {
   const [userChats, setUserChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [usersData, setUsersData] = useState<any[]>([]); // Declare usersData state variable
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
-  // const [clickedUserData, setClickedUserData] = useState<any>(null);
-  const [messages, setMessages] = useState(null);
+  const [clickedUser, setClickedUser] = useState<any>(null);
+
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
   const userId = localStorage.getItem("id") || "";
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        // Make a request to fetch current user data
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${userId}`,
+        );
+        setCurrentUser(response.data);
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   useEffect(() => {
     const fetchUserChats = async () => {
@@ -91,6 +124,7 @@ const Chat = () => {
         chat.members.includes(user.id.toString()),
     );
     setCurrentChat(chat || null);
+    setClickedUser(user);
   };
 
   console.log(currentChat);
@@ -137,22 +171,6 @@ const Chat = () => {
                     >
                       <span>All Conversations</span>
                       <span className="absolute bottom-0 left-0 h-1 w-6 rounded-full bg-indigo-800" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-gray-700 flex items-center pb-3 text-xs font-semibold"
-                    >
-                      <span>Archived</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-gray-700 flex items-center pb-3 text-xs font-semibold"
-                    >
-                      <span>Starred</span>
                     </a>
                   </li>
                 </ul>
@@ -231,11 +249,20 @@ const Chat = () => {
           </div>
           <div className="flex h-full w-full flex-col bg-white px-4 py-6">
             <div className="flex flex-row items-center rounded-2xl px-6 py-4 shadow">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-pink-500 text-pink-100">
-                T
+              <div className="avatar">
+                <div className="w-13 rounded-full">
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
+                    width={55}
+                    height={55}
+                    alt="User"
+                  />
+                </div>
               </div>
               <div className="ml-3 flex flex-col">
-                <div className="text-sm font-semibold">Username</div>
+                <div className="text-sm font-semibold">
+                  {clickedUser?.fullname}
+                </div>
                 <div className="text-gray-500 text-xs">Active</div>
               </div>
               <div className="ml-auto">
@@ -312,162 +339,93 @@ const Chat = () => {
                 </ul>
               </div>
             </div>
+
             <div className="h-full overflow-hidden py-4">
               <div className="h-full overflow-y-auto">
-                <div className="grid grid-cols-12 gap-y-2">
-                  <div className="col-start-1 col-end-8 rounded-lg p-3">
-                    <div className="flex flex-row items-center">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative ml-3 rounded-xl bg-white px-4 py-2 text-sm shadow">
-                        <div>Hey How are you today?</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-start-1 col-end-8 rounded-lg p-3">
-                    <div className="flex flex-row items-center">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative ml-3 rounded-xl bg-white px-4 py-2 text-sm shadow">
-                        <div>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Vel ipsa commodi illum saepe numquam maxime
-                          asperiores voluptate sit, minima perspiciatis.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-start-6 col-end-13 rounded-lg p-3">
-                    <div className="flex flex-row-reverse items-center justify-start">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative mr-3 rounded-xl bg-indigo-100 px-4 py-2 text-sm shadow">
-                        <div>Im ok what about you?</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-start-6 col-end-13 rounded-lg p-3">
-                    <div className="flex flex-row-reverse items-center justify-start">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative mr-3 rounded-xl bg-indigo-100 px-4 py-2 text-sm shadow">
-                        <div>
-                          Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-start-1 col-end-8 rounded-lg p-3">
-                    <div className="flex flex-row items-center">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative ml-3 rounded-xl bg-white px-4 py-2 text-sm shadow">
-                        <div>Lorem ipsum dolor sit amet !</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-start-6 col-end-13 rounded-lg p-3">
-                    <div className="flex flex-row-reverse items-center justify-start">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative mr-3 rounded-xl bg-indigo-100 px-4 py-2 text-sm shadow">
-                        <div>
-                          Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                        </div>
-                        <div className="text-gray-500 absolute bottom-0 right-0 -mb-5 mr-2 text-xs">
-                          Seen
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-start-1 col-end-8 rounded-lg p-3">
-                    <div className="flex flex-row items-center">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative ml-3 rounded-xl bg-white px-4 py-2 text-sm shadow">
-                        <div>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Perspiciatis, in.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-start-1 col-end-8 rounded-lg p-3">
-                    <div className="flex flex-row items-center">
-                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500">
-                        A
-                      </div>
-                      <div className="relative ml-3 rounded-xl bg-white px-4 py-2 text-sm shadow">
-                        <div className="flex flex-row items-center">
-                          <button className="flex h-8 w-10 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-800">
-                            <svg
-                              className="h-6 w-6 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
+                <div className="h-full overflow-hidden py-4">
+                  <div className="h-full overflow-y-auto">
+                    {/* <div className="grid grid-cols-12 gap-y-2">
+                      {messages &&
+                        messages.map((message: any) => (
+                          <div
+                            key={message.id}
+                            className={`col-start-${message.senderId === userId ? "6" : "1"} col-end-${message.senderId === userId ? "13" : "8"} rounded-lg p-3`}
+                          >
+                            <div
+                              className={`flex flex-${message.senderId === userId ? "row-reverse" : "row"} items-center`}
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1.5"
-                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1.5"
-                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          </button>
-                          <div className="ml-4 flex flex-row items-center space-x-px">
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-4 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-8 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-8 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-10 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-10 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-12 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-10 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-6 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-5 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-4 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-3 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-10 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-10 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-8 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-8 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-1 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-1 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-8 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-8 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-2 w-1 rounded-lg" />
-                            <div className="bg-gray-500 h-4 w-1 rounded-lg" />
+                              {message.senderId !== userId && ( // Render avatar only for messages on the left side
+                                <div className="avatar">
+                                  <div className="w-10 rounded-full">
+                                    <img
+                                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
+                                      width={55}
+                                      height={55}
+                                      alt="User"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+
+                              <div
+                                className={`relative ml-3 mr-3 rounded-xl ${message.senderId === userId ? "bg-indigo-100" : "bg-white"} px-4 py-2 text-sm shadow`}
+                              >
+                                <div>{message.text}</div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                        ))}
+                    </div> */}
+                    <div className="grid grid-cols-12 gap-y-2">
+                      {messages &&
+                        messages.map((message: any) => (
+                          <div
+                            key={message.id}
+                            className={`col-start-${message.senderId === userId ? "6" : "1"} col-end-${message.senderId === userId ? "13" : "8"} rounded-lg p-3`}
+                          >
+                            <div
+                              className={`flex flex-${message.senderId === userId ? "row-reverse" : "row"} items-center`}
+                            >
+                              {message.senderId !== userId && ( // Render avatar only for messages on the left side
+                                <div className="avatar">
+                                  <div className="w-10 rounded-full">
+                                    <img
+                                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
+                                      width={55}
+                                      height={55}
+                                      alt="User"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+
+                              {message.senderId === userId && ( // Render avatar of current user (ME) when sender is ME
+                                <div className="avatar">
+                                  <div className="w-10 rounded-full">
+                                    <img
+                                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${currentUser?.picture}`}
+                                      width={55}
+                                      height={55}
+                                      alt="User"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+
+                              <div
+                                className={`relative ml-3 mr-3 rounded-xl ${message.senderId === userId ? "bg-indigo-100" : "bg-white"} px-4 py-2 text-sm shadow`}
+                              >
+                                <div>{message.text}</div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="flex flex-row items-center">
               <div className="flex h-12 w-full flex-row items-center rounded-3xl border px-2">
                 <button className="text-gray-400 ml-1 flex h-10 w-10 items-center justify-center">
