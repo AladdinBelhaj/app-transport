@@ -150,14 +150,12 @@ const Chat = () => {
         messageData,
       );
 
-      // Optionally, you can handle the response if needed
       console.log("Message sent:", response.data);
       setMessages((prevMessages) => [...prevMessages, response.data]);
-      // Reset the input field after sending the message
+
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
-      // Handle errors here
     }
   };
 
