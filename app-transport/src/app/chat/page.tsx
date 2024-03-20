@@ -5,6 +5,11 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { io, Socket } from "socket.io-client";
 
+interface OnlineUser {
+  userId: string;
+  socketId: string;
+}
+
 interface Chat {
   id: number;
   members: string;
@@ -22,7 +27,7 @@ interface Message {
 }
 
 interface User {
-  id: number;
+  id: string;
   fullname: string;
   picture: string;
 }
@@ -38,7 +43,7 @@ const Chat = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [newMessage, setNewMessage] = useState("");
   const [socket, setSocket] = useState<Socket | null>(null);
-
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
   const userId = localStorage.getItem("id") || "";
 
   useEffect(() => {
@@ -46,10 +51,36 @@ const Chat = () => {
     setSocket(newSocket);
   }, [currentUser]);
 
+  // useEffect(() => {
+  //   if (socket === null) return;
+  //   socket.emit("addNewUser", userId);
+  //   socket.on("getOnlineUsers", (res) => {
+  //     setOnlineUsers(res);
+  //   });
+
+  //   return () => {
+  //     socket.off("getOnlineUsers");
+  //   };
+  // }, [socket]);
   useEffect(() => {
     if (socket === null) return;
+
+    // Emit an event to add the current user to the online users list
     socket.emit("addNewUser", userId);
-  }, [socket]);
+
+    // Listen for updates to the online users list
+    socket.on("getOnlineUsers", (onlineUsers) => {
+      // Set the onlineUsers state
+      setOnlineUsers(onlineUsers);
+    });
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      socket.off("getOnlineUsers");
+    };
+  }, [socket, userId, usersData]);
+
+  console.log("ONLINE USERS:", onlineUsers);
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -224,45 +255,55 @@ const Chat = () => {
               <div className="mt-2">
                 <div className="-mx-4 flex flex-col">
                   {/* <div className="flex flex-row items-center border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent p-4"> */}
-                  {usersData.map((user) => (
-                    <div
-                      key={user.id}
-                      className={`relative flex flex-row items-center p-4 ${
-                        currentChat &&
-                        currentChat.members.includes(user.id.toString())
-                          ? "border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent"
-                          : ""
-                      }`}
-                      onClick={() => handleUserClick(user)}
-                    >
-                      <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
-                        5 min
-                      </div>
-                      <div className="avatar">
-                        <div className="w-15 rounded-full">
-                          <img
-                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.picture}`}
-                            width={55}
-                            height={55}
-                            alt="User"
-                          />
+                  {usersData.map((user) => {
+                    const isOnline = onlineUsers.some(
+                      (onlineUser) => onlineUser.userId == user.id,
+                    );
+
+                    return (
+                      <div
+                        key={user.id}
+                        className={`relative flex flex-row items-center p-4 ${
+                          currentChat &&
+                          currentChat.members.includes(user.id.toString())
+                            ? "border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent"
+                            : ""
+                        }`}
+                        onClick={() => handleUserClick(user)}
+                      >
+                        <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
+                          5 min
+                        </div>
+                        <div
+                          className={`avatar ${isOnline ? "online" : "offline"}`}
+                        >
+                          {" "}
+                          {/* Conditionally render class name */}
+                          <div className="w-15 rounded-full">
+                            <img
+                              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.picture}`}
+                              width={55}
+                              height={55}
+                              alt="User"
+                            />
+                          </div>
+                        </div>
+                        <div className="ml-3 flex flex-grow flex-col">
+                          <div className="text-sm font-medium">
+                            {user.fullname}
+                          </div>
+                          <div className="w-40 truncate text-xs">
+                            Last Message Example
+                          </div>
+                        </div>
+                        <div className="mb-1 ml-2 flex-shrink-0 self-end">
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                            5
+                          </span>
                         </div>
                       </div>
-                      <div className="ml-3 flex flex-grow flex-col">
-                        <div className="text-sm font-medium">
-                          {user.fullname}
-                        </div>
-                        <div className="w-40 truncate text-xs">
-                          Last Message Example
-                        </div>
-                      </div>
-                      <div className="mb-1 ml-2 flex-shrink-0 self-end">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                          5
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               <div className="relative h-full overflow-hidden pt-2">
@@ -290,7 +331,9 @@ const Chat = () => {
           </div>
           <div className="flex h-full w-full flex-col bg-white px-4 py-6">
             <div className="flex flex-row items-center rounded-2xl px-6 py-4 shadow">
-              <div className="avatar">
+              <div
+                className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == clickedUser?.id) ? "online" : "offline"}`}
+              >
                 <div className="w-13 rounded-full">
                   <img
                     src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
@@ -300,11 +343,18 @@ const Chat = () => {
                   />
                 </div>
               </div>
+
               <div className="ml-3 flex flex-col">
                 <div className="text-sm font-semibold">
                   {clickedUser?.fullname}
                 </div>
-                <div className="text-gray-500 text-xs">Active</div>
+                <div className="text-gray-500 text-xs">
+                  {onlineUsers.some(
+                    (onlineUser) => onlineUser.userId == clickedUser.id,
+                  )
+                    ? "Active"
+                    : "Inactive"}
+                </div>
               </div>
               <div className="ml-auto">
                 <ul className="flex flex-row items-center space-x-2">
@@ -428,7 +478,9 @@ const Chat = () => {
                               className={`flex flex-${message.senderId === userId ? "row-reverse" : "row"} items-center`}
                             >
                               {message.senderId !== userId && ( // Render avatar only for messages on the left side
-                                <div className="avatar">
+                                <div
+                                  className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
+                                >
                                   <div className="w-12 rounded-full">
                                     <img
                                       src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
@@ -441,7 +493,9 @@ const Chat = () => {
                               )}
 
                               {message.senderId === userId && ( // Render avatar of current user (ME) when sender is ME
-                                <div className="avatar">
+                                <div
+                                  className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
+                                >
                                   <div className="w-12 rounded-full">
                                     <img
                                       src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${currentUser?.picture}`}
