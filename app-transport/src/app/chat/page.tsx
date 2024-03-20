@@ -38,7 +38,7 @@ const Chat = () => {
 
   const userId = localStorage.getItem("id") || "";
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [newMessage, setNewMessage] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -129,6 +129,38 @@ const Chat = () => {
   };
 
   console.log(currentChat);
+
+  const handleMessageChange = (event: any) => {
+    setNewMessage(event.target.value);
+    console.log(newMessage);
+  };
+
+  const handleSendMessage = async () => {
+    try {
+      // Prepare the message data
+      const messageData = {
+        chatId: currentChat?.id, // Assuming currentChat contains the chat information
+        senderId: userId, // Assuming userId contains the current user's ID
+        text: newMessage,
+      };
+
+      // Send the message data to the backend
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages`,
+        messageData,
+      );
+
+      // Optionally, you can handle the response if needed
+      console.log("Message sent:", response.data);
+      setMessages((prevMessages) => [...prevMessages, response.data]);
+      // Reset the input field after sending the message
+      setNewMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      // Handle errors here
+    }
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Chat" />
@@ -450,6 +482,7 @@ const Chat = () => {
                     type="text"
                     className="flex h-10 w-full items-center border border-transparent text-sm focus:outline-none"
                     placeholder="Type your message...."
+                    onChange={handleMessageChange}
                   />
                 </div>
                 <div className="flex flex-row">
@@ -489,7 +522,7 @@ const Chat = () => {
               </div>
 
               <div>
-                <button className="ml-5">
+                <button className="ml-5" onClick={handleSendMessage}>
                   <svg
                     className="-mr-px h-5 w-5 rotate-90 transform"
                     fill="none"
