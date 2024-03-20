@@ -16,8 +16,9 @@ const Chat = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [usersData, setUsersData] = useState<any[]>([]); // Declare usersData state variable
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+  // const [clickedUserData, setClickedUserData] = useState<any>(null);
   const [messages, setMessages] = useState(null);
-  const [isMessagesLoading, setMessagesLoading] = useState(null);
+  const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
   const userId = localStorage.getItem("id") || "";
 
@@ -36,6 +37,24 @@ const Chat = () => {
 
     fetchUserChats();
   }, [userId]);
+
+  useEffect(() => {
+    const fetchUserMessages = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages/${currentChat?.id}`, // Adjust endpoint as per your backend API
+        );
+        setMessages(response.data);
+        setIsMessagesLoading(false); // Update loading state after fetching messages
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+        setIsMessagesLoading(false); // Update loading state in case of error
+      }
+    };
+
+    fetchUserMessages();
+  }, [currentChat]);
+  console.log(messages);
 
   useEffect(() => {
     const fetchUsersData = async () => {
@@ -150,11 +169,12 @@ const Chat = () => {
                     <div
                       key={user.id}
                       className={`relative flex flex-row items-center p-4 ${
-                        currentChat && currentChat.id === user.id
+                        currentChat &&
+                        currentChat.members.includes(user.id.toString())
                           ? "border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent"
                           : ""
                       }`}
-                      onClick={() => setCurrentChat(user)}
+                      onClick={() => handleUserClick(user)}
                     >
                       <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
                         5 min
@@ -169,18 +189,14 @@ const Chat = () => {
                           />
                         </div>
                       </div>
-
-                      {/* Assuming user.picture contains the image URL */}
                       <div className="ml-3 flex flex-grow flex-col">
                         <div className="text-sm font-medium">
                           {user.fullname}
                         </div>
-                        {/* Render last message example */}
                         <div className="w-40 truncate text-xs">
                           Last Message Example
                         </div>
                       </div>
-                      {/* Render the count of unread messages */}
                       <div className="mb-1 ml-2 flex-shrink-0 self-end">
                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                           5
@@ -219,7 +235,7 @@ const Chat = () => {
                 T
               </div>
               <div className="ml-3 flex flex-col">
-                <div className="text-sm font-semibold">UI Art Design</div>
+                <div className="text-sm font-semibold">Username</div>
                 <div className="text-gray-500 text-xs">Active</div>
               </div>
               <div className="ml-auto">
