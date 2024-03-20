@@ -38,6 +38,7 @@ const Chat = () => {
 
   const userId = localStorage.getItem("id") || "";
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [newMessage, setNewMessage] = useState(null);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -388,7 +389,7 @@ const Chat = () => {
                             >
                               {message.senderId !== userId && ( // Render avatar only for messages on the left side
                                 <div className="avatar">
-                                  <div className="w-10 rounded-full">
+                                  <div className="w-12 rounded-full">
                                     <img
                                       src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
                                       width={55}
@@ -401,7 +402,7 @@ const Chat = () => {
 
                               {message.senderId === userId && ( // Render avatar of current user (ME) when sender is ME
                                 <div className="avatar">
-                                  <div className="w-10 rounded-full">
+                                  <div className="w-12 rounded-full">
                                     <img
                                       src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${currentUser?.picture}`}
                                       width={55}
@@ -486,8 +487,9 @@ const Chat = () => {
                   </button>
                 </div>
               </div>
-              <div className="ml-6">
-                <button className="bg-gray-200 hover:bg-gray-300 flex h-10 w-10 items-center justify-center rounded-full text-indigo-800 text-white">
+
+              <div>
+                <button className="ml-5">
                   <svg
                     className="-mr-px h-5 w-5 rotate-90 transform"
                     fill="none"
