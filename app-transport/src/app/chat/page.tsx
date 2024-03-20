@@ -41,7 +41,8 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState<Message[]>([]);
+  const [textMessage, setTextMessage] = useState("");
   const [socket, setSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
   const userId = localStorage.getItem("id") || "";
@@ -51,40 +52,45 @@ const Chat = () => {
     setSocket(newSocket);
   }, [currentUser]);
 
-  // useEffect(() => {
-  //   if (socket === null) return;
-  //   socket.emit("addNewUser", userId);
-  //   socket.on("getOnlineUsers", (res) => {
-  //     setOnlineUsers(res);
-  //   });
-
-  //   return () => {
-  //     socket.off("getOnlineUsers");
-  //   };
-  // }, [socket]);
   useEffect(() => {
     if (socket === null) return;
 
-    // Emit an event to add the current user to the online users list
     socket.emit("addNewUser", userId);
 
-    // Listen for updates to the online users list
     socket.on("getOnlineUsers", (onlineUsers) => {
-      // Set the onlineUsers state
       setOnlineUsers(onlineUsers);
+      console.log("Catch these", onlineUsers);
     });
 
-    // Clean up the event listener when the component unmounts
     return () => {
       socket.off("getOnlineUsers");
     };
-  }, [socket, userId, usersData]);
+  }, [socket]);
 
-  console.log("ONLINE USERS:", onlineUsers);
+  useEffect(() => {
+    if (socket === null || !currentChat) return;
+
+    const membersArray = currentChat.members.split(",");
+    const recepientId = membersArray.find((memberId) => memberId !== userId);
+
+    socket.emit("sendMessage", { ...newMessage, recepientId });
+  }, [newMessage]);
+
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getMessage", (res) => {
+      // if (currentChat.id != res.chatId) return;
+      console.log("Test");
+      console.log("NOW THESE: ", res);
+      setMessages((prevMessages) => [...prevMessages, res]);
+    });
+  }, [socket, currentChat]);
+
+  // console.log("ONLINE USERS:", onlineUsers);
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        // Make a request to fetch current user data
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${userId}`,
         );
@@ -129,7 +135,7 @@ const Chat = () => {
 
     fetchUserMessages();
   }, [currentChat]);
-  console.log(messages);
+  // console.log(messages);
 
   useEffect(() => {
     const fetchUsersData = async () => {
@@ -150,7 +156,7 @@ const Chat = () => {
 
         setUsersData(usersData);
 
-        console.log("Users data:", usersData);
+        // console.log("Users data:", usersData);
       } catch (error) {
         console.error("Error fetching other users data:", error);
       }
@@ -169,11 +175,11 @@ const Chat = () => {
     setClickedUser(user);
   };
 
-  console.log(currentChat);
+  // console.log(currentChat);
 
   const handleMessageChange = (event: any) => {
-    setNewMessage(event.target.value);
-    console.log(newMessage);
+    setTextMessage(event.target.value);
+    // console.log(newMessage);
   };
 
   const handleSendMessage = async () => {
@@ -182,7 +188,7 @@ const Chat = () => {
       const messageData = {
         chatId: currentChat?.id, // Assuming currentChat contains the chat information
         senderId: userId, // Assuming userId contains the current user's ID
-        text: newMessage,
+        text: textMessage,
       };
 
       // Send the message data to the backend
@@ -191,10 +197,10 @@ const Chat = () => {
         messageData,
       );
 
-      console.log("Message sent:", response.data);
+      setNewMessage(response.data);
       setMessages((prevMessages) => [...prevMessages, response.data]);
 
-      setNewMessage("");
+      setTextMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -350,7 +356,7 @@ const Chat = () => {
                 </div>
                 <div className="text-gray-500 text-xs">
                   {onlineUsers.some(
-                    (onlineUser) => onlineUser.userId == clickedUser.id,
+                    (onlineUser) => onlineUser.userId == clickedUser?.id,
                   )
                     ? "Active"
                     : "Inactive"}
