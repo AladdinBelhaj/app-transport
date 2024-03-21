@@ -284,7 +284,7 @@ const Chat = () => {
                           className={`avatar ${isOnline ? "online" : "offline"}`}
                         >
                           {" "}
-                          {/* Conditionally render class name */}
+                          {/* Conditionally render className name */}
                           <div className="w-15 rounded-full">
                             <img
                               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.picture}`}
@@ -436,93 +436,56 @@ const Chat = () => {
                 </ul>
               </div>
             </div>
-
             <div className="h-full overflow-hidden py-4">
               <div className="h-full overflow-y-auto">
-                <div className="h-full overflow-hidden py-4">
-                  <div className="h-full overflow-y-auto">
-                    {/* <div className="grid grid-cols-12 gap-y-2">
-                      {messages &&
-                        messages.map((message: any) => (
-                          <div
-                            key={message.id}
-                            className={`col-start-${message.senderId === userId ? "6" : "1"} col-end-${message.senderId === userId ? "13" : "8"} rounded-lg p-3`}
-                          >
+                <div className="grid grid-cols-12 gap-y-2">
+                  {messages &&
+                    messages.map((message: any) => (
+                      <div
+                        key={message.id}
+                        className={`col-start-${message.senderId === userId ? "6" : "1"} col-end-${message.senderId === userId ? "13" : "8"} rounded-lg p-3`}
+                      >
+                        <div
+                          className={`flex flex-${message.senderId === userId ? "row-reverse" : "row"} items-center`}
+                        >
+                          {message.senderId !== userId && ( // Render avatar only for messages on the left side
                             <div
-                              className={`flex flex-${message.senderId === userId ? "row-reverse" : "row"} items-center`}
+                              className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
                             >
-                              {message.senderId !== userId && ( // Render avatar only for messages on the left side
-                                <div className="avatar">
-                                  <div className="w-10 rounded-full">
-                                    <img
-                                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
-                                      width={55}
-                                      height={55}
-                                      alt="User"
-                                    />
-                                  </div>
-                                </div>
-                              )}
-
-                              <div
-                                className={`relative ml-3 mr-3 rounded-xl ${message.senderId === userId ? "bg-indigo-100" : "bg-white"} px-4 py-2 text-sm shadow`}
-                              >
-                                <div>{message.text}</div>
+                              <div className="w-12 rounded-full">
+                                <img
+                                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
+                                  width={55}
+                                  height={55}
+                                  alt="User"
+                                />
                               </div>
                             </div>
-                          </div>
-                        ))}
-                    </div> */}
-                    <div className="grid grid-cols-12 gap-y-2">
-                      {messages &&
-                        messages.map((message: any) => (
-                          <div
-                            key={message.id}
-                            className={`col-start-${message.senderId === userId ? "6" : "1"} col-end-${message.senderId === userId ? "13" : "8"} rounded-lg p-3`}
-                          >
+                          )}
+
+                          {message.senderId === userId && ( // Render avatar of current user (ME) when sender is ME
                             <div
-                              className={`flex flex-${message.senderId === userId ? "row-reverse" : "row"} items-center`}
+                              className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
                             >
-                              {message.senderId !== userId && ( // Render avatar only for messages on the left side
-                                <div
-                                  className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
-                                >
-                                  <div className="w-12 rounded-full">
-                                    <img
-                                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
-                                      width={55}
-                                      height={55}
-                                      alt="User"
-                                    />
-                                  </div>
-                                </div>
-                              )}
-
-                              {message.senderId === userId && ( // Render avatar of current user (ME) when sender is ME
-                                <div
-                                  className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
-                                >
-                                  <div className="w-12 rounded-full">
-                                    <img
-                                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${currentUser?.picture}`}
-                                      width={55}
-                                      height={55}
-                                      alt="User"
-                                    />
-                                  </div>
-                                </div>
-                              )}
-
-                              <div
-                                className={`relative ml-3 mr-3 rounded-xl ${message.senderId === userId ? "bg-indigo-100" : "bg-white"} px-4 py-2 text-sm shadow`}
-                              >
-                                <div>{message.text}</div>
+                              <div className="w-12 rounded-full">
+                                <img
+                                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${currentUser?.picture}`}
+                                  width={55}
+                                  height={55}
+                                  alt="User"
+                                />
                               </div>
                             </div>
+                          )}
+
+                          <div
+                            className={`relative ml-3 mr-3 rounded-xl ${message.senderId === userId ? "bg-indigo-100" : "bg-white"} px-4 py-2 text-sm shadow`}
+                          >
+                            <div>{message.text}</div>
                           </div>
-                        ))}
-                    </div>
-                  </div>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
