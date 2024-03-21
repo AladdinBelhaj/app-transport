@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
@@ -32,6 +32,12 @@ interface User {
   picture: string;
 }
 
+type Notification = {
+  senderId: string;
+  isRead: boolean;
+  date: Date;
+};
+
 const Chat = () => {
   const [userChats, setUserChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +51,15 @@ const Chat = () => {
   const [textMessage, setTextMessage] = useState("");
   const [socket, setSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
   const userId = localStorage.getItem("id") || "";
+
+  const currentChatRef = useRef(currentChat);
+
+  useEffect(() => {
+    currentChatRef.current = currentChat;
+  }, [currentChat]);
 
   useEffect(() => {
     const newSocket = io("http://localhost:9000");
@@ -80,12 +94,29 @@ const Chat = () => {
     if (socket === null) return;
 
     socket.on("getMessage", (res) => {
-      // if (currentChat.id != res.chatId) return;
-      console.log("Test");
-      console.log("NOW THESE: ", res);
       setMessages((prevMessages) => [...prevMessages, res]);
     });
   }, [socket, currentChat]);
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getNotification", (res) => {
+      const membersArray = currentChatRef.current?.members.split(",");
+      const isChatOpen = membersArray?.some((id) => id === res.senderId);
+
+      if (!currentChatRef.current) {
+        setNotifications((prev) => [res, ...prev]);
+      } else {
+        setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
+      }
+    });
+  }, [socket]);
+
+  console.log("Notifications: ", notifications);
+  const membersArray = currentChat?.members.split(",");
+  console.log(membersArray);
+  const isChatOpen = membersArray?.some((id) => id == "1");
+  console.log("CHAT OPEN?!", isChatOpen);
 
   // console.log("ONLINE USERS:", onlineUsers);
   useEffect(() => {
@@ -172,6 +203,7 @@ const Chat = () => {
         chat.members.includes(user.id.toString()),
     );
     setCurrentChat(chat || null);
+    const members = chat?.members.split(",");
     setClickedUser(user);
   };
 
