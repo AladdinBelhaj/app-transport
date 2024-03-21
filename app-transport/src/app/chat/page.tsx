@@ -57,6 +57,13 @@ const Chat = () => {
 
   const currentChatRef = useRef(currentChat);
 
+  const scroll = useRef<HTMLDivElement>(null); // Specify the type of the ref
+
+  useEffect(() => {
+    if (scroll.current) {
+      scroll.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
   useEffect(() => {
     currentChatRef.current = currentChat;
   }, [currentChat]);
@@ -301,7 +308,7 @@ const Chat = () => {
                     return (
                       <div
                         key={user.id}
-                        className={`relative flex flex-row items-center p-4 ${
+                        className={`relative flex cursor-pointer flex-row items-center p-4 hover:bg-gray-3 ${
                           currentChat &&
                           currentChat.members.includes(user.id.toString())
                             ? "border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent"
@@ -469,20 +476,32 @@ const Chat = () => {
               </div>
             </div>
             <div className="h-full overflow-hidden py-4">
-              <div className="h-full overflow-y-auto">
+              <div className="h-full overflow-y-auto ">
                 <div className="grid grid-cols-12 gap-y-2">
                   {messages &&
                     messages.map((message: any) => (
                       <div
                         key={message.id}
-                        className={`col-start-${message.senderId === userId ? "6" : "1"} col-end-${message.senderId === userId ? "13" : "8"} rounded-lg p-3`}
+                        className={`col-start-${message.senderId === userId ? "6" : "1"} col-end-${
+                          message.senderId === userId ? "13" : "8"
+                        } rounded-lg p-3`}
                       >
                         <div
-                          className={`flex flex-${message.senderId === userId ? "row-reverse" : "row"} items-center`}
+                          className={`flex flex-${
+                            message.senderId === userId ? "row-reverse" : "row"
+                          } items-center`}
                         >
-                          {message.senderId !== userId && ( // Render avatar only for messages on the left side
+                          {message.senderId !== userId && (
+                            // Render avatar only for messages on the left side
                             <div
-                              className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
+                              className={`avatar ${
+                                onlineUsers.some(
+                                  (onlineUser) =>
+                                    onlineUser.userId == message.senderId,
+                                )
+                                  ? "online"
+                                  : "offline"
+                              }`}
                             >
                               <div className="w-12 rounded-full">
                                 <img
@@ -495,9 +514,17 @@ const Chat = () => {
                             </div>
                           )}
 
-                          {message.senderId === userId && ( // Render avatar of current user (ME) when sender is ME
+                          {message.senderId === userId && (
+                            // Render avatar of current user (ME) when sender is ME
                             <div
-                              className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == message.senderId) ? "online" : "offline"}`}
+                              className={`avatar ${
+                                onlineUsers.some(
+                                  (onlineUser) =>
+                                    onlineUser.userId == message.senderId,
+                                )
+                                  ? "online"
+                                  : "offline"
+                              }`}
                             >
                               <div className="w-12 rounded-full">
                                 <img
@@ -511,7 +538,11 @@ const Chat = () => {
                           )}
 
                           <div
-                            className={`relative ml-3 mr-3 rounded-xl ${message.senderId === userId ? "bg-indigo-100" : "bg-white"} px-4 py-2 text-sm shadow`}
+                            className={`relative ml-3 mr-3 rounded-xl ${
+                              message.senderId === userId
+                                ? "bg-indigo-100"
+                                : "bg-white"
+                            } px-4 py-2 text-sm shadow`}
                           >
                             <div>{message.text}</div>
                           </div>
@@ -611,21 +642,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
-{
-  /* <div className="flex flex-row items-center border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent p-4">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-pink-500 font-bold text-pink-300">
-                      T
-                    </div>
-                    <div className="ml-3 flex flex-grow flex-col">
-                      <div className="flex items-center">
-                        <div className="text-sm font-medium">UI Art Design</div>
-                        <div className="ml-2 h-2 w-2 rounded-full bg-green-500" />
-                      </div>
-                      <div className="w-40 truncate text-xs">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Debitis, doloribus?
-                      </div>
-                    </div>
-                  </div> */
-}
