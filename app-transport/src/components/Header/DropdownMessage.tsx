@@ -1,11 +1,98 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { io, Socket } from "socket.io-client";
 
+interface OnlineUser {
+  userId: string;
+  socketId: string;
+}
+
+interface Chat {
+  id: number;
+  members: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Message {
+  id: number;
+  chatId: string;
+  senderId: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface User {
+  id: string;
+  fullname: string;
+  picture: string;
+}
+
+type Notification = {
+  senderId: string;
+  isRead: boolean;
+  date: Date;
+};
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
+  const [notifying, setNotifying] = useState(false);
 
+  const [usersData, setUsersData] = useState<any[]>([]); // Declare usersData state variable
+  const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const userId = localStorage.getItem("id") || "";
+
+  const currentChatRef = useRef(currentChat);
+
+  useEffect(() => {
+    const stringCurrentChat = localStorage.getItem("currentChat");
+    if (stringCurrentChat !== null) {
+      setCurrentChat(JSON.parse(stringCurrentChat));
+      currentChatRef.current = JSON.parse(stringCurrentChat);
+    } else {
+      setCurrentChat(null);
+      currentChatRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:9000");
+    setSocket(newSocket);
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getOnlineUsers", (onlineUsers) => {
+      setOnlineUsers(onlineUsers);
+      console.log("Catch these", onlineUsers);
+    });
+
+    return () => {
+      socket.off("getOnlineUsers");
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getMessage", (res) => {
+      setMessages((prevMessages) => [...prevMessages, res]);
+      setNotifying(true);
+    });
+  }, [socket, currentChat]);
+
+  console.log(messages);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
@@ -25,7 +112,6 @@ const DropdownMessage = () => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;
