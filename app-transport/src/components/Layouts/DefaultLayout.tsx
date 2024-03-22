@@ -7,12 +7,20 @@ import { useUserData } from "../../../utils/getUserData";
 import { useEffect } from "react";
 import SidebarFirstLogin from "@/components/SidebarFirstLogin";
 import SidebarClient from "../SidebarClient";
+import { SocketContextProvider } from "@/app/context/SocketContext";
+import { useContext } from "react";
+import { SocketContext } from "@/app/context/SocketContext";
+import { Socket } from "socket.io-client";
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const socket = useContext(SocketContext);
+
+  console.log("This is the socket: ", socket);
+
   const storedData = localStorage.getItem("data");
   let userData: any;
   if (storedData) {
@@ -32,48 +40,53 @@ export default function DefaultLayout({
   }
 
   return (
-    <AuthGuard redirect={"/auth/signin"}>
-      <>
-        {/* <!-- ===== Page Wrapper Start ===== --> */}
-        <div className="flex h-screen overflow-hidden">
-          {/* <!-- ===== Sidebar Start ===== --> */}
-          {isFirstLogin === "1" ? (
-            <SidebarFirstLogin
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-            />
-          ) : role === "client" ? (
-            <SidebarClient
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-            />
-          ) : (
-            <SidebarTransporter
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-            />
-          )}
+    <SocketContextProvider>
+      <AuthGuard redirect={"/auth/signin"}>
+        <>
+          {/* <!-- ===== Page Wrapper Start ===== --> */}
+          <div className="flex h-screen overflow-hidden">
+            {/* <!-- ===== Sidebar Start ===== --> */}
+            {isFirstLogin === "1" ? (
+              <SidebarFirstLogin
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+            ) : role === "client" ? (
+              <SidebarClient
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+            ) : (
+              <SidebarTransporter
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+            )}
 
-          {/* <!-- ===== Sidebar End ===== --> */}
+            {/* <!-- ===== Sidebar End ===== --> */}
 
-          {/* <!-- ===== Content Area Start ===== --> */}
-          <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-            {/* <!-- ===== Header Start ===== --> */}
-            <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-            {/* <!-- ===== Header End ===== --> */}
+            {/* <!-- ===== Content Area Start ===== --> */}
+            <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+              {/* <!-- ===== Header Start ===== --> */}
+              <Header
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+              {/* <!-- ===== Header End ===== --> */}
 
-            {/* <!-- ===== Main Content Start ===== --> */}
-            <main>
-              <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                {children}
-              </div>
-            </main>
-            {/* <!-- ===== Main Content End ===== --> */}
+              {/* <!-- ===== Main Content Start ===== --> */}
+              <main>
+                <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                  {children}
+                </div>
+              </main>
+              {/* <!-- ===== Main Content End ===== --> */}
+            </div>
+            {/* <!-- ===== Content Area End ===== --> */}
           </div>
-          {/* <!-- ===== Content Area End ===== --> */}
-        </div>
-        {/* <!-- ===== Page Wrapper End ===== --> */}
-      </>
-    </AuthGuard>
+          {/* <!-- ===== Page Wrapper End ===== --> */}
+        </>
+      </AuthGuard>
+    </SocketContextProvider>
   );
 }
