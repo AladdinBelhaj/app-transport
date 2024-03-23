@@ -1,41 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { io, Socket } from "socket.io-client";
-import { on } from "events";
 
-interface OnlineUser {
-  userId: string;
-  socketId: string;
-}
-
-interface Chat {
-  id: number;
-  members: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Message {
-  id: number;
-  chatId: string;
-  senderId: string;
-  text: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface User {
-  id: string;
-  fullname: string;
-  picture: string;
-}
-
-type Notification = {
-  senderId: string;
-  isRead: boolean;
-  date: Date;
-};
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);

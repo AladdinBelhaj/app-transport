@@ -47,15 +47,9 @@
 "use client";
 import ECommerce from "@/components/Dashboard/E-commerce";
 import AuthGuard from "@/components/Auth/AuthGuard";
-import { useContext } from "react";
-import { SocketContext, SocketContextProvider } from "./context/SocketContext";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
-export default function Home({ children }: { children: React.ReactNode }) {
-  const socket = useContext(SocketContext);
-  console.log("This is the socket: ", socket);
-  const userId = localStorage.getItem("id");
-
+export default function Home() {
   return (
     <AuthGuard redirect={"/auth/signin"}>
       <DefaultLayout>

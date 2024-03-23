@@ -608,15 +608,13 @@
 // export default Chat;
 
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { useContext } from "react";
-import { SocketContextProvider } from "../context/SocketContext";
-import { SocketContext } from "../context/SocketContext";
 import { io, Socket } from "socket.io-client";
-import { OnlineUsersContext } from "../context/SocketContext";
+import { OnlineUsersContext, SocketContext } from "../context/SocketContext";
+
 interface OnlineUser {
   userId: string;
   socketId: string;
@@ -665,24 +663,20 @@ const Chat = () => {
   // const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
+  const socket = useContext(SocketContext);
+  const onlineUsers = useContext(OnlineUsersContext);
+
   const userId = localStorage.getItem("id") || "";
 
   const currentChatRef = useRef(currentChat);
 
   const scroll = useRef<HTMLDivElement>(null); // Specify the type of the ref
-  const socket = useContext(SocketContext);
-  const onlineUsers = useContext(OnlineUsersContext);
 
-  console.log("This is the socket: ", socket);
-  console.log("This is the list: ", onlineUsers);
   useEffect(() => {
     if (scroll.current) {
       scroll.current.scrollIntoView({ behavior: "smooth" });
     }
   }, []);
-  useEffect(() => {
-    currentChatRef.current = currentChat;
-  }, [currentChat]);
 
   useEffect(() => {
     if (socket === null || !currentChat) return;
@@ -698,31 +692,26 @@ const Chat = () => {
 
     socket.on("getMessage", (res) => {
       setMessages((prevMessages) => [...prevMessages, res]);
-    });
-  }, [socket, currentChat]);
-
-  useEffect(() => {
-    if (socket === null) return;
-
-    socket.on("getNotification", (res) => {
-      const membersArray = currentChatRef.current?.members.split(",");
-      const isChatOpen = membersArray?.some((id) => id === res.senderId);
-
-      if (!currentChatRef.current) {
-        setNotifications((prev) => [res, ...prev]);
-      } else {
-        setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
-      }
+      console.log("All da mes:", res);
     });
   }, [socket]);
 
-  console.log("Notifications: ", notifications);
-  const membersArray = currentChat?.members.split(",");
-  console.log(membersArray);
-  const isChatOpen = membersArray?.some((id) => id == "1");
-  console.log("CHAT OPEN?!", isChatOpen);
+  // useEffect(() => {
+  //   if (socket === null) return;
 
-  // console.log("ONLINE USERS:", onlineUsers);
+  //   socket.on("getNotification", (res) => {
+  //     const membersArray = currentChatRef.current?.members.split(",");
+  //     const isChatOpen = membersArray?.some((id) => id === res.senderId);
+
+  //     if (!currentChatRef.current) {
+  //       setNotifications((prev) => [res, ...prev]);
+  //     } else {
+  //       setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
+  //     }
+  //   });
+  // }, [socket]);
+
+  console.log("Notifications: ", notifications);
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -807,7 +796,7 @@ const Chat = () => {
         chat.members.includes(user.id.toString()),
     );
     setCurrentChat(chat || null);
-    localStorage.setItem("currentChat", JSON.stringify(chat || null));
+
     setClickedUser(user);
   };
 

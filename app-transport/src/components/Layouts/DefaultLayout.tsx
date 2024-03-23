@@ -7,18 +7,12 @@ import { useUserData } from "../../../utils/getUserData";
 import { useEffect } from "react";
 import SidebarFirstLogin from "@/components/SidebarFirstLogin";
 import SidebarClient from "../SidebarClient";
-import { SocketContextProvider } from "@/app/context/SocketContext";
-import { useContext } from "react";
-import { SocketContext } from "@/app/context/SocketContext";
-import { Socket } from "socket.io-client";
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const socket = useContext(SocketContext);
-  console.log("SOCKET IN DEFAULT LAYOUT: ", socket);
   const storedData = localStorage.getItem("data");
   let userData: any;
   if (storedData) {

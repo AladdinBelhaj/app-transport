@@ -7,6 +7,10 @@ import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import { SocketContextProvider } from "./context/SocketContext";
 
+interface OnlineUser {
+  userId: string;
+  socketId: string;
+}
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,21 +19,19 @@ export default function RootLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // const pathname = usePathname();
-
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
   return (
-    <SocketContextProvider>
-      <html lang="en">
-        <body suppressHydrationWarning={true}>
-          <div className="dark:bg-boxdark-2 dark:text-bodydark">
-            {loading ? <Loader /> : children}
-          </div>
-        </body>
-      </html>
-    </SocketContextProvider>
+    <html lang="en">
+      <body suppressHydrationWarning={true}>
+        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+          {!loading && (
+            <SocketContextProvider>{children}</SocketContextProvider>
+          )}
+        </div>
+      </body>
+    </html>
   );
 }

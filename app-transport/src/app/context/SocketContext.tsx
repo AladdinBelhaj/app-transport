@@ -1,10 +1,4 @@
-import React, {
-  useMemo,
-  createContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+import React, { createContext, useEffect, useState, ReactNode } from "react";
 import { io, Socket } from "socket.io-client";
 
 export const SocketContext = createContext<Socket | null>(null);
@@ -23,22 +17,13 @@ export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
   children,
 }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-
+  const userId = localStorage.getItem("id");
   useEffect(() => {
-    console.log("Initializing socket...");
     const newSocket = io("http://localhost:9000");
     setSocket(newSocket);
-
-    return () => {
-      console.log("Disconnecting socket...");
-
-      if (socket) {
-        socket.disconnect();
-      }
-    };
   }, []);
+
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
-  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     if (socket === null) return;

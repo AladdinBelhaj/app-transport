@@ -42,10 +42,6 @@
 
 // io.listen(9000);
 
-
-
-
-
 const { Server } = require("socket.io");
 
 const io = new Server({ cors: "*" });
@@ -79,8 +75,6 @@ io.on("connection", (socket) => {
         date: new Date(),
       });
 
-      
-      io.to(user.socketId).emit("getMessageForDropdown", message);
     
     }
     
