@@ -28,7 +28,7 @@ const DropdownMessage = () => {
 
     socket.on("getMessage", (res) => {
       setMessages((prevMessages) => [...prevMessages, res]);
-      console.log("All da mes:", res);
+      setNotifying(true);
     });
   }, [socket]);
 
