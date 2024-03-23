@@ -28,8 +28,12 @@ const DropdownMessage = () => {
 
     socket.on("getMessage", (res) => {
       setMessages((prevMessages) => [...prevMessages, res]);
-      setNotifying(true);
+      setNotifying(true); // Set notifying to true when a new message is received
     });
+
+    return () => {
+      socket.off("getMessage");
+    };
   }, [socket]);
 
   console.log("Messages from HEADER: ", messages);

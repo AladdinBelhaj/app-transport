@@ -696,20 +696,20 @@ const Chat = () => {
     });
   }, [socket]);
 
-  // useEffect(() => {
-  //   if (socket === null) return;
+  useEffect(() => {
+    if (socket === null) return;
 
-  //   socket.on("getNotification", (res) => {
-  //     const membersArray = currentChatRef.current?.members.split(",");
-  //     const isChatOpen = membersArray?.some((id) => id === res.senderId);
+    socket.on("getNotification", (res) => {
+      const membersArray = currentChatRef.current?.members.split(",");
+      const isChatOpen = membersArray?.some((id) => id === res.senderId);
 
-  //     if (!currentChatRef.current) {
-  //       setNotifications((prev) => [res, ...prev]);
-  //     } else {
-  //       setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
-  //     }
-  //   });
-  // }, [socket]);
+      if (!currentChatRef.current) {
+        setNotifications((prev) => [res, ...prev]);
+      } else {
+        setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
+      }
+    });
+  }, [socket]);
 
   console.log("Notifications: ", notifications);
   useEffect(() => {
