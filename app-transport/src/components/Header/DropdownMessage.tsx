@@ -1,13 +1,38 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { OnlineUsersContext, SocketContext } from "@/app/context/SocketContext";
+
+interface Message {
+  id: number;
+  chatId: string;
+  senderId: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
-
+  const [messages, setMessages] = useState<Message[]>([]);
+  const onlineUsers = useContext(OnlineUsersContext);
+  console.log("Online Users from HEADER: ", onlineUsers);
+  const socket = useContext(SocketContext);
+  console.log("Socket from HEADER: ", socket);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getMessage", (res) => {
+      setMessages((prevMessages) => [...prevMessages, res]);
+      console.log("All da mes:", res);
+    });
+  }, [socket]);
+
+  console.log("Messages from HEADER: ", messages);
 
   // close on click outside
   useEffect(() => {
