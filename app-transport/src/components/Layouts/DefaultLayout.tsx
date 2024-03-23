@@ -18,9 +18,7 @@ export default function DefaultLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const socket = useContext(SocketContext);
-
-  console.log("This is the socket: ", socket);
-
+  console.log("SOCKET IN DEFAULT LAYOUT: ", socket);
   const storedData = localStorage.getItem("data");
   let userData: any;
   if (storedData) {
@@ -40,53 +38,48 @@ export default function DefaultLayout({
   }
 
   return (
-    <SocketContextProvider>
-      <AuthGuard redirect={"/auth/signin"}>
-        <>
-          {/* <!-- ===== Page Wrapper Start ===== --> */}
-          <div className="flex h-screen overflow-hidden">
-            {/* <!-- ===== Sidebar Start ===== --> */}
-            {isFirstLogin === "1" ? (
-              <SidebarFirstLogin
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-              />
-            ) : role === "client" ? (
-              <SidebarClient
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-              />
-            ) : (
-              <SidebarTransporter
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-              />
-            )}
+    <AuthGuard redirect={"/auth/signin"}>
+      <>
+        {/* <!-- ===== Page Wrapper Start ===== --> */}
+        <div className="flex h-screen overflow-hidden">
+          {/* <!-- ===== Sidebar Start ===== --> */}
+          {isFirstLogin === "1" ? (
+            <SidebarFirstLogin
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+          ) : role === "client" ? (
+            <SidebarClient
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+          ) : (
+            <SidebarTransporter
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+          )}
 
-            {/* <!-- ===== Sidebar End ===== --> */}
+          {/* <!-- ===== Sidebar End ===== --> */}
 
-            {/* <!-- ===== Content Area Start ===== --> */}
-            <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-              {/* <!-- ===== Header Start ===== --> */}
-              <Header
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-              />
-              {/* <!-- ===== Header End ===== --> */}
+          {/* <!-- ===== Content Area Start ===== --> */}
+          <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+            {/* <!-- ===== Header Start ===== --> */}
+            <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+            {/* <!-- ===== Header End ===== --> */}
 
-              {/* <!-- ===== Main Content Start ===== --> */}
-              <main>
-                <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                  {children}
-                </div>
-              </main>
-              {/* <!-- ===== Main Content End ===== --> */}
-            </div>
-            {/* <!-- ===== Content Area End ===== --> */}
+            {/* <!-- ===== Main Content Start ===== --> */}
+            <main>
+              <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                {children}
+              </div>
+            </main>
+            {/* <!-- ===== Main Content End ===== --> */}
           </div>
-          {/* <!-- ===== Page Wrapper End ===== --> */}
-        </>
-      </AuthGuard>
-    </SocketContextProvider>
+          {/* <!-- ===== Content Area End ===== --> */}
+        </div>
+        {/* <!-- ===== Page Wrapper End ===== --> */}
+      </>
+    </AuthGuard>
   );
 }

@@ -1,60 +1,67 @@
-// import React, { createContext, useEffect, useState, ReactNode } from "react";
-// import { io, Socket } from "socket.io-client";
+import React, {
+  useMemo,
+  createContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { io, Socket } from "socket.io-client";
 
-// // Define a context for the socket
-// export const SocketContext = createContext<Socket | null>(null);
+export const SocketContext = createContext<Socket | null>(null);
+export const OnlineUsersContext = createContext<OnlineUser[]>([]);
 
-// // Define the type for SocketContextProvider props
-// interface SocketContextProviderProps {
-//   children: ReactNode;
-// }
-
-// // Provider component that provides the socket context
-// export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
-//   children,
-// }) => {
-//   const [socket, setSocket] = useState<Socket | null>(null);
-
-//   useEffect(() => {
-//     console.log("Initializing socket...");
-//     const newSocket = io("http://localhost:9000");
-//     setSocket(newSocket);
-
-//     return () => {
-//       console.log("Disconnecting socket...");
-//       // Clean up socket connection
-//       if (socket) {
-//         socket.disconnect();
-//       }
-//     };
-//   }, []);
-
-//   console.log("Socket:", socket);
-
-//   return (
-//     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
-//   );
-// };
-
-// SocketContext.tsx
-// SocketContext.tsx
-import React, { createContext, ReactNode } from "react";
-import { Socket } from "socket.io-client";
-
-interface SocketContextProps {
-  children: ReactNode;
-  socket?: Socket<any, any> | null;
+interface OnlineUser {
+  userId: string;
+  socketId: string;
 }
 
-export const SocketContext = createContext<Socket<any, any> | null>(null);
+interface SocketContextProviderProps {
+  children: ReactNode;
+}
 
-export const SocketContextProvider: React.FC<SocketContextProps> = ({
+export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
   children,
-  socket,
 }) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  useEffect(() => {
+    console.log("Initializing socket...");
+    const newSocket = io("http://localhost:9000");
+    setSocket(newSocket);
+
+    return () => {
+      console.log("Disconnecting socket...");
+
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
+  const userId = localStorage.getItem("id");
+
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.emit("addNewUser", userId);
+
+    socket.on("getOnlineUsers", (onlineUsers) => {
+      setOnlineUsers(onlineUsers);
+      console.log("Catch these", onlineUsers);
+    });
+
+    return () => {
+      socket.off("getOnlineUsers");
+    };
+  }, [socket]);
+
+  console.log("Socket:", socket);
+
   return (
-    <SocketContext.Provider value={socket || null}>
-      {children}
+    <SocketContext.Provider value={socket}>
+      <OnlineUsersContext.Provider value={onlineUsers}>
+        {children}
+      </OnlineUsersContext.Provider>
     </SocketContext.Provider>
   );
 };

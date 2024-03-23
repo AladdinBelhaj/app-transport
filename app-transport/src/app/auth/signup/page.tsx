@@ -119,7 +119,7 @@ const Register = () => {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
-              <Link className="mb-5.5 inline-block" href="/">
+              {/* <Link className="mb-5.5 inline-block" href="/">
                 <Image
                   className="hidden dark:block"
                   src={"/images/logo/logo.svg"}
@@ -134,7 +134,7 @@ const Register = () => {
                   width={176}
                   height={32}
                 />
-              </Link>
+              </Link> */}
               <p className="2xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 suspendisse.
@@ -155,7 +155,7 @@ const Register = () => {
           <div className=" border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <h2 className="mb-7 text-sm font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign Up to TailAdmin
+                Sign Up
               </h2>
 
               <form>

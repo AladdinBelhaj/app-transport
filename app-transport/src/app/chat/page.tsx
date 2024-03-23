@@ -608,14 +608,15 @@
 // export default Chat;
 
 "use client";
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { SocketContext } from "../context/SocketContext";
+import { useContext } from "react";
 import { SocketContextProvider } from "../context/SocketContext";
+import { SocketContext } from "../context/SocketContext";
 import { io, Socket } from "socket.io-client";
-
+import { OnlineUsersContext } from "../context/SocketContext";
 interface OnlineUser {
   userId: string;
   socketId: string;
@@ -649,7 +650,7 @@ type Notification = {
   date: Date;
 };
 
-const Chat: React.FC = () => {
+const Chat = () => {
   const [userChats, setUserChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [usersData, setUsersData] = useState<any[]>([]); // Declare usersData state variable
@@ -659,24 +660,21 @@ const Chat: React.FC = () => {
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [newMessage, setNewMessage] = useState<Message[]>([]);
-  // const [socket, setSocket] = useState<Socket | null>(null);
   const [textMessage, setTextMessage] = useState("");
-
+  // const [socket, setSocket] = useState<Socket | null>(null);
+  // const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const socket = useContext(SocketContext);
-  console.log("Socket is ready: ", socket);
   const userId = localStorage.getItem("id") || "";
 
   const currentChatRef = useRef(currentChat);
 
-  const scroll = useRef<HTMLDivElement>(null);
+  const scroll = useRef<HTMLDivElement>(null); // Specify the type of the ref
+  const socket = useContext(SocketContext);
+  const onlineUsers = useContext(OnlineUsersContext);
 
-  useEffect(() => {
-    if (socket) {
-      console.log("Socket is ready:", socket);
-    }
-  }, [socket]);
+  console.log("This is the socket: ", socket);
+  console.log("This is the list: ", onlineUsers);
   useEffect(() => {
     if (scroll.current) {
       scroll.current.scrollIntoView({ behavior: "smooth" });
@@ -881,6 +879,55 @@ const Chat: React.FC = () => {
               <div className="mt-2">
                 <div className="-mx-4 flex flex-col">
                   {/* <div className="flex flex-row items-center border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent p-4"> */}
+                  {usersData.map((user) => {
+                    const isOnline = onlineUsers.some(
+                      (onlineUser) => onlineUser.userId == user.id,
+                    );
+
+                    return (
+                      <div
+                        key={user.id}
+                        className={`relative flex cursor-pointer flex-row items-center p-4 hover:bg-gray-3 ${
+                          currentChat &&
+                          currentChat.members.includes(user.id.toString())
+                            ? "border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent"
+                            : ""
+                        }`}
+                        onClick={() => handleUserClick(user)}
+                      >
+                        <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
+                          5 min
+                        </div>
+                        <div
+                          className={`avatar ${isOnline ? "online" : "offline"}`}
+                        >
+                          {" "}
+                          {/* Conditionally render className name */}
+                          <div className="w-15 rounded-full">
+                            <img
+                              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.picture}`}
+                              width={55}
+                              height={55}
+                              alt="User"
+                            />
+                          </div>
+                        </div>
+                        <div className="ml-3 flex flex-grow flex-col">
+                          <div className="text-sm font-medium">
+                            {user.fullname}
+                          </div>
+                          <div className="w-40 truncate text-xs">
+                            Last Message Example
+                          </div>
+                        </div>
+                        <div className="mb-1 ml-2 flex-shrink-0 self-end">
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                            5
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className="relative h-full overflow-hidden pt-2">
@@ -891,7 +938,9 @@ const Chat: React.FC = () => {
           <div className="flex h-full w-full flex-col bg-white px-4 py-6">
             {currentChat && (
               <div className="flex flex-row items-center rounded-2xl px-6 py-4 shadow">
-                <div>
+                <div
+                  className={`avatar ${onlineUsers.some((onlineUser) => onlineUser.userId == clickedUser?.id) ? "online" : "offline"}`}
+                >
                   <div className="w-13 rounded-full">
                     <img
                       src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
@@ -906,7 +955,13 @@ const Chat: React.FC = () => {
                   <div className="text-sm font-semibold">
                     {clickedUser?.fullname}
                   </div>
-                  <div className="text-gray-500 text-xs"></div>
+                  <div className="text-gray-500 text-xs">
+                    {onlineUsers.some(
+                      (onlineUser) => onlineUser.userId == clickedUser?.id,
+                    )
+                      ? "Active"
+                      : "Inactive"}
+                  </div>
                 </div>
                 <div className="ml-auto">
                   <ul className="flex flex-row items-center space-x-2">
@@ -1016,7 +1071,7 @@ const Chat: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        {/* <div className="mr-2">
+                        <div className="mr-2">
                           <div
                             className={`avatar ${
                               onlineUsers.some(
@@ -1036,7 +1091,7 @@ const Chat: React.FC = () => {
                               />
                             </div>
                           </div>
-                        </div> */}
+                        </div>
                         <div
                           className={`relative rounded-xl ${
                             message.senderId === userId

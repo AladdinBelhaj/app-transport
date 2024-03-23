@@ -44,38 +44,23 @@
 //     </AuthGuard>
 //   );
 // }
-
 "use client";
 import ECommerce from "@/components/Dashboard/E-commerce";
 import AuthGuard from "@/components/Auth/AuthGuard";
-import { SocketContextProvider } from "./context/SocketContext";
+import { useContext } from "react";
+import { SocketContext, SocketContextProvider } from "./context/SocketContext";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { useState, useEffect } from "react";
-import { io, Socket } from "socket.io-client";
-export default function Home() {
-  const [socket, setSocket] = useState<Socket | null>(null);
 
-  useEffect(() => {
-    console.log("Initializing socket...");
-    const newSocket = io("http://localhost:9000");
-    setSocket(newSocket);
-
-    return () => {
-      console.log("Disconnecting socket...");
-      // Clean up socket connection
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, []);
+export default function Home({ children }: { children: React.ReactNode }) {
+  const socket = useContext(SocketContext);
+  console.log("This is the socket: ", socket);
+  const userId = localStorage.getItem("id");
 
   return (
-    <SocketContextProvider socket={socket}>
-      <AuthGuard redirect={"/auth/signin"}>
-        <DefaultLayout>
-          <ECommerce />
-        </DefaultLayout>
-      </AuthGuard>
-    </SocketContextProvider>
+    <AuthGuard redirect={"/auth/signin"}>
+      <DefaultLayout>
+        <ECommerce />
+      </DefaultLayout>
+    </AuthGuard>
   );
 }
