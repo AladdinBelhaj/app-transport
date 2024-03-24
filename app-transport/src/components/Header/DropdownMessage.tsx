@@ -12,10 +12,31 @@ interface Message {
   updatedAt: string;
 }
 
+interface User {
+  id: string;
+  fullname: string;
+  picture: string;
+}
+
+interface Chat {
+  id: number;
+  members: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+type Notification = {
+  senderId: string;
+  isRead: boolean;
+  message: string;
+  date: Date;
+};
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const onlineUsers = useContext(OnlineUsersContext);
   console.log("Online Users from HEADER: ", onlineUsers);
   const socket = useContext(SocketContext);
@@ -23,20 +44,40 @@ const DropdownMessage = () => {
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
+  const currentChatRef = useRef(currentChat);
+
+  useEffect(() => {
+    const stringCurrentChat = localStorage.getItem("currentChat");
+    console.log("Stored currentChat from localStorage: ", stringCurrentChat);
+    if (stringCurrentChat !== null) {
+      setCurrentChat(JSON.parse(stringCurrentChat));
+      currentChatRef.current = JSON.parse(stringCurrentChat);
+    } else {
+      setCurrentChat(null);
+      currentChatRef.current = null;
+    }
+  }, []);
+
   useEffect(() => {
     if (socket === null) return;
 
-    socket.on("getMessage", (res) => {
-      setMessages((prevMessages) => [...prevMessages, res]);
-      setNotifying(true);
+    socket.on("getNotification", (res) => {
+      const membersArray = currentChatRef.current?.members.split(",");
+      const isChatOpen = membersArray?.some((id) => id === res.senderId);
+      if (!currentChatRef.current) {
+        setNotifications((prev) => [res, ...prev]);
+        setNotifying(true);
+      } else {
+        setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
+      }
     });
 
     return () => {
-      socket.off("getMessage");
+      socket.off("getNotification");
     };
   }, [socket]);
 
-  console.log("Messages from HEADER: ", messages);
+  console.log("Header notifications: ", notifications);
 
   // close on click outside
   useEffect(() => {

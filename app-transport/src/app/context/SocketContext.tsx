@@ -3,12 +3,21 @@ import { io, Socket } from "socket.io-client";
 
 export const SocketContext = createContext<Socket | null>(null);
 export const OnlineUsersContext = createContext<OnlineUser[]>([]);
+export const MessagesContext = createContext<Message[]>([]);
 
 interface OnlineUser {
   userId: string;
   socketId: string;
 }
 
+interface Message {
+  id: number;
+  chatId: string;
+  senderId: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+}
 interface SocketContextProviderProps {
   children: ReactNode;
 }
@@ -38,6 +47,17 @@ export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
     return () => {
       socket.off("getOnlineUsers");
     };
+  }, [socket]);
+
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getMessage", (res) => {
+      setMessages((prevMessages) => [...prevMessages, res]);
+      console.log("All da mes:", res);
+    });
   }, [socket]);
 
   console.log("Socket:", socket);

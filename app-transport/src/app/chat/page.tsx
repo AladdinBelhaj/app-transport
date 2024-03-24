@@ -1,9 +1,10 @@
 // "use client";
-// import React, { useEffect, useState, useRef } from "react";
+// import React, { useEffect, useState, useRef, useContext } from "react";
 // import axios from "axios";
 // import DefaultLayout from "@/components/Layouts/DefaultLayout";
 // import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 // import { io, Socket } from "socket.io-client";
+// import { OnlineUsersContext, SocketContext } from "../context/SocketContext";
 
 // interface OnlineUser {
 //   userId: string;
@@ -35,6 +36,7 @@
 // type Notification = {
 //   senderId: string;
 //   isRead: boolean;
+//   message: string;
 //   date: Date;
 // };
 
@@ -49,13 +51,19 @@
 //   const [currentUser, setCurrentUser] = useState<User | null>(null);
 //   const [newMessage, setNewMessage] = useState<Message[]>([]);
 //   const [textMessage, setTextMessage] = useState("");
-//   const [socket, setSocket] = useState<Socket | null>(null);
-//   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
+//   // const [socket, setSocket] = useState<Socket | null>(null);
+//   // const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
 //   const [notifications, setNotifications] = useState<Notification[]>([]);
+
+//   const socket = useContext(SocketContext);
+//   const onlineUsers = useContext(OnlineUsersContext);
 
 //   const userId = localStorage.getItem("id") || "";
 
 //   const currentChatRef = useRef(currentChat);
+//   useEffect(() => {
+//     currentChatRef.current = currentChat;
+//   }, [currentChat]);
 
 //   const scroll = useRef<HTMLDivElement>(null); // Specify the type of the ref
 
@@ -64,29 +72,6 @@
 //       scroll.current.scrollIntoView({ behavior: "smooth" });
 //     }
 //   }, []);
-//   useEffect(() => {
-//     currentChatRef.current = currentChat;
-//   }, [currentChat]);
-
-//   useEffect(() => {
-//     const newSocket = io("http://localhost:9000");
-//     setSocket(newSocket);
-//   }, [currentUser]);
-
-//   useEffect(() => {
-//     if (socket === null) return;
-
-//     socket.emit("addNewUser", userId);
-
-//     socket.on("getOnlineUsers", (onlineUsers) => {
-//       setOnlineUsers(onlineUsers);
-//       console.log("Catch these", onlineUsers);
-//     });
-
-//     return () => {
-//       socket.off("getOnlineUsers");
-//     };
-//   }, [socket]);
 
 //   useEffect(() => {
 //     if (socket === null || !currentChat) return;
@@ -102,8 +87,9 @@
 
 //     socket.on("getMessage", (res) => {
 //       setMessages((prevMessages) => [...prevMessages, res]);
+//       console.log("All da mes:", res);
 //     });
-//   }, [socket, currentChat]);
+//   }, [socket]);
 
 //   useEffect(() => {
 //     if (socket === null) return;
@@ -118,15 +104,13 @@
 //         setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
 //       }
 //     });
+
+//     return () => {
+//       socket.off("getNotification");
+//     };
 //   }, [socket]);
 
 //   console.log("Notifications: ", notifications);
-//   const membersArray = currentChat?.members.split(",");
-//   console.log(membersArray);
-//   const isChatOpen = membersArray?.some((id) => id == "1");
-//   console.log("CHAT OPEN?!", isChatOpen);
-
-//   // console.log("ONLINE USERS:", onlineUsers);
 //   useEffect(() => {
 //     const fetchCurrentUser = async () => {
 //       try {
@@ -165,10 +149,10 @@
 //           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages/${currentChat?.id}`, // Adjust endpoint as per your backend API
 //         );
 //         setMessages(response.data);
-//         setIsMessagesLoading(false); // Update loading state after fetching messages
+//         setIsMessagesLoading(false);
 //       } catch (error) {
 //         console.error("Error fetching messages:", error);
-//         setIsMessagesLoading(false); // Update loading state in case of error
+//         setIsMessagesLoading(false);
 //       }
 //     };
 
@@ -194,8 +178,6 @@
 //         const usersData = usersDataResponses.map((response) => response.data);
 
 //         setUsersData(usersData);
-
-//         // console.log("Users data:", usersData);
 //       } catch (error) {
 //         console.error("Error fetching other users data:", error);
 //       }
@@ -211,11 +193,12 @@
 //         chat.members.includes(user.id.toString()),
 //     );
 //     setCurrentChat(chat || null);
-//     localStorage.setItem("currentChat", JSON.stringify(chat || null));
+//     if (chat !== undefined) {
+//       const chatString: string = JSON.stringify(chat);
+//       localStorage.setItem("currentChat", chatString);
+//     }
 //     setClickedUser(user);
 //   };
-
-//   // console.log(currentChat);
 
 //   const handleMessageChange = (event: any) => {
 //     setTextMessage(event.target.value);
@@ -645,6 +628,7 @@ interface User {
 type Notification = {
   senderId: string;
   isRead: boolean;
+  message: string;
   date: Date;
 };
 
@@ -757,10 +741,10 @@ const Chat = () => {
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages/${currentChat?.id}`, // Adjust endpoint as per your backend API
         );
         setMessages(response.data);
-        setIsMessagesLoading(false); // Update loading state after fetching messages
+        setIsMessagesLoading(false);
       } catch (error) {
         console.error("Error fetching messages:", error);
-        setIsMessagesLoading(false); // Update loading state in case of error
+        setIsMessagesLoading(false);
       }
     };
 
@@ -786,8 +770,6 @@ const Chat = () => {
         const usersData = usersDataResponses.map((response) => response.data);
 
         setUsersData(usersData);
-
-        // console.log("Users data:", usersData);
       } catch (error) {
         console.error("Error fetching other users data:", error);
       }
@@ -803,11 +785,12 @@ const Chat = () => {
         chat.members.includes(user.id.toString()),
     );
     setCurrentChat(chat || null);
-
+    if (chat !== undefined) {
+      const chatString: string = JSON.stringify(chat);
+      localStorage.setItem("currentChat", chatString);
+    }
     setClickedUser(user);
   };
-
-  // console.log(currentChat);
 
   const handleMessageChange = (event: any) => {
     setTextMessage(event.target.value);
