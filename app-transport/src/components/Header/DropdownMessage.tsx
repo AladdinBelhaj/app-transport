@@ -61,19 +61,12 @@ const DropdownMessage = () => {
   useEffect(() => {
     if (socket === null) return;
 
-    socket.on("getNotification", (res) => {
-      const membersArray = currentChatRef.current?.members.split(",");
-      const isChatOpen = membersArray?.some((id) => id === res.senderId);
-      if (!currentChatRef.current) {
-        setNotifications((prev) => [res, ...prev]);
-        setNotifying(true);
-      } else {
-        setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
-      }
+    socket.on("getHeaderNotif", (res) => {
+      setNotifications((prev) => [res, ...prev]);
     });
 
     return () => {
-      socket.off("getNotification");
+      socket.off("getHeaderNotif");
     };
   }, [socket]);
 

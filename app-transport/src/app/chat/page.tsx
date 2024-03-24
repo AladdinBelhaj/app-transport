@@ -641,6 +641,9 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentNotification, setCurrentNotification] = useState<
+    Notification[]
+  >([]);
   const [newMessage, setNewMessage] = useState<Message[]>([]);
   const [textMessage, setTextMessage] = useState("");
   // const [socket, setSocket] = useState<Socket | null>(null);
@@ -692,8 +695,10 @@ const Chat = () => {
 
       if (!currentChatRef.current) {
         setNotifications((prev) => [res, ...prev]);
+        setCurrentNotification(res);
       } else {
         setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
+        setCurrentNotification({ ...res, isRead: true });
       }
     });
 
@@ -701,6 +706,14 @@ const Chat = () => {
       socket.off("getNotification");
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (socket === null) return;
+    socket.emit("sendHeaderNotif", currentNotification);
+    return () => {
+      socket.off("sendHeaderNotif");
+    };
+  }, [socket, currentNotification]);
 
   console.log("Notifications: ", notifications);
   useEffect(() => {

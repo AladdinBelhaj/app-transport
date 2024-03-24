@@ -43,6 +43,7 @@
 // io.listen(9000);
 
 const { Server } = require("socket.io");
+const { notifications } = require("../app/models");
 
 const io = new Server({ cors: "*" });
 
@@ -76,10 +77,16 @@ io.on("connection", (socket) => {
         date: new Date(),
       });
 
-    
     }
-    
+  
   });
+    socket.on("sendHeaderNotif",(notification)=>{
+      const user = onlineUsers.find((user) => user.userId !== notification.senderId);
+      if (user) {
+      io.to(user.socketId).emit("getHeaderNotif", notification);
+      }
+    })
+
 
   socket.on("disconnect", () => {
     onlineUsers = onlineUsers.filter((user) => user.socketId != socket.id);
