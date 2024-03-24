@@ -28,7 +28,7 @@ const DropdownMessage = () => {
 
     socket.on("getMessage", (res) => {
       setMessages((prevMessages) => [...prevMessages, res]);
-      setNotifying(true); // Set notifying to true when a new message is received
+      setNotifying(true);
     });
 
     return () => {

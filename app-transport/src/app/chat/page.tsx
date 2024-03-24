@@ -669,6 +669,9 @@ const Chat = () => {
   const userId = localStorage.getItem("id") || "";
 
   const currentChatRef = useRef(currentChat);
+  useEffect(() => {
+    currentChatRef.current = currentChat;
+  }, [currentChat]);
 
   const scroll = useRef<HTMLDivElement>(null); // Specify the type of the ref
 
@@ -709,6 +712,10 @@ const Chat = () => {
         setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
       }
     });
+
+    return () => {
+      socket.off("getNotification");
+    };
   }, [socket]);
 
   console.log("Notifications: ", notifications);
