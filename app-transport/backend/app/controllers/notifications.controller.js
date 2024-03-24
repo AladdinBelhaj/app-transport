@@ -1,12 +1,13 @@
 const db = require('../models/index');
-const MesNotification = db.MesNotification;
+const notifications = db.notifications;
 const Op = db.Sequelize.Op;
+
 
 exports.createNotification = async (req, res) => {
     const { senderId, message, isRead, date } = req.body;
 
     try {
-        const notification = await MesNotification.create({
+        const notification = await notifications.create({
             senderId,
             message,
             isRead,
@@ -22,7 +23,7 @@ exports.createNotification = async (req, res) => {
 
 exports.getNotifications = async (req, res) => {
     try {
-        const notifications = await MesNotification.findAll();
+        const notifications = await notifications.findAll();
 
         res.status(200).json(notifications);
     } catch (error) {

@@ -4,7 +4,7 @@ const eventsRoutes = require('./events.route')
 const offersRoutes = require("./offers.route")
 const chatsRoutes = require("./chats.route");
 const messagesRoutes = require("./messages.route");
-const messageNotifsRoutes = require("./messageNotifs.route");
+const notificationsRoutes = require("./notifications.route");
 
 function setupRoutes(app) {
     usersRoutes(app);
@@ -13,7 +13,7 @@ function setupRoutes(app) {
     offersRoutes(app);
     chatsRoutes(app);
     messagesRoutes(app);
-    messageNotifsRoutes(app);
+    notificationsRoutes(app);
 }
 
 

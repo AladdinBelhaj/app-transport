@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const MesNotification = sequelize.define("MesNotification", {
+    const notifications = sequelize.define("notifications", {
         senderId: {
             type: Sequelize.STRING
         },
@@ -13,5 +13,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE
         }
     });
-    return MesNotification;
+    return notifications;
 };

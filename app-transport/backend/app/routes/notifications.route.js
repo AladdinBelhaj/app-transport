@@ -1,4 +1,4 @@
-const { notification } = require("../models/index");
+const { notification } = require("../models/notifications.model");
 
 
 module.exports = (app) => {
