@@ -156,18 +156,21 @@ const Offers = () => {
   const [isAcceptModalOpen, setIsAcceptModalOpen] = useState(false);
   const [offerToDeleteId, setOfferToDeleteId] = useState<number | null>(null);
   const [offerToAcceptId, setOfferToAcceptId] = useState<number | null>(null);
+  const [userToBeAnswered, setUserToBeAnswered] = useState<string | null>(null);
 
-  const openDeleteModal = (offerId: number) => {
+  const openDeleteModal = (offerId: number, userId: string) => {
     setIsDeleteModalOpen(true);
-    setOfferToDeleteId(offerId); // Set the offer ID to be deleted
+    setUserToBeAnswered(userId);
+    setOfferToDeleteId(offerId);
   };
 
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const openAcceptModal = (offerId: number) => {
+  const openAcceptModal = (offerId: number, userId: string) => {
     setIsAcceptModalOpen(true);
+    setUserToBeAnswered(userId);
     setOfferToAcceptId(offerId); // Set the offer ID to be deleted
   };
 
@@ -181,8 +184,9 @@ const Offers = () => {
       setOfferData((prevOfferData) =>
         prevOfferData.filter((offer: any) => offer.id !== offerToDeleteId),
       );
-      setIsDeleteModalOpen(false); // Close the delete modal
-      setOfferToDeleteId(null); // Reset the offer ID to null
+      setIsDeleteModalOpen(false);
+      setOfferToDeleteId(null);
+      setUserToBeAnswered(null);
 
       axios
         .put(
@@ -204,8 +208,9 @@ const Offers = () => {
       setOfferData((prevOfferData) =>
         prevOfferData.filter((offer: any) => offer.id !== offerToAcceptId),
       );
-      setIsAcceptModalOpen(false); // Close the delete modal
-      setOfferToAcceptId(null); // Reset the offer ID to null
+      setIsAcceptModalOpen(false);
+      setOfferToAcceptId(null);
+      setUserToBeAnswered(null);
       const offerToAccept = offerData.find(
         (offer: any) => offer.id === offerToAcceptId,
       ) as { id: string; totalWeight: string; tripId: string } | undefined;
@@ -493,7 +498,7 @@ const Offers = () => {
                 </div>
                 <div className="space-x-4">
                   <button
-                    onClick={() => openAcceptModal(offer.id)}
+                    onClick={() => openAcceptModal(offer.id, userData?.id)}
                     className={`rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-700 ${+tripData?.maxWeight < +offer.totalWeight ? "cursor-not-allowed opacity-40" : ""}`}
                     disabled={+tripData?.maxWeight < +offer.totalWeight}
                   >
@@ -501,7 +506,7 @@ const Offers = () => {
                   </button>
 
                   <button
-                    onClick={() => openDeleteModal(offer.id)}
+                    onClick={() => openDeleteModal(offer.id, userData?.id)}
                     className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-700"
                   >
                     Reject Offer
