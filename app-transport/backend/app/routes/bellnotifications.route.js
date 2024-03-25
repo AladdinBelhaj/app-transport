@@ -16,6 +16,6 @@ module.exports = (app) => {
     router.post("/create", bellnotifications.createNotification);
     router.get("/:id", bellnotifications.getNotificationsById);
     router.delete("/", bellnotifications.deleteAllNotifications);
-
+    router.put('/update', bellnotifications.updateNotifications);
     app.use("/api/bellnotifications", router);
 };
