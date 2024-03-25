@@ -14,7 +14,7 @@ module.exports = (app) => {
     var router = require("express").Router();
 
     router.post("/create", bellnotifications.createNotification);
-    router.get("/", bellnotifications.getNotifications);
+    router.get("/:id", bellnotifications.getNotificationsById);
     router.delete("/", bellnotifications.deleteAllNotifications);
 
     app.use("/api/bellnotifications", router);

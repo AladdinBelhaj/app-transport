@@ -1,15 +1,30 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { SocketContext } from "@/app/context/SocketContext";
-
+import axios from "axios";
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
+  const userId = localStorage.getItem("id");
   const socket = useContext(SocketContext);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
-
+  useEffect(() => {
+    // Fetch notifications from the backend when the component mounts
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/${userId}`,
+      )
+      .then((response) => {
+        // Upon successful fetch, set the notifications state
+        setNotifications(response.data);
+        console.log("current notifs:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching notifications:", error);
+      });
+  }, []);
   useEffect(() => {
     // Listen for notification events from the server
     socket?.on("getApplyTripNotif", (notification: any) => {

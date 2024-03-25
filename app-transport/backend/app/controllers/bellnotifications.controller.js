@@ -4,10 +4,11 @@ const Op = db.Sequelize.Op;
 
 
 exports.createNotification = async (req, res) => {
-    const { message, isRead, date } = req.body;
+    const { userId, message, isRead, date } = req.body;
 
     try {
         const notification = await bellnotifications.create({
+            userId,
             message,
             isRead,
             date
@@ -20,17 +21,23 @@ exports.createNotification = async (req, res) => {
     }
 };
 
-exports.getNotifications = async (req, res) => {
+exports.getNotificationsById = async (req, res) => {
     try {
-        const bellnotifications = await bellnotifications.findAll();
+        const { id } = req.params; // Get the ID from the request parameters
 
-        res.status(200).json(bellnotifications);
+        // Query the database to find notifications by ID
+        const notifications = await bellnotifications.findAll({
+            where: {
+                userId: id // Assuming 'userId' is the field in your database for the user ID
+            }
+        });
+
+        res.status(200).json(notifications);
     } catch (error) {
         console.log(error);
         res.status(500).json(error);
     }
 };
-
 
 exports.deleteAllNotifications = async (req, res) => {
     try {
