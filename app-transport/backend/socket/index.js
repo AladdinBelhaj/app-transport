@@ -95,18 +95,15 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("sendApplyTripNotif",( transporterId,
-    departCountry,
-    destCountry,)=>{
-    const user = onlineUsers.find((user) => user.userId == transporterId);
-    if(user){
-      io.to(user.socketId).emit("getApplyTripNotif",{
-        message: `You received a new offer (${departCountry} to ${destCountry} trip!)`,
-        isRead:false,
-        date: new Date(),
-      })
+  socket.on("sendApplyTripNotif", (notificationData) => {
+    const { userId } = notificationData;
+    const user = onlineUsers.find((user) => user.userId === userId);
+    
+    if (user) {
+      io.to(user.socketId).emit("getApplyTripNotif", notificationData);
     }
   });
+  
   
   socket.on("disconnect", () => {
     onlineUsers = onlineUsers.filter((user) => user.socketId != socket.id);

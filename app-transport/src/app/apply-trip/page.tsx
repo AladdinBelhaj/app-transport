@@ -573,21 +573,20 @@ const ApplyTrip: React.FC = () => {
             .catch((error) => {
               console.error("Error adding ID:", error);
             });
-          axios.post(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
-            {
-              userId: transporterId,
-              message: `You received a new offer (${departCountry} to ${destCountry} trip!)`,
-              isRead: false,
-              date: new Date(),
-            },
-          );
-          socket?.emit(
-            "sendApplyTripNotif",
-            transporterId,
-            departCountry,
-            destCountry,
-          );
+          axios
+            .post(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+              {
+                userId: transporterId,
+                message: `You received a new offer (${departCountry} to ${destCountry} trip!)`,
+                isRead: false,
+                date: new Date(),
+              },
+            )
+            .then((response: any) => {
+              console.log(response.data);
+              socket?.emit("sendApplyTripNotif", response.data);
+            });
         } else {
           console.log("Unexpected status code:", response.status);
         }
