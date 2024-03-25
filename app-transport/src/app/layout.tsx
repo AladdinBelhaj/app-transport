@@ -7,10 +7,6 @@ import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import { SocketContextProvider } from "./context/SocketContext";
 
-interface OnlineUser {
-  userId: string;
-  socketId: string;
-}
 export default function RootLayout({
   children,
 }: Readonly<{

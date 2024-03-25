@@ -1,13 +1,31 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { SocketContext } from "@/app/context/SocketContext";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
-
+  const [notifying, setNotifying] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const socket = useContext(SocketContext);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
+  useEffect(() => {
+    // Listen for notification events from the server
+    socket?.on("getApplyTripNotif", (notification: any) => {
+      // Handle the received notification
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        notification,
+      ]);
+      setNotifying(true);
+    });
+
+    return () => {
+      socket?.off("getApplyTripNotif");
+    };
+  }, [socket]);
+  console.log("dropdown notif: ", notifications);
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;

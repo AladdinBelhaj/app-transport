@@ -76,16 +76,38 @@ io.on("connection", (socket) => {
         isRead: false,
         date: new Date(),
       });
-
     }
   
+    
+
   });
-    socket.on("sendHeaderNotif",(notification)=>{
-      const user = onlineUsers.find((user) => user.userId !== notification.senderId);
-      if (user) {
-      io.to(user.socketId).emit("getHeaderNotif", notification);
-      }
-    })
+
+
+  socket.on("sendHeaderNotif", (notification) => {
+    console.log("Notification being sent:", notification);
+  
+    const senderUser = onlineUsers.find((user) => user.userId === notification.senderId);
+    
+    if (senderUser) {
+      // Emit the notification to all users except the sender
+      onlineUsers.forEach((user) => {
+        if (user.userId !== notification.senderId) {
+          io.to(user.socketId).emit("getHeaderNotif", notification);
+        }
+      });
+    }
+  });
+
+  socket.on("sendApplyTripNotif",(transporterId)=>{
+    const user = onlineUsers.find((user) => user.userId == transporterId);
+    if(user){
+      io.to(user.socketId).emit("getApplyTripNotif",{
+        message: "You have received a new offer!",
+        date: new Date(),
+      })
+    }
+  });
+  
 
 
   socket.on("disconnect", () => {

@@ -695,10 +695,10 @@ const Chat = () => {
 
       if (!currentChatRef.current) {
         setNotifications((prev) => [res, ...prev]);
-        setCurrentNotification(res);
+        socket.emit("sendHeaderNotif", res);
       } else {
         setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
-        setCurrentNotification({ ...res, isRead: true });
+        socket.emit("sendHeaderNotif", { ...res, isRead: true });
       }
     });
 
@@ -706,14 +706,6 @@ const Chat = () => {
       socket.off("getNotification");
     };
   }, [socket]);
-
-  useEffect(() => {
-    if (socket === null) return;
-    socket.emit("sendHeaderNotif", currentNotification);
-    return () => {
-      socket.off("sendHeaderNotif");
-    };
-  }, [socket, currentNotification]);
 
   console.log("Notifications: ", notifications);
   useEffect(() => {

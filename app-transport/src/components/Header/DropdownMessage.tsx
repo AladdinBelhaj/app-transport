@@ -35,20 +35,20 @@ const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [currentNotification, setCurrentNotification] = useState<
+    Notification[]
+  >([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const onlineUsers = useContext(OnlineUsersContext);
-  console.log("Online Users from HEADER: ", onlineUsers);
   const socket = useContext(SocketContext);
-  console.log("Socket from HEADER: ", socket);
+
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
   const currentChatRef = useRef(currentChat);
-
   useEffect(() => {
     const stringCurrentChat = localStorage.getItem("currentChat");
-    console.log("Stored currentChat from localStorage: ", stringCurrentChat);
     if (stringCurrentChat !== null) {
       setCurrentChat(JSON.parse(stringCurrentChat));
       currentChatRef.current = JSON.parse(stringCurrentChat);
@@ -57,22 +57,26 @@ const DropdownMessage = () => {
       currentChatRef.current = null;
     }
   }, []);
-
   useEffect(() => {
     if (socket === null) return;
 
-    socket.on("getHeaderNotif", (res) => {
-      setNotifications((prev) => [res, ...prev]);
+    socket.on("getNotification", (res) => {
+      const membersArray = currentChatRef.current?.members.split(",");
+      const isChatOpen = membersArray?.some((id) => id === res.senderId);
+
+      if (!currentChatRef.current) {
+        setNotifications((prev) => [res, ...prev]);
+        socket.emit("sendHeaderNotif", res);
+      } else {
+        setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
+        socket.emit("sendHeaderNotif", { ...res, isRead: true });
+      }
     });
 
     return () => {
-      socket.off("getHeaderNotif");
+      socket.off("getNotification");
     };
   }, [socket]);
-
-  console.log("Header notifications: ", notifications);
-
-  // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
@@ -96,6 +100,23 @@ const DropdownMessage = () => {
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
   });
+
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getHeaderNotif", (res) => {
+      setNotifications((prev) => [res, ...prev]);
+      // if (!res.isRead) {
+      //   setNotifying(true);
+      // }
+    });
+
+    return () => {
+      socket.off("getHeaderNotif");
+    };
+  }, [socket]);
+
+  console.log("Header notifications: ", notifications);
 
   return (
     <li className="relative">
@@ -350,3 +371,18 @@ export default DropdownMessage;
 //     setNotifying(true);
 //   });
 // }, [socket, currentChat]);
+
+// useEffect(() => {
+//   if (socket === null) return;
+
+//   socket.on("getHeaderNotif", (res) => {
+//     setNotifications((prev) => [res, ...prev]);
+//     // if (!res.isRead) {
+//     //   setNotifying(true);
+//     // }
+//   });
+
+//   return () => {
+//     socket.off("getHeaderNotif");
+//   };
+// }, [socket]);

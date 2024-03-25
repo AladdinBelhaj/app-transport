@@ -390,7 +390,7 @@
 // export default ApplyTrip;
 
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import axios from "axios";
@@ -401,6 +401,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 import { useUpdateOfferImage } from "../../../utils/updateOfferImage";
+import { io, Socket } from "socket.io-client";
+import { SocketContext } from "../context/SocketContext";
 
 interface Accordion {
   id: number;
@@ -411,6 +413,7 @@ interface Input {
 }
 
 const ApplyTrip: React.FC = () => {
+  const socket = useContext(SocketContext);
   const router = useRouter();
   const [accordions, setAccordions] = useState<Accordion[]>([{ id: 0 }]);
   const [inputs, setInputs] = useState<Input[]>([
@@ -484,11 +487,14 @@ const ApplyTrip: React.FC = () => {
 
   let tripId: any;
   let transporterId: any;
-
+  let departCountry: any;
+  let arrivCountry: any;
   if (currentTripString !== null) {
     const currentTrip = JSON.parse(currentTripString);
     tripId = currentTrip?.id;
     transporterId = currentTrip?.transporterId;
+    departCountry = currentTrip?.departCountry;
+    arrivCountry = currentTrip?.arrivCountry;
   }
 
   const [offerCreated, setOfferCreated] = useState(false);
@@ -567,6 +573,7 @@ const ApplyTrip: React.FC = () => {
             .catch((error) => {
               console.error("Error adding ID:", error);
             });
+          socket?.emit("sendApplyTripNotif", transporterId);
         } else {
           console.log("Unexpected status code:", response.status);
         }
@@ -574,7 +581,7 @@ const ApplyTrip: React.FC = () => {
       .catch((error) => {
         console.error("Error creating offer:", error);
       });
-    router.push("/offers/view-offers");
+    // router.push("/offers/view-offers");
   }
 
   return (
