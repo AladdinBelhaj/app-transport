@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
+import { SocketContext } from "../context/SocketContext";
 
 interface TripData {
   id: number;
@@ -45,7 +46,7 @@ const Offers = () => {
     {},
   );
   const modalRef = useRef<HTMLDivElement>(null);
-
+  const socket = useContext(SocketContext);
   const id = localStorage.getItem("id");
 
   useEffect(() => {
@@ -187,7 +188,20 @@ const Offers = () => {
       setIsDeleteModalOpen(false);
       setOfferToDeleteId(null);
       setUserToBeAnswered(null);
+      const offerToReject = offerData.find(
+        (offer: any) => offer.id === offerToAcceptId,
+      ) as { id: string; tripId: string } | undefined;
 
+      let tripId: string | undefined;
+      let tripData: TripData | undefined;
+
+      if (offerToReject) {
+        tripId = offerToReject.tripId;
+
+        if (tripId !== undefined) {
+          tripData = tripDataMap[tripId];
+        }
+      }
       axios
         .put(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToDeleteId}`,
@@ -198,6 +212,20 @@ const Offers = () => {
         })
         .catch((error) => {
           console.error("Error rejecting offer:", error);
+        });
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+          {
+            userId: userToBeAnswered,
+            message: `Your offer has been rejected (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
+            isRead: false,
+            date: new Date(),
+          },
+        )
+        .then((response: any) => {
+          console.log(response.data);
+          socket?.emit("sendApplyTripNotif", response.data);
         });
     }
   };
@@ -257,7 +285,20 @@ const Offers = () => {
         .catch((error) => {
           console.error("Error accepting offer:", error);
         });
-
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+          {
+            userId: userToBeAnswered,
+            message: `Your offer has been accepted (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
+            isRead: false,
+            date: new Date(),
+          },
+        )
+        .then((response: any) => {
+          console.log(response.data);
+          socket?.emit("sendApplyTripNotif", response.data);
+        });
       axios
         .put(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${tripId}`,
