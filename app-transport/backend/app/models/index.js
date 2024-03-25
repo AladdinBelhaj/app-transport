@@ -27,7 +27,8 @@ db.events = require("./events.model")(sequelize, Sequelize);
 db.offers = require("./offers.model")(sequelize, Sequelize);
 db.chats = require("./chats.model")(sequelize, Sequelize);
 db.messages = require("./messages.model")(sequelize, Sequelize);
-db.notifications = require("./notifications.model")(sequelize, Sequelize)
+db.notifications = require("./notifications.model")(sequelize, Sequelize);
+db.bellnotifications = require("./bellnotifications.model")(sequelize,Sequelize);
 
 // user role association
 db.roles.belongsToMany(db.users, {

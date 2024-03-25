@@ -488,13 +488,13 @@ const ApplyTrip: React.FC = () => {
   let tripId: any;
   let transporterId: any;
   let departCountry: any;
-  let arrivCountry: any;
+  let destCountry: any;
   if (currentTripString !== null) {
     const currentTrip = JSON.parse(currentTripString);
     tripId = currentTrip?.id;
     transporterId = currentTrip?.transporterId;
     departCountry = currentTrip?.departCountry;
-    arrivCountry = currentTrip?.arrivCountry;
+    destCountry = currentTrip?.destCountry;
   }
 
   const [offerCreated, setOfferCreated] = useState(false);
@@ -573,7 +573,12 @@ const ApplyTrip: React.FC = () => {
             .catch((error) => {
               console.error("Error adding ID:", error);
             });
-          socket?.emit("sendApplyTripNotif", transporterId);
+          socket?.emit(
+            "sendApplyTripNotif",
+            transporterId,
+            departCountry,
+            destCountry,
+          );
         } else {
           console.log("Unexpected status code:", response.status);
         }
