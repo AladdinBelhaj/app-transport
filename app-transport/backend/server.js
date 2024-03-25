@@ -44,8 +44,6 @@ setupRoutes(app);
 setupStaticRoutes(app);
 app.use("/api/stripe", stripe);
 
-
-
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {

@@ -1,5 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
     const bellnotifications = sequelize.define("bellnotifications", {
+        userId: {
+            type: Sequelize.STRING
+        },
         message: {
             type: Sequelize.STRING
         },
@@ -9,6 +12,6 @@ module.exports = (sequelize, Sequelize) => {
         date: {
             type: Sequelize.DATE
         }
-    });
+    });              
     return bellnotifications;
 };

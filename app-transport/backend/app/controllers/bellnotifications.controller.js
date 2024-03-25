@@ -4,11 +4,10 @@ const Op = db.Sequelize.Op;
 
 
 exports.createNotification = async (req, res) => {
-    const { senderId, message, isRead, date } = req.body;
+    const { message, isRead, date } = req.body;
 
     try {
         const notification = await bellnotifications.create({
-            senderId,
             message,
             isRead,
             date
