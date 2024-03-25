@@ -86,7 +86,6 @@ io.on("connection", (socket) => {
     const senderUser = onlineUsers.find((user) => user.userId === notification.senderId);
     
     if (senderUser) {
-      // Emit the notification to all users except the sender
       onlineUsers.forEach((user) => {
         if (user.userId !== notification.senderId) {
           io.to(user.socketId).emit("getHeaderNotif", notification);

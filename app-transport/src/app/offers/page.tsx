@@ -189,7 +189,7 @@ const Offers = () => {
       setOfferToDeleteId(null);
       setUserToBeAnswered(null);
       const offerToReject = offerData.find(
-        (offer: any) => offer.id === offerToAcceptId,
+        (offer: any) => offer.id === offerToDeleteId,
       ) as { id: string; tripId: string } | undefined;
 
       let tripId: string | undefined;
