@@ -110,12 +110,21 @@ const CurrentTrips = () => {
       });
   }
 
-  if (!tripData) {
-    // Render loading state or return null
-    return <div>Loading...</div>;
-  }
-
-  // Rest of your component code...
+  const userId = localStorage.getItem("id");
+  const [offerData, setOfferData] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${userId}`)
+      .then((response) => {
+        const filteredOffers = response.data.filter(
+          (offer: any) => offer.tripId === selectedTrip?.id,
+        );
+        setOfferData(filteredOffers);
+      })
+      .catch((error) => {
+        console.error("Error fetching offer data:", error);
+      });
+  }, []);
 
   return (
     <>

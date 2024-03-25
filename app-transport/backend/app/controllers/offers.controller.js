@@ -96,7 +96,7 @@ exports.getOfferData = async (req, res) => {
 
 exports.getOfferDataUser = async (req, res) => {
     try {
-        const userId = req.params.userId; // Assuming the trip ID is passed as a parameter in the URL
+        const userId = req.params.userId; 
 
         const offer = await Offers.findAll({
             where: { userId: userId },
