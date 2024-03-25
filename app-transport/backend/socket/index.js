@@ -97,9 +97,9 @@ io.on("connection", (socket) => {
 
   socket.on("sendApplyTripNotif", (notificationData) => {
     const { userId } = notificationData;
-    const user = onlineUsers.find((user) => user.userId === userId);
-    
+    const user = onlineUsers.find((user) => user.userId == userId);
     if (user) {
+
       io.to(user.socketId).emit("getApplyTripNotif", notificationData);
     }
   });

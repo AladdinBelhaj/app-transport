@@ -209,23 +209,23 @@ const Offers = () => {
         )
         .then((response) => {
           console.log("Offer rejected successfully");
+          axios
+            .post(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+              {
+                userId: userToBeAnswered,
+                message: `Your offer has been rejected (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
+                isRead: false,
+                date: new Date(),
+              },
+            )
+            .then((response: any) => {
+              console.log(response.data);
+              socket?.emit("sendApplyTripNotif", response.data);
+            });
         })
         .catch((error) => {
           console.error("Error rejecting offer:", error);
-        });
-      axios
-        .post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
-          {
-            userId: userToBeAnswered,
-            message: `Your offer has been rejected (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
-            isRead: false,
-            date: new Date(),
-          },
-        )
-        .then((response: any) => {
-          console.log(response.data);
-          socket?.emit("sendApplyTripNotif", response.data);
         });
     }
   };
@@ -281,23 +281,23 @@ const Offers = () => {
         )
         .then((response) => {
           console.log("Offer accepted successfully");
+          axios
+            .post(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+              {
+                userId: userToBeAnswered,
+                message: `Your offer has been accepted (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
+                isRead: false,
+                date: new Date(),
+              },
+            )
+            .then((response: any) => {
+              console.log(response.data);
+              socket?.emit("sendApplyTripNotif", response.data);
+            });
         })
         .catch((error) => {
           console.error("Error accepting offer:", error);
-        });
-      axios
-        .post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
-          {
-            userId: userToBeAnswered,
-            message: `Your offer has been accepted (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
-            isRead: false,
-            date: new Date(),
-          },
-        )
-        .then((response: any) => {
-          console.log(response.data);
-          socket?.emit("sendApplyTripNotif", response.data);
         });
       axios
         .put(
