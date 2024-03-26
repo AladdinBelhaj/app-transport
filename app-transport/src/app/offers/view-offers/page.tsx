@@ -564,10 +564,22 @@ const ViewOffers = () => {
               <div>
                 <h4 className="text-xl font-semibold text-black dark:text-white">
                   {tripData?.departCountry} to {tripData?.destCountry}
-                  <span className="text-sm font-light">
-                    {" "}
-                    (Weight Left: {tripData?.maxWeight} kg)
-                  </span>
+                  {tripData?.status === "finished" ? (
+                    <span className="text-sm font-light">
+                      {" "}
+                      (Trip is finished)
+                    </span>
+                  ) : tripData?.status === "pending" ? (
+                    <span className="text-sm font-light">
+                      {" "}
+                      (Weight Left: {tripData?.maxWeight} kg)
+                    </span>
+                  ) : tripData?.status === "ongoing" ? (
+                    <span className="text-sm font-light">
+                      {" "}
+                      (Trip is ongoing)
+                    </span>
+                  ) : null}
                 </h4>
 
                 <div className="col-span-1 flex items-center">

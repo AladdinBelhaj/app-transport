@@ -180,7 +180,7 @@ const FindTripsPage = () => {
               </thead>
               <tbody>
                 {(filteredTripData.length > 0 ? filteredTripData : tripData)
-                  .filter((trip) => trip.status !== "ongoing")
+                  .filter((trip) => trip.status == "pending")
                   .map((trip: Trip) => (
                     <tr key={trip.id}>
                       <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
