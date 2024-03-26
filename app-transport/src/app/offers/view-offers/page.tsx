@@ -498,6 +498,11 @@ const ViewOffers = () => {
                   Total Weight: {offer.totalWeight} kg
                 </span>
               </div>
+              <div className="space-x-4">
+                <button className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800">
+                  Confirm Delivery
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
