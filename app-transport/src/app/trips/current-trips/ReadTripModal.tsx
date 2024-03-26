@@ -127,7 +127,8 @@ const ReadTripModal: React.FC<ModalProps> = ({
       .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${userId}`)
       .then((response) => {
         const filteredOffers = response.data.filter(
-          (offer: any) => offer.tripId == selectedTrip?.id,
+          (offer: any) =>
+            offer.tripId == selectedTrip?.id && offer.status === "accepted",
         );
 
         const userIdsSentNotification: Set<string> = new Set();

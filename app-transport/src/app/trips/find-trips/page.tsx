@@ -183,7 +183,7 @@ const FindTripsPage = () => {
                   .filter((trip) => trip.status == "pending")
                   .map((trip: Trip) => (
                     <tr key={trip.id}>
-                      <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                      <td className="border-b border-[#eee] px-4 py-5 pl-9  dark:border-strokedark xl:pl-11">
                         <h5 className="font-medium text-black dark:text-white">
                           {transporterNames[trip.transporterId]}
                         </h5>
