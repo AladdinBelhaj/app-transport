@@ -181,9 +181,11 @@ const CurrentTrips = () => {
                           className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
                             trip.status === "ongoing"
                               ? "bg-success text-success"
-                              : trip.maxWeight === "Pending"
-                                ? "bg-danger text-danger"
-                                : "bg-warning text-warning"
+                              : trip.status === "finished"
+                                ? "bg-primary text-primary" // Changed to primary color for 'finished' status
+                                : trip.maxWeight === "Pending"
+                                  ? "bg-danger text-danger"
+                                  : "bg-warning text-warning"
                           }`}
                         >
                           {trip.status}

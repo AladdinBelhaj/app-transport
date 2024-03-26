@@ -52,53 +52,6 @@ const ReadTripModal: React.FC<ModalProps> = ({
     router.push(`/offers/${selectedTrip?.id}`);
   };
 
-  // const handleStart = (event: React.FormEvent) => {
-  //   closeModal();
-  //   if (selectedTrip != null) {
-  //     selectedTrip.status = "ongoing";
-  //   }
-  //   console.log(selectedTrip);
-  //   console.log(selectedTrip?.id);
-  //   axios
-  //     .put(
-  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
-  //       selectedTrip,
-  //     )
-  //     .then((response) => {})
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  //   axios
-  //     .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${userId}`)
-  //     .then((response) => {
-  //       const filteredOffers = response.data.filter(
-  //         (offer: any) => offer.tripId == selectedTrip?.id,
-  //       );
-  //       Promise.all(
-  //         filteredOffers.map((offer: any) =>
-  //           axios.post(
-  //             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
-  //             {
-  //               userId: offer.userId,
-  //               message: `The ${selectedTrip?.departCountry} to ${selectedTrip?.destCountry} has started!`,
-  //               isRead: false,
-  //               date: new Date(),
-  //             },
-  //           ),
-  //         ),
-  //       ).then((responses: any) => {
-  //         console.log(responses); // Array of responses from axios requests
-
-  //         responses.forEach((response: any) => {
-  //           socket?.emit("sendApplyTripNotif", response.data);
-  //         });
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching offer data:", error);
-  //     });
-  // };
-
   const handleStart = (event: React.FormEvent) => {
     closeModal();
     if (selectedTrip != null) {
@@ -122,20 +75,71 @@ const ReadTripModal: React.FC<ModalProps> = ({
           (offer: any) => offer.tripId == selectedTrip?.id,
         );
 
-        // Keep track of unique userIds
         const userIdsSentNotification: Set<string> = new Set();
 
-        // Loop through filteredOffers to send notifications
         filteredOffers.forEach((offer: any) => {
-          // Check if userId has already received a notification
           if (!userIdsSentNotification.has(offer.userId)) {
-            // Send notification
             axios
               .post(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
                 {
                   userId: offer.userId,
                   message: `The ${selectedTrip?.departCountry} to ${selectedTrip?.destCountry} has started!`,
+                  isRead: false,
+                  date: new Date(),
+                },
+              )
+              .then((response: any) => {
+                console.log(response); // Log response
+                socket?.emit("sendApplyTripNotif", response.data); // Emit socket event
+              })
+              .catch((error) => {
+                console.error("Error sending notification:", error);
+              });
+
+            // Add userId to the set to mark that notification has been sent
+            userIdsSentNotification.add(offer.userId);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching offer data:", error);
+      });
+  };
+
+  const handleFinish = (event: React.FormEvent) => {
+    closeModal();
+    if (selectedTrip != null) {
+      selectedTrip.status = "finished";
+    }
+    console.log(selectedTrip);
+    console.log(selectedTrip?.id);
+    axios
+      .put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
+        selectedTrip,
+      )
+      .then((response) => {})
+      .catch((err) => {
+        console.error(err);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${userId}`)
+      .then((response) => {
+        const filteredOffers = response.data.filter(
+          (offer: any) => offer.tripId == selectedTrip?.id,
+        );
+
+        const userIdsSentNotification: Set<string> = new Set();
+
+        filteredOffers.forEach((offer: any) => {
+          if (!userIdsSentNotification.has(offer.userId)) {
+            axios
+              .post(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+                {
+                  userId: offer.userId,
+                  message: `The ${selectedTrip?.departCountry} to ${selectedTrip?.destCountry} has finished!`,
                   isRead: false,
                   date: new Date(),
                 },
@@ -302,7 +306,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                   <button
                     type="button"
                     className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-red-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-red-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
-                    // onClick={handleStart}
+                    onClick={handleFinish}
                   >
                     <svg
                       aria-hidden="true"
