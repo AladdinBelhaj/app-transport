@@ -349,6 +349,17 @@ const ViewOffers = () => {
     {},
   );
   const modalRef = useRef<HTMLDivElement>(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [offerToConfirmId, setOfferToConfirmId] = useState<number | null>(null);
+
+  const openConfirmModal = (offerId: number) => {
+    setIsConfirmModalOpen(true);
+    setOfferToConfirmId(offerId);
+  };
+
+  const closeConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+  };
 
   const id = localStorage.getItem("id");
 
@@ -459,6 +470,86 @@ const ViewOffers = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Current Offers" />
+      {isConfirmModalOpen && (
+        <div
+          id="deleteModal"
+          tabIndex={-1}
+          aria-hidden="true"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden"
+          style={{ zIndex: 9999, backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
+          <div className="relative w-full max-w-md">
+            {/* Modal content */}
+            <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
+              <button
+                type="button"
+                onClick={closeConfirmModal}
+                className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+              <svg
+                className="text-gray-400 dark:text-gray-500 mx-auto mb-3.5 h-11 w-11"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0v-6zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p className="text-gray-500 dark:text-gray-300 mb-4">
+                Are you sure you want to reject this offer?
+              </p>
+              <div className="flex items-center justify-center space-x-4">
+                <button
+                  type="button"
+                  className="text-gray-500 border-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600 rounded-lg border bg-white px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:hover:text-white"
+                  onClick={closeConfirmModal} // Close modal on click
+                >
+                  No, cancel
+                </button>
+                <button
+                  type="submit"
+                  className="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                  // onClick={() => handleDelete()}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="-ml-1 mr-1.5 h-5 w-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0v-6zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {offerData.map((offer: any, offerIndex: number) => {
         const tripData = tripDataMap[offer.tripId];
         const userData = userDataMap[offer.userId];
@@ -505,7 +596,10 @@ const ViewOffers = () => {
                     tripData?.status === "finished"
                   ) {
                     return (
-                      <button className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800">
+                      <button
+                        onClick={() => openConfirmModal(offer.id)}
+                        className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800"
+                      >
                         Confirm Delivery
                       </button>
                     );
