@@ -326,14 +326,14 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
       });
     }
   }, [isOpen]);
-  console.log(formData);
+  // console.log(formData);
 
   const handleInput = (name: string, value: string) => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    console.log(formData);
+    // console.log(formData);
   };
 
   const isFormValid = () => {

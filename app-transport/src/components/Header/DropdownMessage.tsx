@@ -116,7 +116,7 @@ const DropdownMessage = () => {
     };
   }, [socket]);
 
-  console.log("Header notifications: ", notifications);
+  // console.log("Header notifications: ", notifications);
 
   return (
     <li className="relative">

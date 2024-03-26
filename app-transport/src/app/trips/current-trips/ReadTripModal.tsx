@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import UpdateTripModal from "./UpdateTripModal";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { off } from "process";
+import { SocketContext } from "@/app/context/SocketContext";
 interface Trip {
   id: number;
   departCountry: string;
@@ -36,7 +38,8 @@ const ReadTripModal: React.FC<ModalProps> = ({
   };
 
   const [isUpdateModalOpen, setUpdateIsModalOpen] = useState(false);
-
+  const socket = useContext(SocketContext);
+  const [offerData, setOfferData] = useState([]);
   const closeUpdateModal = () => {
     setUpdateIsModalOpen(false);
   };
@@ -48,6 +51,53 @@ const ReadTripModal: React.FC<ModalProps> = ({
   const viewOffers = () => {
     router.push(`/offers/${selectedTrip?.id}`);
   };
+
+  // const handleStart = (event: React.FormEvent) => {
+  //   closeModal();
+  //   if (selectedTrip != null) {
+  //     selectedTrip.status = "ongoing";
+  //   }
+  //   console.log(selectedTrip);
+  //   console.log(selectedTrip?.id);
+  //   axios
+  //     .put(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
+  //       selectedTrip,
+  //     )
+  //     .then((response) => {})
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  //   axios
+  //     .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${userId}`)
+  //     .then((response) => {
+  //       const filteredOffers = response.data.filter(
+  //         (offer: any) => offer.tripId == selectedTrip?.id,
+  //       );
+  //       Promise.all(
+  //         filteredOffers.map((offer: any) =>
+  //           axios.post(
+  //             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+  //             {
+  //               userId: offer.userId,
+  //               message: `The ${selectedTrip?.departCountry} to ${selectedTrip?.destCountry} has started!`,
+  //               isRead: false,
+  //               date: new Date(),
+  //             },
+  //           ),
+  //         ),
+  //       ).then((responses: any) => {
+  //         console.log(responses); // Array of responses from axios requests
+
+  //         responses.forEach((response: any) => {
+  //           socket?.emit("sendApplyTripNotif", response.data);
+  //         });
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching offer data:", error);
+  //     });
+  // };
 
   const handleStart = (event: React.FormEvent) => {
     closeModal();
@@ -65,7 +115,51 @@ const ReadTripModal: React.FC<ModalProps> = ({
       .catch((err) => {
         console.error(err);
       });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${userId}`)
+      .then((response) => {
+        const filteredOffers = response.data.filter(
+          (offer: any) => offer.tripId == selectedTrip?.id,
+        );
+
+        // Keep track of unique userIds
+        const userIdsSentNotification: Set<string> = new Set();
+
+        // Loop through filteredOffers to send notifications
+        filteredOffers.forEach((offer: any) => {
+          // Check if userId has already received a notification
+          if (!userIdsSentNotification.has(offer.userId)) {
+            // Send notification
+            axios
+              .post(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+                {
+                  userId: offer.userId,
+                  message: `The ${selectedTrip?.departCountry} to ${selectedTrip?.destCountry} has started!`,
+                  isRead: false,
+                  date: new Date(),
+                },
+              )
+              .then((response: any) => {
+                console.log(response); // Log response
+                socket?.emit("sendApplyTripNotif", response.data); // Emit socket event
+              })
+              .catch((error) => {
+                console.error("Error sending notification:", error);
+              });
+
+            // Add userId to the set to mark that notification has been sent
+            userIdsSentNotification.add(offer.userId);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching offer data:", error);
+      });
   };
+
+  console.log(offerData);
+  const userId = localStorage.getItem("id");
 
   const handleDelegate = (event: React.FormEvent) => {
     router.push("/delegate-objects");

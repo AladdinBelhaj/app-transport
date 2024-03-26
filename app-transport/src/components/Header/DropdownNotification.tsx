@@ -19,7 +19,6 @@ const DropdownNotification = () => {
       .then((response) => {
         // Upon successful fetch, set the notifications state
         setNotifications(response.data);
-        console.log("current notifs:", response.data);
       })
       .catch((error) => {
         console.error("Error fetching notifications:", error);
@@ -64,7 +63,7 @@ const DropdownNotification = () => {
         });
     }
   }, [dropdownOpen]);
-  console.log("dropdown notif: ", notifications);
+  // console.log("dropdown notif: ", notifications);
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;

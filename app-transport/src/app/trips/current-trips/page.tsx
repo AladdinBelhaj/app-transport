@@ -110,22 +110,6 @@ const CurrentTrips = () => {
       });
   }
 
-  const userId = localStorage.getItem("id");
-  const [offerData, setOfferData] = useState([]);
-  useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${userId}`)
-      .then((response) => {
-        const filteredOffers = response.data.filter(
-          (offer: any) => offer.tripId === selectedTrip?.id,
-        );
-        setOfferData(filteredOffers);
-      })
-      .catch((error) => {
-        console.error("Error fetching offer data:", error);
-      });
-  }, []);
-
   return (
     <>
       <DefaultLayout>

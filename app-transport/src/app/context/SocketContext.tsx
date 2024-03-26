@@ -32,15 +32,12 @@ export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
 
     socket.on("getOnlineUsers", (onlineUsers) => {
       setOnlineUsers(onlineUsers);
-      console.log("Catch these", onlineUsers);
     });
 
     return () => {
       socket.off("getOnlineUsers");
     };
   }, [socket]);
-
-  console.log("Socket:", socket);
 
   return (
     <SocketContext.Provider value={socket}>
