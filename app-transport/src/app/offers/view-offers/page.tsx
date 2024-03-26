@@ -499,9 +499,18 @@ const ViewOffers = () => {
                 </span>
               </div>
               <div className="space-x-4">
-                <button className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800">
-                  Confirm Delivery
-                </button>
+                {(() => {
+                  if (
+                    offer.status === "accepted" &&
+                    tripData?.status === "finished"
+                  ) {
+                    return (
+                      <button className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800">
+                        Confirm Delivery
+                      </button>
+                    );
+                  }
+                })()}
               </div>
             </div>
 
