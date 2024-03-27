@@ -1,13 +1,13 @@
 const db = require('../models/index');
-const notifications = db.notifications;
+const Notification = db.notifications; // Changed variable name to Notification
 const Op = db.Sequelize.Op;
 
-
 exports.createNotification = async (req, res) => {
-    const { senderId, message, isRead, date } = req.body;
+    const { recepientId, senderId, message, isRead, date } = req.body;
 
     try {
-        const notification = await notifications.create({
+        const notification = await Notification.create({ // Changed variable name to Notification
+            recepientId,
             senderId,
             message,
             isRead,
@@ -26,7 +26,7 @@ exports.getNotificationsById = async (req, res) => {
         const { id } = req.params; // Get the ID from the request parameters
 
         // Query the database to find notifications by ID
-        const notifications = await notifications.findAll({
+        const notifications = await Notification.findAll({ // Changed variable name to Notification
             where: {
                 recepientId: id // Assuming 'userId' is the field in your database for the user ID
             }
@@ -38,7 +38,6 @@ exports.getNotificationsById = async (req, res) => {
         res.status(500).json(error);
     }
 };
-
 
 exports.deleteAllNotifications = async (req, res) => {
     try {
@@ -54,25 +53,22 @@ exports.deleteAllNotifications = async (req, res) => {
     }
 };
 
-
-
-
 exports.updateNotifications = async (req, res) => {
     try {
-      const { notifications } = req.body;
+        const { notifications } = req.body;
 
-      await Promise.all(
-        notifications.map(async (notification) => {
-          await bellnotifications.update(
-            { isRead: true },
-            { where: { id: notification.id } }
-          );
-        })
-      );
-  
-      res.status(200).json({ message: 'Notifications updated successfully' });
+        await Promise.all(
+            notifications.map(async (notification) => {
+                await Notification.update(
+                    { isRead: true },
+                    { where: { id: notification.id } }
+                );
+            })
+        );
+
+        res.status(200).json({ message: 'Notifications updated successfully' });
     } catch (error) {
-      console.error('Error updating notifications:', error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error('Error updating notifications:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-  };
+};

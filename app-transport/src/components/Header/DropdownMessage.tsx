@@ -238,15 +238,15 @@ const DropdownMessage = () => {
               <li key={index}>
                 <Link
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  href="/messages"
+                  href="/chat"
                 >
                   <div className="avatar">
                     <div className="h-12.5 w-12.5 rounded-full">
                       <img
                         width={112}
                         height={112}
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${sender.picture}`}
-                        alt={sender.fullname}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${sender?.picture}`}
+                        alt={sender?.fullname}
                         style={{
                           width: "auto",
                           height: "auto",
@@ -257,7 +257,7 @@ const DropdownMessage = () => {
 
                   <div>
                     <h6 className="text-sm font-medium text-black dark:text-white">
-                      {sender.fullname}
+                      {sender?.fullname}
                     </h6>
                     <p className="text-sm">{notification.message}</p>
                     <p className="text-xs">{formatTimeDifference()}</p>
