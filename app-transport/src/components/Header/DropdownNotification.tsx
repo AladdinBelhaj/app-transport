@@ -28,8 +28,8 @@ const DropdownNotification = () => {
   useEffect(() => {
     socket?.on("getApplyTripNotif", (notification: any) => {
       setNotifications((prevNotifications) => [
-        ...prevNotifications,
         notification,
+        ...prevNotifications,
       ]);
       setNotifying(true);
     });
