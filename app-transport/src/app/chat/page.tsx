@@ -281,10 +281,20 @@ const Chat = () => {
               </div>
               <div className="mt-2">
                 <div className="-mx-4 flex flex-col">
-                  {/* <div className="flex flex-row items-center border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent p-4"> */}
                   {usersData.map((user) => {
                     const isOnline = onlineUsers.some(
                       (onlineUser) => onlineUser.userId == user.id,
+                    );
+
+                    // Find the notification count for the current user
+                    const notificationCount = notifications.reduce(
+                      (count, notification) => {
+                        if (notification.senderId == user.id) {
+                          return count + 1;
+                        }
+                        return count;
+                      },
+                      0,
                     );
 
                     return (
@@ -304,8 +314,6 @@ const Chat = () => {
                         <div
                           className={`avatar ${isOnline ? "online" : "offline"}`}
                         >
-                          {" "}
-                          {/* Conditionally render className name */}
                           <div className="w-15 rounded-full">
                             <img
                               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.picture}`}
@@ -324,9 +332,14 @@ const Chat = () => {
                           </div>
                         </div>
                         <div className="mb-1 ml-2 flex-shrink-0 self-end">
-                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                            5
-                          </span>
+                          {/* <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                            {notificationCount}
+                          </span> */}
+                          {notificationCount > 0 && (
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                              {notificationCount}
+                            </span>
+                          )}
                         </div>
                       </div>
                     );
@@ -442,74 +455,6 @@ const Chat = () => {
               </div>
             )}
 
-            {/* <div className="bg-gray-200 flex h-full w-full flex-col overflow-y-auto rounded-lg p-4">
-              {messages &&
-                messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex ${
-                      message.senderId === userId
-                        ? "mb-4 items-end justify-end"
-                        : "mt-4 items-start justify-start"
-                    }`}
-                  >
-                    {message.senderId === userId ? (
-                      <>
-                        <div
-                          className={`relative rounded-xl ${
-                            message.senderId === userId
-                              ? "bg-indigo-100"
-                              : "bg-white"
-                          } px-4 py-2 text-sm shadow`}
-                          style={{
-                            maxWidth: "60%",
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          <p className="text-sm">{message.text}</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="mr-2">
-                          <div
-                            className={`avatar ${
-                              onlineUsers.some(
-                                (onlineUser) =>
-                                  onlineUser.userId === message.senderId,
-                              )
-                                ? "online"
-                                : "offline"
-                            }`}
-                          >
-                            <div className="w-12 rounded-full">
-                              <img
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
-                                width={55}
-                                height={55}
-                                alt="User"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className={`relative rounded-xl ${
-                            message.senderId === userId
-                              ? "bg-indigo-100"
-                              : "bg-white"
-                          } px-4 py-2 text-sm shadow`}
-                          style={{
-                            maxWidth: "60%",
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          <p className="text-sm">{message.text}</p>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
-            </div> */}
             <div className="bg-gray-200 flex h-full w-full flex-col overflow-y-auto rounded-lg p-4">
               {messages &&
                 messages
