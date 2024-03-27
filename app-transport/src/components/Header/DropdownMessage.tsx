@@ -85,8 +85,6 @@ const DropdownMessage = () => {
     };
   }, [socket]);
 
-  console.log("Notifications from header: ", notifications);
-
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;

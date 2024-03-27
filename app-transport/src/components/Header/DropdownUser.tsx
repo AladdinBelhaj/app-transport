@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useUserData } from "../../../utils/getUserData";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -16,7 +14,6 @@ const DropdownUser = () => {
   if (userDataString !== null) {
     userData = JSON.parse(userDataString);
   } else {
-    // Handle the case where userDataString is null
     console.error("userDataString is null");
   }
 

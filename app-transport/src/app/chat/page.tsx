@@ -243,6 +243,8 @@ const Chat = () => {
     }
   };
 
+  console.log(currentChat);
+  console.log(messages);
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Chat" />
@@ -440,10 +442,7 @@ const Chat = () => {
               </div>
             )}
 
-            <div
-              className="bg-gray-200 flex h-full w-full flex-col overflow-y-auto rounded-lg p-4"
-              ref={scroll}
-            >
+            {/* <div className="bg-gray-200 flex h-full w-full flex-col overflow-y-auto rounded-lg p-4">
               {messages &&
                 messages.map((message, index) => (
                   <div
@@ -510,6 +509,79 @@ const Chat = () => {
                     )}
                   </div>
                 ))}
+            </div> */}
+            <div className="bg-gray-200 flex h-full w-full flex-col overflow-y-auto rounded-lg p-4">
+              {messages &&
+                messages
+                  .filter(
+                    (message) =>
+                      String(message.chatId) == String(currentChat?.id),
+                  )
+                  .map((message, index) => (
+                    <div
+                      key={index}
+                      className={`flex ${
+                        message.senderId === userId
+                          ? "mb-4 items-end justify-end"
+                          : "mt-4 items-start justify-start"
+                      }`}
+                    >
+                      {message.senderId === userId ? (
+                        <>
+                          <div
+                            className={`relative rounded-xl ${
+                              message.senderId === userId
+                                ? "bg-indigo-100"
+                                : "bg-white"
+                            } px-4 py-2 text-sm shadow`}
+                            style={{
+                              maxWidth: "60%",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            <p className="text-sm">{message.text}</p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="mr-2">
+                            <div
+                              className={`avatar ${
+                                onlineUsers.some(
+                                  (onlineUser) =>
+                                    onlineUser.userId === message.senderId,
+                                )
+                                  ? "online"
+                                  : "offline"
+                              }`}
+                            >
+                              <div className="w-12 rounded-full">
+                                <img
+                                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${clickedUser?.picture}`}
+                                  width={55}
+                                  height={55}
+                                  alt="User"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className={`relative rounded-xl ${
+                              message.senderId === userId
+                                ? "bg-indigo-100"
+                                : "bg-white"
+                            } px-4 py-2 text-sm shadow`}
+                            style={{
+                              maxWidth: "60%",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            <p className="text-sm">{message.text}</p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))}
             </div>
 
             {currentChat && (

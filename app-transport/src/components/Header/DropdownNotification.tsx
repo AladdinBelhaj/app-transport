@@ -64,7 +64,7 @@ const DropdownNotification = () => {
         });
     }
   }, [dropdownOpen]);
-  console.log("dropdown notif: ", notifications);
+
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
