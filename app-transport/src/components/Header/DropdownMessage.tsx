@@ -27,6 +27,7 @@ interface Chat {
 
 type Notification = {
   senderId: string;
+  recepientId: string;
   isRead: boolean;
   message: string;
   date: Date;

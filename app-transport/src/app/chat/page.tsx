@@ -35,6 +35,7 @@ interface User {
 
 type Notification = {
   senderId: string;
+  recepientId: string;
   isRead: boolean;
   message: string;
   date: Date;
@@ -101,6 +102,7 @@ const Chat = () => {
       axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications/create`,
         {
+          recepientId: res.recepientId,
           senderId: res.senderId,
           message: res.message,
           isRead: false,

@@ -26,9 +26,9 @@ exports.getNotificationsById = async (req, res) => {
         const { id } = req.params; // Get the ID from the request parameters
 
         // Query the database to find notifications by ID
-        const notifications = await bellnotifications.findAll({
+        const notifications = await notifications.findAll({
             where: {
-                userId: id // Assuming 'userId' is the field in your database for the user ID
+                recepientId: id // Assuming 'userId' is the field in your database for the user ID
             }
         });
 
