@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { OnlineUsersContext, SocketContext } from "@/app/context/SocketContext";
-
+import axios from "axios";
 interface Message {
   id: number;
   chatId: string;
@@ -40,9 +40,11 @@ const DropdownMessage = () => {
   >([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [userChats, setUserChats] = useState<Chat[]>([]);
+  const [usersData, setUsersData] = useState<any[]>([]);
   const onlineUsers = useContext(OnlineUsersContext);
   const socket = useContext(SocketContext);
-
+  const userId = localStorage.getItem("id");
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
@@ -59,24 +61,17 @@ const DropdownMessage = () => {
   }, []);
   useEffect(() => {
     if (socket === null) return;
-
     socket.on("getNotification", (res) => {
-      const membersArray = currentChatRef.current?.members.split(",");
-      const isChatOpen = membersArray?.some((id) => id === res.senderId);
-
-      if (!currentChatRef.current) {
-        setNotifications((prev) => [res, ...prev]);
-        socket.emit("sendHeaderNotif", res);
-      } else {
-        setNotifications((prev) => [{ ...res, isRead: isChatOpen }, ...prev]);
-        socket.emit("sendHeaderNotif", { ...res, isRead: true });
-      }
+      setNotifications((prev) => [res, ...prev]);
+      setNotifying(true);
     });
 
     return () => {
       socket.off("getNotification");
     };
   }, [socket]);
+
+  console.log("Notifications from header: ", notifications);
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
@@ -100,24 +95,48 @@ const DropdownMessage = () => {
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
   });
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const fetchUserChats = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/${userId}`,
+        );
+        setUserChats(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserChats();
+  }, [userId]);
 
   useEffect(() => {
-    if (socket === null) return;
+    const fetchUsersData = async () => {
+      if (!userChats.length) return;
 
-    socket.on("getHeaderNotif", (res) => {
-      setNotifications((prev) => [res, ...prev]);
-      // if (!res.isRead) {
-      //   setNotifying(true);
-      // }
-    });
+      try {
+        const otherUserIds = userChats
+          .flatMap((chat) => chat.members.split(","))
+          .filter((id) => id !== userId);
 
-    return () => {
-      socket.off("getHeaderNotif");
+        const usersDataPromises = otherUserIds.map((id) =>
+          axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${id}`),
+        );
+
+        const usersDataResponses = await Promise.all(usersDataPromises);
+
+        const usersData = usersDataResponses.map((response) => response.data);
+
+        setUsersData(usersData);
+      } catch (error) {
+        console.error("Error fetching other users data:", error);
+      }
     };
-  }, [socket]);
 
-  // console.log("Header notifications: ", notifications);
-
+    fetchUsersData();
+  }, [userChats, userId]);
   return (
     <li className="relative">
       <Link
@@ -177,7 +196,7 @@ const DropdownMessage = () => {
           <h5 className="text-sm font-medium text-bodydark2">Messages</h5>
         </div>
 
-        <ul className="flex h-auto flex-col overflow-y-auto">
+        {/* <ul className="flex h-auto flex-col overflow-y-auto">
           <li>
             <Link
               className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
@@ -313,6 +332,43 @@ const DropdownMessage = () => {
               </div>
             </Link>
           </li>
+        </ul> */}
+        <ul className="flex h-auto flex-col overflow-y-auto">
+          {notifications.map((notification, index) => {
+            // Find the user who sent the notification
+            const sender = usersData.find(
+              (user) => user.id == notification.senderId,
+            );
+            return (
+              <li key={index}>
+                <Link
+                  className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                  href="/messages"
+                >
+                  <div className="h-12.5 w-12.5 rounded-full">
+                    <Image
+                      width={112}
+                      height={112}
+                      src={sender.picture}
+                      alt={sender.fullname}
+                      style={{
+                        width: "auto",
+                        height: "auto",
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <h6 className="text-sm font-medium text-black dark:text-white">
+                      {sender?.fullname}
+                    </h6>
+                    <p className="text-sm">{notification.message}</p>
+                    <p className="text-xs">{notification.date.toString()}</p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
       {/* <!-- Dropdown End --> */}

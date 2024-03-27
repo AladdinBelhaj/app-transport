@@ -80,20 +80,6 @@ io.on("connection", (socket) => {
   });
 
 
-  socket.on("sendHeaderNotif", (notification) => {
-    console.log("Notification being sent:", notification);
-  
-    const senderUser = onlineUsers.find((user) => user.userId === notification.senderId);
-    
-    if (senderUser) {
-      onlineUsers.forEach((user) => {
-        if (user.userId !== notification.senderId) {
-          io.to(user.socketId).emit("getHeaderNotif", notification);
-        }
-      });
-    }
-  });
-
   socket.on("sendApplyTripNotif", (notificationData) => {
     const { userId } = notificationData;
     const user = onlineUsers.find((user) => user.userId == userId);
