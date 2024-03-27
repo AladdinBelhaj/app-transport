@@ -47,3 +47,25 @@ exports.deleteAllNotifications = async (req, res) => {
     }
 };
 
+
+
+
+exports.updateNotifications = async (req, res) => {
+    try {
+      const { notifications } = req.body;
+
+      await Promise.all(
+        notifications.map(async (notification) => {
+          await bellnotifications.update(
+            { isRead: true },
+            { where: { id: notification.id } }
+          );
+        })
+      );
+  
+      res.status(200).json({ message: 'Notifications updated successfully' });
+    } catch (error) {
+      console.error('Error updating notifications:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };

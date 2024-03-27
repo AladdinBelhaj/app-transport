@@ -16,6 +16,6 @@ module.exports = (app) => {
     router.post("/create", notifications.createNotification);
     router.get("/", notifications.getNotifications);
     router.delete("/", notifications.deleteAllNotifications);
-
+    router.put('/update', notifications.updateNotifications);
     app.use("/api/notifications", router);
 };

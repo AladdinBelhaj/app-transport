@@ -57,8 +57,7 @@ exports.deleteAllNotifications = async (req, res) => {
 exports.updateNotifications = async (req, res) => {
     try {
       const { notifications } = req.body;
-  
-      // Loop through the notifications and update them in the database
+
       await Promise.all(
         notifications.map(async (notification) => {
           await bellnotifications.update(
