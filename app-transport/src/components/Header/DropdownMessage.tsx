@@ -76,7 +76,7 @@ const DropdownMessage = () => {
   useEffect(() => {
     if (socket === null) return;
     socket.on("getNotification", (res) => {
-      setNotifications((prevNotifications) => [...prevNotifications, res]);
+      setNotifications((prevNotifications) => [res, ...prevNotifications]);
       setNotifying(true);
     });
 
@@ -128,6 +128,32 @@ const DropdownMessage = () => {
   }, [userId]);
 
   useEffect(() => {
+    if (dropdownOpen) {
+      // Update all notifications to set isRead to true when dropdown is opened
+      const updatedNotifications = notifications.map((notification) => ({
+        ...notification,
+        isRead: true,
+      }));
+      setNotifications(updatedNotifications);
+
+      // Make an HTTP request to update notifications in the database
+      axios
+        .put(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications/update`,
+          {
+            notifications: updatedNotifications,
+          },
+        )
+        .then((response) => {
+          console.log("Notifications updated in the database:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error updating notifications in the database:", error);
+        });
+    }
+  }, [dropdownOpen]);
+
+  useEffect(() => {
     const fetchUsersData = async () => {
       if (!userChats.length) return;
 
@@ -152,6 +178,11 @@ const DropdownMessage = () => {
 
     fetchUsersData();
   }, [userChats, userId]);
+
+  const isUnreadNotification = notifications.some(
+    (notification) => !notification.isRead,
+  );
+
   return (
     <li className="relative">
       <Link
@@ -164,8 +195,8 @@ const DropdownMessage = () => {
         href="#"
       >
         <span
-          className={`absolute -right-0.5 -top-0.5 z-1 h-2 w-2 rounded-full bg-meta-1 ${
-            notifying === false ? "hidden" : "inline"
+          className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
+            isUnreadNotification ? "inline" : "hidden"
           }`}
         >
           <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
@@ -203,9 +234,8 @@ const DropdownMessage = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${
-          dropdownOpen === true ? "block" : "hidden"
-        }`}
+        className={`absolute -right-27 mt-2.5 flex w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${dropdownOpen === true ? "block" : "hidden"}`}
+        style={{ maxHeight: "380px", overflowY: "auto" }}
       >
         <div className="px-4.5 py-3">
           <h5 className="text-sm font-medium text-bodydark2">Messages</h5>
@@ -241,7 +271,7 @@ const DropdownMessage = () => {
                   href="/chat"
                 >
                   <div className="avatar">
-                    <div className="h-12.5 w-12.5 rounded-full">
+                    <div className="h-12.5 rounded-full">
                       <img
                         width={112}
                         height={112}
