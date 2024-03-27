@@ -133,15 +133,17 @@ const DropdownNotification = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark
-      ${dropdownOpen === true ? "block" : "hidden"}
-      `}
+        //   className={`absolute -right-27 mt-2.5 flex h-auto w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark
+        // ${dropdownOpen === true ? "block" : "hidden"}
+        // `}
+        className={`absolute -right-27 mt-2.5 flex w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${dropdownOpen === true ? "block" : "hidden"}`}
+        style={{ maxHeight: "380px", overflowY: "auto" }}
       >
         <div className="px-4.5 py-3">
           <h5 className="text-sm font-medium text-bodydark2">Notification</h5>
         </div>
-
-        <ul className="flex h-auto flex-col overflow-y-auto">
+        {/* h-auto */}
+        <ul className="flex flex-col overflow-y-auto">
           {notifications.map((notification, index) => (
             <li key={index}>
               <Link
