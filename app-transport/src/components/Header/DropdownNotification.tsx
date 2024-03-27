@@ -24,6 +24,7 @@ const DropdownNotification = () => {
         console.error("Error fetching notifications:", error);
       });
   }, []);
+
   useEffect(() => {
     socket?.on("getApplyTripNotif", (notification: any) => {
       setNotifications((prevNotifications) => [

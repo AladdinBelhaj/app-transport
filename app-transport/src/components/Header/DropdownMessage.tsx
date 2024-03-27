@@ -59,10 +59,23 @@ const DropdownMessage = () => {
       currentChatRef.current = null;
     }
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications/${userId}`)
+      .then((response) => {
+        setNotifications(response.data);
+        console.log("YOOOOOOOOOOOO: ", notifications);
+      })
+      .catch((error) => {
+        console.error("Error fetching notifications:", error);
+      });
+  }, []);
+
   useEffect(() => {
     if (socket === null) return;
     socket.on("getNotification", (res) => {
-      setNotifications((prev) => [res, ...prev]);
+      setNotifications((prevNotifications) => [...prevNotifications, res]);
       setNotifying(true);
     });
 
@@ -72,6 +85,7 @@ const DropdownMessage = () => {
   }, [socket]);
 
   console.log("Notifications from header: ", notifications);
+
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;

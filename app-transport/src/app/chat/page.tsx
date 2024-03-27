@@ -98,6 +98,15 @@ const Chat = () => {
     if (socket === null) return;
 
     socket.on("getNotification", (res) => {
+      axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications/create`,
+        {
+          senderId: res.senderId,
+          message: res.message,
+          isRead: false,
+          date: new Date(),
+        },
+      );
       const membersArray = currentChatRef.current?.members.split(",");
       const isChatOpen = membersArray?.some((id) => id === res.senderId);
 

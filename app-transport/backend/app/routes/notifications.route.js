@@ -14,7 +14,7 @@ module.exports = (app) => {
     var router = require("express").Router();
 
     router.post("/create", notifications.createNotification);
-    router.get("/", notifications.getNotifications);
+    router.get("/:id", notifications.getNotificationsById);
     router.delete("/", notifications.deleteAllNotifications);
     router.put('/update', notifications.updateNotifications);
     app.use("/api/notifications", router);

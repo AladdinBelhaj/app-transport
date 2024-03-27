@@ -21,9 +21,16 @@ exports.createNotification = async (req, res) => {
     }
 };
 
-exports.getNotifications = async (req, res) => {
+exports.getNotificationsById = async (req, res) => {
     try {
-        const notifications = await notifications.findAll();
+        const { id } = req.params; // Get the ID from the request parameters
+
+        // Query the database to find notifications by ID
+        const notifications = await bellnotifications.findAll({
+            where: {
+                userId: id // Assuming 'userId' is the field in your database for the user ID
+            }
+        });
 
         res.status(200).json(notifications);
     } catch (error) {
