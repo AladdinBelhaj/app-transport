@@ -67,7 +67,6 @@ const DropdownMessage = () => {
       .then((response) => {
         const reversedNotifications = response.data.reverse();
         setNotifications(reversedNotifications);
-        console.log("YOOOOOOOOOOOO: ", reversedNotifications);
       })
       .catch((error) => {
         console.error("Error fetching notifications:", error);

@@ -11,14 +11,13 @@ const DropdownNotification = () => {
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
   useEffect(() => {
-    // Fetch notifications from the backend when the component mounts
     axios
       .get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/${userId}`,
       )
       .then((response) => {
-        // Upon successful fetch, set the notifications state
-        setNotifications(response.data);
+        const reversedNotifications = response.data.reverse();
+        setNotifications(reversedNotifications);
       })
       .catch((error) => {
         console.error("Error fetching notifications:", error);
