@@ -232,7 +232,6 @@ const Offers = () => {
 
   const handleAccept = () => {
     if (offerToAcceptId !== null) {
-      // Remove the rejected offer from the UI
       setOfferData((prevOfferData) =>
         prevOfferData.filter((offer: any) => offer.id !== offerToAcceptId),
       );
@@ -269,11 +268,11 @@ const Offers = () => {
       ) {
         tripData.maxWeight = (tripWeight - totalWeight).toString();
       }
-      console.log(newWeight);
-      console.log(tripWeight);
-      console.log(totalWeight);
-      console.log(tripId);
-      console.log(tripData);
+      // console.log(newWeight);
+      // console.log(tripWeight);
+      // console.log(totalWeight);
+      // console.log(tripId);
+      // console.log(tripData);
       axios
         .put(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToAcceptId}`,
@@ -281,6 +280,10 @@ const Offers = () => {
         )
         .then((response) => {
           console.log("Offer accepted successfully");
+          axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats`, {
+            firstId: String(id),
+            secondId: String(userToBeAnswered),
+          });
           axios
             .post(
               `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,

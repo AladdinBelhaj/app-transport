@@ -48,11 +48,12 @@
 import ECommerce from "@/components/Dashboard/E-commerce";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-
+import CrispChat from "@/components/CrispChat/CrispChat";
 export default function Home() {
   return (
     <AuthGuard redirect={"/auth/signin"}>
       <DefaultLayout>
+        <CrispChat />
         <ECommerce />
       </DefaultLayout>
     </AuthGuard>
