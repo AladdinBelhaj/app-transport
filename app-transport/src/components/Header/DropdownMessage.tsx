@@ -65,8 +65,9 @@ const DropdownMessage = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications/${userId}`)
       .then((response) => {
-        setNotifications(response.data);
-        console.log("YOOOOOOOOOOOO: ", notifications);
+        const reversedNotifications = response.data.reverse();
+        setNotifications(reversedNotifications);
+        console.log("YOOOOOOOOOOOO: ", reversedNotifications);
       })
       .catch((error) => {
         console.error("Error fetching notifications:", error);
