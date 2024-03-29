@@ -219,7 +219,7 @@ const ViewOffers = () => {
                 <path d="m22 8.053-8.784 6.683a1.978 1.978 0 0 1-2.44-.031L2.02 7.693a1.091 1.091 0 0 0-.019.199v11.065C2 20.637 3.343 22 5 22h14c1.657 0 3-1.362 3-3.043V8.053Z" />
               </svg>
               <p className="text-gray-500 dark:text-gray-300 mb-4">
-                Are you sure you want to confirm the delivery?
+                Select a transporter
               </p>
               <div className="flex items-center justify-center space-x-4">
                 <button
@@ -227,11 +227,11 @@ const ViewOffers = () => {
                   className="text-gray-500 border-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600 rounded-lg border bg-white px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:hover:text-white"
                   onClick={closeConfirmModal} // Close modal on click
                 >
-                  No, cancel
+                  Cancel
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center rounded-lg bg-sky-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                  className="inline-flex items-center rounded-lg bg-modal-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
                   // onClick={() => handleDelete()}
                 >
                   <svg
@@ -246,7 +246,7 @@ const ViewOffers = () => {
                     <path d="m3.62 6.389 8.396 6.724 8.638-6.572-7.69-4.29a1.975 1.975 0 0 0-1.928 0L3.62 6.39Z" />
                     <path d="m22 8.053-8.784 6.683a1.978 1.978 0 0 1-2.44-.031L2.02 7.693a1.091 1.091 0 0 0-.019.199v11.065C2 20.637 3.343 22 5 22h14c1.657 0 3-1.362 3-3.043V8.053Z" />
                   </svg>
-                  Confirm
+                  Delegate
                 </button>
               </div>
             </div>
@@ -297,9 +297,9 @@ const ViewOffers = () => {
                     return (
                       <button
                         onClick={() => openDelegateModal(offer.id)}
-                        className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800"
+                        className="rounded-md bg-modal-700 px-4 py-2 text-white hover:bg-modal-800"
                       >
-                        Confirm Delivery
+                        Delegate Package
                       </button>
                     );
                   }
