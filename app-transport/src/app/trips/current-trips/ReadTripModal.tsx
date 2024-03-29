@@ -234,6 +234,7 @@ const ReadTripModal: React.FC<ModalProps> = ({
                   {selectedTrip?.status === "ongoing" ? (
                     <button
                       type="button"
+                      onClick={handleDelegate}
                       className="inline-flex items-center rounded-lg bg-modal-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-800 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:bg-modal-600 dark:hover:bg-modal-700 dark:focus:ring-modal-800"
                     >
                       <svg
