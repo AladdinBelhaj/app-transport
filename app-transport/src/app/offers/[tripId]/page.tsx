@@ -157,9 +157,102 @@ const ViewOffers = () => {
   const filteredOffers = offerData.filter(
     (offer: any) => offer.tripId === currentTripId,
   );
+
+  const [isDelegateModalOpen, setIsDelegateModalOpen] = useState(false);
+  const [offerToConfirmId, setOfferToDelegateId] = useState<number | null>(
+    null,
+  );
+
+  const openDelegateModal = (offerId: number) => {
+    setIsDelegateModalOpen(true);
+    setOfferToDelegateId(offerId);
+  };
+
+  const closeConfirmModal = () => {
+    setIsDelegateModalOpen(false);
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Accepted Offers" />
+      {isDelegateModalOpen && (
+        <div
+          id="deleteModal"
+          tabIndex={-1}
+          aria-hidden="true"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden"
+          style={{ zIndex: 9999, backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
+          <div className="relative w-full max-w-md">
+            {/* Modal content */}
+            <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
+              <button
+                type="button"
+                onClick={closeConfirmModal}
+                className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+              <svg
+                className="text-gray-400 dark:text-gray-500 mx-auto mb-3.5 h-11 w-11"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="m3.62 6.389 8.396 6.724 8.638-6.572-7.69-4.29a1.975 1.975 0 0 0-1.928 0L3.62 6.39Z" />
+                <path d="m22 8.053-8.784 6.683a1.978 1.978 0 0 1-2.44-.031L2.02 7.693a1.091 1.091 0 0 0-.019.199v11.065C2 20.637 3.343 22 5 22h14c1.657 0 3-1.362 3-3.043V8.053Z" />
+              </svg>
+              <p className="text-gray-500 dark:text-gray-300 mb-4">
+                Are you sure you want to confirm the delivery?
+              </p>
+              <div className="flex items-center justify-center space-x-4">
+                <button
+                  type="button"
+                  className="text-gray-500 border-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600 rounded-lg border bg-white px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:hover:text-white"
+                  onClick={closeConfirmModal} // Close modal on click
+                >
+                  No, cancel
+                </button>
+                <button
+                  type="submit"
+                  className="inline-flex items-center rounded-lg bg-sky-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                  // onClick={() => handleDelete()}
+                >
+                  <svg
+                    className="-ml-1 mr-1.5 h-5 w-5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="m3.62 6.389 8.396 6.724 8.638-6.572-7.69-4.29a1.975 1.975 0 0 0-1.928 0L3.62 6.39Z" />
+                    <path d="m22 8.053-8.784 6.683a1.978 1.978 0 0 1-2.44-.031L2.02 7.693a1.091 1.091 0 0 0-.019.199v11.065C2 20.637 3.343 22 5 22h14c1.657 0 3-1.362 3-3.043V8.053Z" />
+                  </svg>
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {filteredOffers.map((offer: any, offerIndex: number) => {
         const tripData = tripDataMap[offer.tripId];
         const userData = userDataMap[offer.userId];
@@ -182,19 +275,6 @@ const ViewOffers = () => {
                   </span>
                 </h4>
 
-                {/* <div className="col-span-1 flex items-center">
-                  <p
-                    className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                      offer.status === "accepted"
-                        ? "bg-success text-success"
-                        : offer.status === "rejected"
-                          ? "bg-danger text-danger"
-                          : "bg-warning text-warning"
-                    }`}
-                  >
-                    {offer.status}
-                  </p>
-                </div> */}
                 <p className="text-sm font-normal">
                   Offer by{" "}
                   <Link
@@ -207,6 +287,23 @@ const ViewOffers = () => {
                 <span className="text-sm font-light">
                   Total Weight: {offer.totalWeight} kg
                 </span>
+              </div>
+              <div className="space-x-4">
+                {(() => {
+                  if (
+                    offer.status === "accepted" &&
+                    tripData?.status === "ongoing"
+                  ) {
+                    return (
+                      <button
+                        onClick={() => openDelegateModal(offer.id)}
+                        className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800"
+                      >
+                        Confirm Delivery
+                      </button>
+                    );
+                  }
+                })()}
               </div>
             </div>
 
