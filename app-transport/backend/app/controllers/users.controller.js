@@ -277,9 +277,16 @@ exports.getAllUsers = async (req, res) => {
         // Retrieve all users from the database
         const allUsers = await Users.findAll();
 
+        // Check if any users were found
+        if (allUsers.length === 0) {
+            return res.status(404).send({ message: "No users found." });
+        }
+
         // Return the list of all users
         res.status(200).send(allUsers);
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        console.error("Error fetching all users:", err);
+        res.status(500).send({ message: "Internal server error." });
     }
 };
+
