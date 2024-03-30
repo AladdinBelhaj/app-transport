@@ -272,3 +272,14 @@ exports.getUserDataById = async (req, res) => {
     }
 };
 
+exports.getAllUsers = async (req, res) => {
+    try {
+        // Retrieve all users from the database
+        const allUsers = await Users.findAll();
+
+        // Return the list of all users
+        res.status(200).send(allUsers);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};

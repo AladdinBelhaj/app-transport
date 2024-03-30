@@ -20,6 +20,7 @@ module.exports = app => {
     router.put("/:userId",users.updateUserData);
     router.put("/imageData/:userId",users.upload,users.uploadImage)
     router.get("/transporters/:transporterId",users.getUserDataById);
+    router.get("/allUsers",users.getAllUsers);
 
     app.use('/api/users', router);
 };
