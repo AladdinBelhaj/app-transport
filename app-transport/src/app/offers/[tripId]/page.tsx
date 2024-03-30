@@ -194,6 +194,17 @@ const ViewOffers = () => {
 
     fetchTransporters();
   }, []);
+
+  const [selectedTransporter, setSelectedTransporter] = useState<string | null>(
+    null,
+  );
+
+  const handleTransporterChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSelectedTransporter(event.target.value);
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Accepted Offers" />
@@ -247,18 +258,20 @@ const ViewOffers = () => {
                 <select
                   id="transporter"
                   className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                  required
+                  value={selectedTransporter || ""}
+                  onChange={handleTransporterChange}
                 >
                   <option value="" disabled>
-                    Select transporter
+                    Select a transporter
                   </option>
                   {transporters.map((transporter) => (
-                    <option key={transporter.id} value={transporter.id}>
+                    <option key={transporter.id} value={transporter.fullname}>
                       {transporter.fullname}
                     </option>
                   ))}
                 </select>
               </div>
+
               <div className="flex items-center justify-center space-x-4">
                 <button
                   type="button"
@@ -269,8 +282,8 @@ const ViewOffers = () => {
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center rounded-lg bg-modal-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
-                  // onClick={() => handleDelete()}
+                  className={`inline-flex items-center rounded-lg bg-modal-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 ${!selectedTransporter ? "cursor-not-allowed opacity-50" : ""}`}
+                  disabled={!selectedTransporter}
                 >
                   <svg
                     className="-ml-1 mr-1.5 h-5 w-5"
