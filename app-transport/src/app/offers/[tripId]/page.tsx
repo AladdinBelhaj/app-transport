@@ -159,7 +159,7 @@ const ViewOffers = () => {
   );
 
   const [isDelegateModalOpen, setIsDelegateModalOpen] = useState(false);
-  const [offerToConfirmId, setOfferToDelegateId] = useState<number | null>(
+  const [offerToDelegateId, setOfferToDelegateId] = useState<number | null>(
     null,
   );
 
@@ -203,6 +203,18 @@ const ViewOffers = () => {
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setSelectedTransporter(event.target.value);
+  };
+
+  const handleDelegate = () => {
+    if (offerToDelegateId !== null) {
+      setOfferData((prevOfferData) =>
+        prevOfferData.filter((offer: any) => offer.id !== offerToDelegateId),
+      );
+    }
+    axios.put(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToDelegateId}`,
+      { transporterId: selectedTransporter, status: userId },
+    );
   };
 
   return (
@@ -284,6 +296,7 @@ const ViewOffers = () => {
                   type="submit"
                   className={`inline-flex items-center rounded-lg bg-modal-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-modal-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 ${!selectedTransporter ? "cursor-not-allowed opacity-50" : ""}`}
                   disabled={!selectedTransporter}
+                  onClick={handleDelegate}
                 >
                   <svg
                     className="-ml-1 mr-1.5 h-5 w-5"
