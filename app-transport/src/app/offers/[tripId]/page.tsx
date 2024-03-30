@@ -221,6 +221,15 @@ const ViewOffers = () => {
               <p className="text-gray-500 dark:text-gray-300 mb-4">
                 Select a transporter
               </p>
+              <div className="mb-5">
+                <select
+                  id="transporter"
+                  className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  required
+                >
+                  <option value="" disabled></option>
+                </select>
+              </div>
               <div className="flex items-center justify-center space-x-4">
                 <button
                   type="button"
