@@ -172,6 +172,28 @@ const ViewOffers = () => {
     setIsDelegateModalOpen(false);
   };
 
+  const userId = localStorage.getItem("id");
+
+  const [transporters, setTransporters] = useState<UserData[]>([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTransporters = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`,
+        );
+        const transporterUsers = response.data.filter(
+          (user: any) => user.role === "transporter" && user.id != userId,
+        );
+        setTransporters(transporterUsers);
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    };
+
+    fetchTransporters();
+  }, []);
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Accepted Offers" />
@@ -227,7 +249,14 @@ const ViewOffers = () => {
                   className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   required
                 >
-                  <option value="" disabled></option>
+                  <option value="" disabled>
+                    Select transporter
+                  </option>
+                  {transporters.map((transporter) => (
+                    <option key={transporter.id} value={transporter.id}>
+                      {transporter.fullname}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="flex items-center justify-center space-x-4">
