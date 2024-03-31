@@ -192,6 +192,8 @@ const ViewOffers = () => {
 
   const closeDelegateModal = () => {
     setIsDelegateModalOpen(false);
+    setOfferToDelegateId(null);
+    setDestCountry("");
   };
 
   const userId = localStorage.getItem("id");
@@ -289,7 +291,7 @@ const ViewOffers = () => {
                 Select a transporter
               </p>
               <div className="mb-5">
-                <select
+                {/* <select
                   id="transporter"
                   className="bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full rounded-lg border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   value={selectedTransporter || ""}
@@ -303,6 +305,31 @@ const ViewOffers = () => {
                       {transporter.fullname}
                     </option>
                   ))}
+                </select> */}
+                <select
+                  value={selectedTransporter || ""}
+                  onChange={handleTransporterChange}
+                >
+                  <option value="" disabled>
+                    Select a transporter
+                  </option>
+                  {/* Filter transporters based on whether their id exists in any trip where destCountry matches */}
+                  {transporters
+                    .filter((transporter) =>
+                      allTrips.some(
+                        (trip) =>
+                          trip.destCountry === destCountry &&
+                          trip.transporterId == transporter.id,
+                      ),
+                    )
+                    .map((filteredTransporter) => (
+                      <option
+                        key={filteredTransporter.id}
+                        value={filteredTransporter.id}
+                      >
+                        {filteredTransporter.fullname}
+                      </option>
+                    ))}
                 </select>
               </div>
 
