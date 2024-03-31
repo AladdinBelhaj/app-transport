@@ -629,19 +629,6 @@ const Offers = () => {
                         {object[`weight-${index}`]} kg
                       </p>
                     </div>
-                    {/* <div className="col-span-1 flex items-center">
-                      <p
-                        className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                          offer.status === "accepted"
-                            ? "bg-success text-success"
-                            : offer.status === "rejected"
-                              ? "bg-danger text-danger"
-                              : "bg-warning text-warning"
-                        }`}
-                      >
-                        {offer.status}
-                      </p>
-                    </div> */}
                   </div>
                 );
               })}

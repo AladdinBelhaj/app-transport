@@ -46,6 +46,26 @@ const ViewOffers = () => {
   const [userDataMap, setUserDataMap] = useState<{ [key: string]: UserData }>(
     {},
   );
+  const [allTrips, setAllTrips] = useState<TripData[]>([]);
+
+  useEffect(() => {
+    const fetchTrips = async () => {
+      try {
+        axios
+          .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips`)
+          .then((response) => {
+            setAllTrips(response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching trips:", error);
+          });
+      } catch (error) {
+        console.error("Error fetching trips:", error);
+      }
+    };
+
+    fetchTrips();
+  }, []);
   const modalRef = useRef<HTMLDivElement>(null);
 
   const id = localStorage.getItem("id");
@@ -162,13 +182,15 @@ const ViewOffers = () => {
   const [offerToDelegateId, setOfferToDelegateId] = useState<number | null>(
     null,
   );
+  const [destCountry, setDestCountry] = useState("");
 
-  const openDelegateModal = (offerId: number) => {
+  const openDelegateModal = (offerId: number, destCountry: string) => {
     setIsDelegateModalOpen(true);
     setOfferToDelegateId(offerId);
+    setDestCountry(destCountry);
   };
 
-  const closeConfirmModal = () => {
+  const closeDelegateModal = () => {
     setIsDelegateModalOpen(false);
   };
 
@@ -233,7 +255,7 @@ const ViewOffers = () => {
             <div className="dark:bg-gray-800 relative rounded-lg bg-white p-4 text-center shadow sm:p-5">
               <button
                 type="button"
-                onClick={closeConfirmModal}
+                onClick={closeDelegateModal}
                 className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm dark:hover:text-white"
               >
                 <svg
@@ -277,7 +299,7 @@ const ViewOffers = () => {
                     Select a transporter
                   </option>
                   {transporters.map((transporter) => (
-                    <option key={transporter.id} value={transporter.fullname}>
+                    <option key={transporter.id} value={transporter.id}>
                       {transporter.fullname}
                     </option>
                   ))}
@@ -288,7 +310,7 @@ const ViewOffers = () => {
                 <button
                   type="button"
                   className="text-gray-500 border-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600 rounded-lg border bg-white px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 focus:ring-modal-300 dark:hover:text-white"
-                  onClick={closeConfirmModal} // Close modal on click
+                  onClick={closeDelegateModal} // Close modal on click
                 >
                   Cancel
                 </button>
@@ -360,7 +382,9 @@ const ViewOffers = () => {
                   ) {
                     return (
                       <button
-                        onClick={() => openDelegateModal(offer.id)}
+                        onClick={() =>
+                          openDelegateModal(offer.id, tripData?.destCountry)
+                        }
                         className="rounded-md bg-modal-700 px-4 py-2 text-white hover:bg-modal-800"
                       >
                         Delegate Package
