@@ -182,18 +182,17 @@ const ViewOffers = () => {
   const [offerToDelegateId, setOfferToDelegateId] = useState<number | null>(
     null,
   );
-  const [destCountry, setDestCountry] = useState("");
+  const [trip, setTrip] = useState<TripData | null>(null);
 
-  const openDelegateModal = (offerId: number, destCountry: string) => {
+  const openDelegateModal = (offerId: number, selectedTrip: TripData) => {
     setIsDelegateModalOpen(true);
     setOfferToDelegateId(offerId);
-    setDestCountry(destCountry);
+    setTrip(selectedTrip);
   };
-
   const closeDelegateModal = () => {
     setIsDelegateModalOpen(false);
     setOfferToDelegateId(null);
-    setDestCountry("");
+    setTrip(null);
   };
 
   const userId = localStorage.getItem("id");
@@ -235,10 +234,20 @@ const ViewOffers = () => {
         prevOfferData.filter((offer: any) => offer.id !== offerToDelegateId),
       );
     }
+    const matchedTrip = allTrips.find(
+      (tripData) =>
+        tripData.destCountry === trip?.destCountry &&
+        tripData.transporterId === selectedTransporter,
+    );
     axios.put(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToDelegateId}`,
-      { transporterId: selectedTransporter, status: userId },
+      {
+        tripId: matchedTrip?.id,
+        transporterId: selectedTransporter,
+        status: `${trip?.id},${userId}`,
+      },
     );
+    closeDelegateModal();
   };
 
   return (
@@ -317,9 +326,9 @@ const ViewOffers = () => {
                   {transporters
                     .filter((transporter) =>
                       allTrips.some(
-                        (trip) =>
-                          trip.destCountry === destCountry &&
-                          trip.transporterId == transporter.id,
+                        (tripData) =>
+                          tripData.destCountry === trip?.destCountry &&
+                          tripData.transporterId == transporter.id,
                       ),
                     )
                     .map((filteredTransporter) => (
@@ -409,9 +418,7 @@ const ViewOffers = () => {
                   ) {
                     return (
                       <button
-                        onClick={() =>
-                          openDelegateModal(offer.id, tripData?.destCountry)
-                        }
+                        onClick={() => openDelegateModal(offer.id, tripData)}
                         className="rounded-md bg-modal-700 px-4 py-2 text-white hover:bg-modal-800"
                       >
                         Delegate Package
