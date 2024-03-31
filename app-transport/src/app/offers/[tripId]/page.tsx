@@ -175,7 +175,8 @@ const ViewOffers = () => {
   }, [isModalOpen]);
 
   const filteredOffers = offerData.filter(
-    (offer: any) => offer.tripId === currentTripId,
+    (offer: any) =>
+      offer.tripId === currentTripId && offer.status === "accepted",
   );
 
   const [isDelegateModalOpen, setIsDelegateModalOpen] = useState(false);

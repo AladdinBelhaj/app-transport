@@ -190,7 +190,7 @@ const Offers = () => {
       setUserToBeAnswered(null);
       const offerToReject = offerData.find(
         (offer: any) => offer.id === offerToDeleteId,
-      ) as { id: string; tripId: string } | undefined;
+      ) as { id: string; tripId: string; status: string } | undefined;
 
       let tripId: string | undefined;
       let tripData: TripData | undefined;
@@ -202,31 +202,56 @@ const Offers = () => {
           tripData = tripDataMap[tripId];
         }
       }
-      axios
-        .put(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToDeleteId}`,
-          { status: "rejected" },
-        )
-        .then((response) => {
-          console.log("Offer rejected successfully");
+      if (offerToReject) {
+        const { status } = offerToReject;
+
+        if (status.includes(",")) {
+          const [previousTripId, previousTransporterId] = status.split(",");
+
           axios
-            .post(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+            .put(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToDeleteId}`,
               {
-                userId: userToBeAnswered,
-                message: `Your offer has been rejected (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
-                isRead: false,
-                date: new Date(),
+                tripId: previousTripId,
+                transporterId: previousTransporterId,
+                status: "accepted",
               },
             )
-            .then((response: any) => {
-              console.log(response.data);
-              socket?.emit("sendApplyTripNotif", response.data);
+            .then((response) => {
+              console.log("Offer returned successfully");
+              // Additional actions if needed
+            })
+            .catch((error) => {
+              console.error("Error returning offer:", error);
             });
-        })
-        .catch((error) => {
-          console.error("Error rejecting offer:", error);
-        });
+        } else {
+          axios
+            .put(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToDeleteId}`,
+              { status: "rejected" },
+            )
+            .then((response) => {
+              console.log("Offer rejected successfully");
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bellnotifications/create`,
+                  {
+                    userId: userToBeAnswered,
+                    message: `Your offer has been rejected (${tripData?.departCountry} to ${tripData?.destCountry} trip!)`,
+                    isRead: false,
+                    date: new Date(),
+                  },
+                )
+                .then((response: any) => {
+                  console.log(response.data);
+                  socket?.emit("sendApplyTripNotif", response.data);
+                });
+            })
+            .catch((error) => {
+              console.error("Error rejecting offer:", error);
+            });
+        }
+      }
     }
   };
 
@@ -255,8 +280,6 @@ const Offers = () => {
           tripData = tripDataMap[tripId];
         }
       }
-
-      // Ensure tripData is defined before accessing its properties
       if (tripData) {
         tripWeight = +tripData.maxWeight;
       }
@@ -268,11 +291,6 @@ const Offers = () => {
       ) {
         tripData.maxWeight = (tripWeight - totalWeight).toString();
       }
-      // console.log(newWeight);
-      // console.log(tripWeight);
-      // console.log(totalWeight);
-      // console.log(tripId);
-      // console.log(tripData);
       axios
         .put(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToAcceptId}`,
