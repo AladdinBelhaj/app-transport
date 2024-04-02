@@ -374,7 +374,14 @@ const UpdateTripModal: React.FC<UpdateModalProps> = ({
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     closeModal();
-
+    const eventData = {
+      start: formData.departDate,
+      end: formData.arrivDate,
+    };
+    axios.put(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${formData.id}`,
+      eventData,
+    );
     axios
       .put(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${formData.id}`,
