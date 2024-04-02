@@ -3,18 +3,68 @@ const Trips = db.trips;
 const Op = db.Sequelize.Op;
 const config = require("../config/auth.config")
 const sequelize = require("../models/index")
+// exports.createTrip = async (req, res) => {
+//     try {
+//         await Trips.create({
+//             departCountry: req.body.departCountry,
+//             departState:  req.body.departState,
+//             destCountry:  req.body.destCountry,
+//             desState:  req.body.desState,
+//             departDate:  req.body.departDate,
+//             arrivDate: req.body.arrivDate,
+//             maxWeight: req.body.maxWeight,
+//             description:req.body.description,
+//             transporterId: req.body.transporterId,
+//             status: "pending"
+//         });
+//         res.status(201).send({ message: "Trip created successfully!" });
+//     } catch (err) {
+//         console.error("Error creating trip:", err);
+//         res.status(500).send({ message: "An error occurred while creating the trip." });
+//     }
+// };
+
+
 exports.createTrip = async (req, res) => {
     try {
+        // Check if a trip already exists for the current user within the specified period
+        const existingTrip = await Trips.findOne({
+            where: {
+                transporterId: req.body.transporterId, // Assuming the user ID is available in req.body.userId
+                [Op.or]: [
+                    {
+                        departDate: req.body.departDate
+                    },
+                    {
+                        departDate: {
+                            [Op.lte]: req.body.departDate
+                        },
+                        arrivDate: {
+                            [Op.gte]: req.body.departDate
+                        }
+                    }
+                ]
+            }
+        });
+
+        // If an existing trip is found, return an error
+        if (existingTrip) {
+            return res.status(400).send({
+                message: "Failed! A trip already exists for the current user on that day or within that period!"
+            });
+        }
+
+        // If no existing trip, create a new one
         await Trips.create({
             departCountry: req.body.departCountry,
-            departState:  req.body.departState,
-            destCountry:  req.body.destCountry,
-            desState:  req.body.desState,
-            departDate:  req.body.departDate,
+            departState: req.body.departState,
+            destCountry: req.body.destCountry,
+            desState: req.body.desState,
+            departDate: req.body.departDate,
             arrivDate: req.body.arrivDate,
             maxWeight: req.body.maxWeight,
-            description:req.body.description,
-            transporterId: req.body.transporterId,
+            description: req.body.description,
+            transporterId: req.body.transporterId, // Assigning the user ID to transporterId
             status: "pending"
         });
         res.status(201).send({ message: "Trip created successfully!" });
@@ -23,6 +73,7 @@ exports.createTrip = async (req, res) => {
         res.status(500).send({ message: "An error occurred while creating the trip." });
     }
 };
+
 
 
 exports.getTripData = async (req, res) => {

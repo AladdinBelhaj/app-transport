@@ -8,7 +8,4 @@ const verifyUpdateTrip = require("./verifyUpdateTrip");
 module.exports = {
     authJwt,
     verifySignUp,
-    verifyTrip,
-    verifyEvent,
-    verifyUpdateTrip
 };

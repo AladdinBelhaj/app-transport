@@ -15,10 +15,11 @@ module.exports = app => {
     var router = require("express").Router();
 
    
-    router.post("/create", verifyTrip.checkDuplicateTrip, trips.createTrip);
+    // router.post("/create", verifyTrip.checkDuplicateTrip, trips.createTrip);
+    router.post("/create", trips.createTrip);
     router.get("/:transporterId",trips.getTripData);
     router.get("/single/:id",trips.getSingleTripData);
-    router.put("/:tripId", verifyUpdateTrip.checkDuplicateTrip, trips.updateTripData);
+    router.put("/:tripId", trips.updateTripData);
     router.delete("/:tripId", trips.deleteTrip);
     router.get('/', trips.getAllTrips);
 

@@ -1,5 +1,5 @@
 const { events } = require("../models/events.model");
-const {verifyEvent} = require("../middleware");
+
 
 module.exports = app => {
     app.use(function (req, res, next) {
@@ -14,7 +14,7 @@ module.exports = app => {
     var router = require("express").Router();
 
    
-    router.post("/create",verifyEvent.checkDuplicateEvent,events.createEvent);
+    router.post("/create",events.createEvent);
     router.get("/:transporterId",events.getEventsData);
     router.put("/:eventId", events.updateEventData);
     router.delete("/:eventId", events.deleteEvent);
