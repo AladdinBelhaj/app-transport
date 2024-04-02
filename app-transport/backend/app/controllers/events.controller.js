@@ -6,7 +6,7 @@ const config = require("../config/auth.config")
 exports.createEvent = async (req, res) => {
     try {
         await Events.create({
-            title: "New trip!",
+            title: "New event!",
             start: req.body.start,
             end: req.body.end,
             transporterId: req.body.transporterId,
@@ -36,6 +36,80 @@ exports.getEventsData = async (req, res) => {
 
         // Return the user data
         res.status(200).send(event);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
+
+
+
+
+
+
+exports.updateEventData = async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+
+        const event = await Events.findOne({
+            where: { id: eventId }
+        });
+
+        if (!event) {
+            return res.status(404).send({ message: "Event not found." });
+        }
+
+        const updatedFields = {};
+        if (req.body.start) {
+            updatedFields.start = req.body.start;
+        }
+        if (req.body.end) {
+            updatedFields.end = req.body.end;
+        }
+
+        await Events.update(updatedFields, {
+            where: { id: eventId }
+        }).then(data => console.log(data));
+
+        res.status(200).send({ message: "Event data updated successfully." });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
+
+
+exports.deleteEvent = async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+
+        // Check if the event exists
+        const event = await Events.findOne({
+            where: { id: eventId }
+        });
+
+        if (!event) {
+            return res.status(404).send({ message: "Event not found." });
+        }
+
+        await Events.destroy({
+            where: { id: eventId }
+        });
+
+        // Return a success message
+        res.status(200).send({ message: "Event deleted successfully." });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};
+
+
+
+exports.getAllEvents = async (req, res) => {
+    try {
+
+        const allEvents = await Events.findAll();
+
+
+        res.status(200).send(allEvents);
     } catch (err) {
         res.status(500).send({ message: err.message });
     }

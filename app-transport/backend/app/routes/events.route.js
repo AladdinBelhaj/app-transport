@@ -16,6 +16,8 @@ module.exports = app => {
    
     router.post("/create",verifyEvent.checkDuplicateEvent,events.createEvent);
     router.get("/:transporterId",events.getEventsData);
-
+    router.put("/:eventId", events.updateEventData);
+    router.delete("/:eventId", events.deleteEvent);
+    router.get('/', events.getAllEvents);
     app.use('/api/events', router);
 };

@@ -31,10 +31,10 @@ const setupStaticRoutes = require("./app/routes/filespath.route");
 // initial();
 //   });
 
-db.sequelize.sync({ alter: true }).then(() => {
-    console.log("Drop and re-sync db.");
-    initial();
-});
+// db.sequelize.sync({ alter: true }).then(() => {
+//     console.log("Drop and re-sync db.");
+//     initial();
+// });
 
 app.get('/', (req, res) => {
     res.send('Hello Express');
