@@ -32,13 +32,13 @@ const Calendar = () => {
     );
     setClickedDate(clickedDate);
     console.log(clickedDate);
-    const newEvent = {
-      title: "testing",
-      start: clickedDate,
-      resourceId: "a",
-    };
-    console.log("New event:", newEvent);
-    setInitialEvents((prevEvents) => [...prevEvents, newEvent]);
+    // const newEvent = {
+    //   title: "testing",
+    //   start: clickedDate,
+    //   resourceId: "a",
+    // };
+    // console.log("New event:", newEvent);
+    // setInitialEvents((prevEvents) => [...prevEvents, newEvent]);
 
     setIsModalOpen(true);
   };
@@ -51,7 +51,7 @@ const Calendar = () => {
     <div className="relative mx-auto max-w-7xl">
       <Breadcrumb pageName="Calendar" />
       <FullCalendar
-        key={JSON.stringify(initialEvents)} // Add key prop here
+        key={JSON.stringify(initialEvents)}
         plugins={[
           // resourceTimelinePlugin,
           dayGridPlugin,
