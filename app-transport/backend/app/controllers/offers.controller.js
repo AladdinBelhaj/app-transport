@@ -201,3 +201,14 @@ exports.uploadImage = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 };
+
+
+exports.getAllOffers = async (req, res) => {
+    try {
+        const allOffers = await Offers.findAll();
+
+        res.status(200).send(allOffers);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+};

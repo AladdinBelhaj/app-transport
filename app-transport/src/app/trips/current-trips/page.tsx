@@ -84,6 +84,32 @@ const CurrentTrips = () => {
     }
   }, [tripCreatedDel]);
 
+  // function handleDelete(event: React.FormEvent) {
+  //   closeDeleteModal();
+  //   axios
+  //     .delete(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
+  //     )
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         localStorage.setItem("tripCreatedDel", "true");
+  //         window.location.reload();
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       toast.error("A trip already exists during that period!", {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+  //     });
+  // }
+
   function handleDelete(event: React.FormEvent) {
     closeDeleteModal();
     axios
@@ -93,6 +119,7 @@ const CurrentTrips = () => {
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("tripCreatedDel", "true");
+          getAndDeleteOffers(selectedTrip?.id);
           window.location.reload();
         }
       })
@@ -110,6 +137,26 @@ const CurrentTrips = () => {
       });
   }
 
+  async function getAndDeleteOffers(tripId: number | undefined) {
+    try {
+      const offersResponse = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers`,
+      );
+      const offersToDelete = offersResponse.data.filter(
+        (offer: any) => offer.tripId == tripId,
+      );
+
+      const deletePromises = offersToDelete.map((offer: any) => {
+        return axios.delete(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offer.id}`,
+        );
+      });
+
+      await Promise.all(deletePromises);
+    } catch (error) {
+      console.error("Error deleting associated offers:", error);
+    }
+  }
   return (
     <>
       <DefaultLayout>

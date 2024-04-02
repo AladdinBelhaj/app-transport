@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { useUserData } from "../../../utils/getUserData";
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // const userDataString = localStorage.getItem("data");
 
-  // const userData = useUserData();
+  const userData = useUserData();
   const userDataString = localStorage.getItem("data");
-  let userData;
+  // let userData;
 
-  if (userDataString !== null) {
-    userData = JSON.parse(userDataString);
-  } else {
-    console.error("userDataString is null");
-  }
+  // if (userDataString !== null) {
+  //   userData = JSON.parse(userDataString);
+  // } else {
+  //   console.error("userDataString is null");
+  // }
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
