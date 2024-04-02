@@ -1,6 +1,3 @@
-const { events } = require("../models/events.model");
-
-
 module.exports = app => {
     app.use(function (req, res, next) {
         res.header(

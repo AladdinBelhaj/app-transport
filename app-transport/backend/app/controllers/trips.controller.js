@@ -119,11 +119,56 @@ exports.getSingleTripData = async (req, res) => {
 
 
 
-
-
 exports.updateTripData = async (req, res) => {
     try {
         const tripId = req.params.tripId;
+        // const existingTrip = await Trips.findOne({
+        //     where: {
+        //         id: { [Op.not]: tripId }, // Exclude the current trip being updated
+        //         transporterId: req.body.transporterId, // Assuming the user ID is available in req.body.userId
+        //         [Op.or]: [
+        //             {
+        //                 departDate: req.body.departDate
+        //             },
+        //             {
+        //                 departDate: {
+        //                     [Op.lte]: req.body.departDate
+        //                 },
+        //                 arrivDate: {
+        //                     [Op.gte]: req.body.departDate
+        //                 }
+        //             }
+        //         ]
+        //     }
+        // });
+        const existingTrip = await Trips.findOne({
+            where: {
+                id: { [Op.not]: tripId }, // Exclude the current trip being updated
+                transporterId: req.body.transporterId, // Assuming the user ID is available in req.body.userId
+                [Op.or]: [
+                    {
+                        [Op.and]: [
+                            { departDate: { [Op.lte]: req.body.departDate } },
+                            { arrivDate: { [Op.gte]: req.body.departDate } }
+                        ]
+                    },
+                    {
+                        [Op.and]: [
+                            { departDate: { [Op.lte]: req.body.arrivDate } },
+                            { arrivDate: { [Op.gte]: req.body.arrivDate } }
+                        ]
+                    }
+                ]
+            }
+        });
+        // If an existing trip is found, return an error
+        if (existingTrip) {
+            return res.status(400).send({
+                message: "Failed! Another trip already exists for the current user within the specified date range."
+            });
+        }
+
+
 
         const trip = await Trips.findOne({
             where: { id: tripId }
@@ -174,6 +219,61 @@ exports.updateTripData = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+
+// exports.updateTripData = async (req, res) => {
+//     try {
+//         const tripId = req.params.tripId;
+
+//         const trip = await Trips.findOne({
+//             where: { id: tripId }
+//         });
+
+//         if (!trip) {
+//             return res.status(404).send({ message: "Trip not found." });
+//         }
+
+//         const updatedFields = {};
+//         if (req.body.departCountry) {
+//             updatedFields.departCountry = req.body.departCountry;
+//         }
+//         if (req.body.departState) {
+//             updatedFields.departState = req.body.departState;
+//         }
+//         if (req.body.destCountry) {
+//             updatedFields.destCountry = req.body.destCountry;
+//         }
+        
+//         if(req.body.desState){
+//             updatedFields.desState = req.body.desState;
+//         }
+//         if(req.body.status){
+//             updatedFields.status = req.body.status;
+//         }
+//         if(req.body.arrivDate){
+//             updatedFields.arrivDate = req.body.arrivDate;
+//         }
+//         if(req.body.departDate){
+//             updatedFields.departDate = req.body.departDate;
+//         }
+//         if(req.body.maxWeight){
+//             updatedFields.maxWeight = req.body.maxWeight;
+//         }
+//         if(req.body.description){
+//             updatedFields.description = req.body.description;
+//         }
+
+//         // Update trip data
+//         await Trips.update(updatedFields, {
+//             where: { id: tripId }
+//         }).then(data => console.log(data));
+
+//         // Return a success message
+//         res.status(200).send({ message: "Trip data updated successfully." });
+//     } catch (err) {
+//         res.status(500).send({ message: err.message });
+//     }
+// };
 
 
 exports.deleteTrip = async (req, res) => {

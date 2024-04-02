@@ -1,6 +1,3 @@
-const {verifyTrip} = require("../middleware")
-const {verifyUpdateTrip} = require("../middleware")
-
 
 module.exports = app => {
     app.use(function (req, res, next) {
