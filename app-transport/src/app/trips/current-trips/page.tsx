@@ -112,6 +112,9 @@ const CurrentTrips = () => {
 
   function handleDelete(event: React.FormEvent) {
     closeDeleteModal();
+    axios.delete(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${selectedTrip?.id}`,
+    );
     axios
       .delete(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips/${selectedTrip?.id}`,
