@@ -93,6 +93,9 @@ const Chat = () => {
       setMessages((prevMessages) => [...prevMessages, res]);
       console.log("All da mes:", res);
     });
+    return () => {
+      socket.off("getMessage");
+    };
   }, [socket]);
 
   useEffect(() => {
@@ -219,12 +222,35 @@ const Chat = () => {
     // console.log(newMessage);
   };
 
+  // const handleSendMessage = async () => {
+  //   try {
+  //     // Prepare the message data
+  //     const messageData = {
+  //       chatId: currentChat?.id,
+  //       senderId: userId,
+  //       text: textMessage,
+  //     };
+
+  //     // Send the message data to the backend
+  //     const response = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages`,
+  //       messageData,
+  //     );
+
+  //     setNewMessage(response.data);
+  //     setMessages((prevMessages) => [...prevMessages, response.data]);
+
+  //     setTextMessage("");
+  //   } catch (error) {
+  //     console.error("Error sending message:", error);
+  //   }
+  // };
   const handleSendMessage = async () => {
     try {
       // Prepare the message data
       const messageData = {
-        chatId: currentChat?.id, // Assuming currentChat contains the chat information
-        senderId: userId, // Assuming userId contains the current user's ID
+        chatId: currentChat?.id,
+        senderId: userId,
         text: textMessage,
       };
 
@@ -243,8 +269,8 @@ const Chat = () => {
     }
   };
 
-  console.log(currentChat);
-  console.log(messages);
+  // console.log(currentChat);
+  // console.log(messages);
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Chat" />
