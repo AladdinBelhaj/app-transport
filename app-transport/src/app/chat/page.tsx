@@ -215,6 +215,15 @@ const Chat = () => {
       localStorage.setItem("currentChat", chatString);
     }
     setClickedUser(user);
+    const updatedNotifications = notifications.map((notification) => {
+      if (notification.recepientId === user.id) {
+        return { ...notification, isRead: true };
+      }
+      return notification;
+    });
+
+    // Update the state with the modified notifications
+    setNotifications(updatedNotifications);
   };
 
   const handleMessageChange = (event: any) => {
@@ -312,7 +321,74 @@ const Chat = () => {
                       (onlineUser) => onlineUser.userId == user.id,
                     );
 
-                    // Find the notification count for the current user
+                    let notificationCount = notifications.reduce(
+                      (count, notification) => {
+                        if (
+                          notification.senderId == user.id &&
+                          notification.recepientId !== clickedUser?.id &&
+                          !notification.isRead
+                        ) {
+                          return count + 1;
+                        }
+                        return count;
+                      },
+                      0,
+                    );
+                    if (user.id === clickedUser?.id) {
+                      notificationCount = 0;
+                    }
+                    return (
+                      <div
+                        key={user.id}
+                        className={`relative flex cursor-pointer flex-row items-center p-4 hover:bg-gray-3 ${
+                          currentChat &&
+                          currentChat.members.includes(user.id.toString())
+                            ? "border-l-2 border-red-500 bg-gradient-to-r from-red-100 to-transparent"
+                            : ""
+                        }`}
+                        onClick={() => handleUserClick(user)}
+                      >
+                        <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
+                          5 min
+                        </div>
+                        <div
+                          className={`avatar ${isOnline ? "online" : "offline"}`}
+                        >
+                          <div className="w-15 rounded-full">
+                            <img
+                              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.picture}`}
+                              width={55}
+                              height={55}
+                              alt="User"
+                            />
+                          </div>
+                        </div>
+                        <div className="ml-3 flex flex-grow flex-col">
+                          <div className="text-sm font-medium">
+                            {user.fullname}
+                          </div>
+                          <div className="w-40 truncate text-xs">
+                            Last Message Example
+                          </div>
+                        </div>
+                        <div className="mb-1 ml-2 flex-shrink-0 self-end">
+                          {notificationCount > 0 && (
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                              {notificationCount}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* <div className="-mx-4 flex flex-col">
+                  {usersData.map((user) => {
+                    const isOnline = onlineUsers.some(
+                      (onlineUser) => onlineUser.userId == user.id,
+                    );
+
                     const notificationCount = notifications.reduce(
                       (count, notification) => {
                         if (notification.senderId == user.id) {
@@ -358,9 +434,7 @@ const Chat = () => {
                           </div>
                         </div>
                         <div className="mb-1 ml-2 flex-shrink-0 self-end">
-                          {/* <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                            {notificationCount}
-                          </span> */}
+
                           {notificationCount > 0 && (
                             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                               {notificationCount}
@@ -370,7 +444,7 @@ const Chat = () => {
                       </div>
                     );
                   })}
-                </div>
+                </div> */}
               </div>
               <div className="relative h-full overflow-hidden pt-2">
                 <div className="-mx-4 flex h-full flex-col divide-y overflow-y-auto"></div>
