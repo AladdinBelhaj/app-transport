@@ -20,6 +20,5 @@ module.exports = app => {
     router.put("/imageData/:offerId",offers.upload,offers.uploadImage)
     router.get("/",offers.getAllOffers);
 
-
     app.use('/api/offers', router);
 };
