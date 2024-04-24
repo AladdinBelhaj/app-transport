@@ -594,7 +594,7 @@ const ApplyTrip: React.FC = () => {
       .catch((error) => {
         console.error("Error creating offer:", error);
       });
-    router.push("/offers/view-offers");
+    router.push("/");
   }
 
   return (

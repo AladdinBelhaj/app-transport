@@ -175,7 +175,7 @@ const Chat = () => {
 
     fetchUserMessages();
   }, [currentChat]);
-  // console.log(messages);
+  console.log("ALL MESSAGES:", messages);
 
   useEffect(() => {
     const fetchUsersData = async () => {
@@ -291,18 +291,15 @@ const Chat = () => {
               <div className="flex flex-row items-center">
                 <div className="flex flex-row items-center">
                   <div className="text-xl font-semibold">Messages</div>
-                  <div className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
+                  {/* <div className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
                     5
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="mt-5">
                 <ul className="flex flex-row items-center justify-between">
                   <li>
-                    <a
-                      href="#"
-                      className="relative flex items-center pb-3 text-xs font-semibold text-indigo-800"
-                    >
+                    <a className="relative flex items-center pb-3 text-xs font-semibold text-indigo-800">
                       <span>All Conversations</span>
                       <span className="absolute bottom-0 left-0 h-1 w-6 rounded-full bg-indigo-800" />
                     </a>
@@ -337,6 +334,7 @@ const Chat = () => {
                     if (user.id === clickedUser?.id) {
                       notificationCount = 0;
                     }
+
                     return (
                       <div
                         key={user.id}
@@ -367,9 +365,9 @@ const Chat = () => {
                           <div className="text-sm font-medium">
                             {user.fullname}
                           </div>
-                          <div className="w-40 truncate text-xs">
-                            Last Message Example
-                          </div>
+                          {/* <div className="w-40 truncate text-xs">
+                            {lastMessage ? lastMessage.text : "No messages"}
+                          </div> */}
                         </div>
                         <div className="mb-1 ml-2 flex-shrink-0 self-end">
                           {notificationCount > 0 && (

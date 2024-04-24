@@ -1361,7 +1361,7 @@ const ViewOffers = () => {
               </div>
 
               {JSON.parse(offer.objects).map((object: any, index: number) => {
-                const pictureIndex = pictureIds.indexOf(index);
+                const pictureIndex = pictureIds?.indexOf(index);
                 const weight = parseFloat(object[`weight-${index}`]);
                 totalWeight += weight; // Add object weight to total weight
                 return (
@@ -1389,6 +1389,7 @@ const ViewOffers = () => {
                             />
                           </div>
                         )}
+
                         <p className="text-sm text-black dark:text-white">
                           {object[`name-${index}`]}
                         </p>
