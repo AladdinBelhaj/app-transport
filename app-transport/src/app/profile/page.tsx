@@ -15,6 +15,8 @@ import axios from "axios";
 const Profile = () => {
   const userData = useUserData();
 
+  console.log(userData);
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-242.5">
@@ -34,7 +36,7 @@ const Profile = () => {
               }}
             />
             <div className="absolute bottom-1 right-1 z-10 xsm:bottom-4 xsm:right-4">
-              <label
+              {/* <label
                 htmlFor="cover"
                 className="flex cursor-pointer items-center justify-center gap-2 rounded bg-primary px-2 py-1 text-sm font-medium text-white hover:bg-opacity-80 xsm:px-4"
               >
@@ -68,7 +70,7 @@ const Profile = () => {
                   </svg>
                 </span>
                 <span>Edit</span>
-              </label>
+              </label> */}
             </div>
           </div>
           <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
@@ -83,11 +85,11 @@ const Profile = () => {
                     />
                   </div>
                 </div>
-                <label
+                {/* <label
                   htmlFor="profile"
                   className="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
-                >
-                  <svg
+                > */}
+                {/* <svg
                     className="fill-current"
                     width="14"
                     height="14"
@@ -107,40 +109,46 @@ const Profile = () => {
                       d="M7.00004 5.83329C6.03354 5.83329 5.25004 6.61679 5.25004 7.58329C5.25004 8.54979 6.03354 9.33329 7.00004 9.33329C7.96654 9.33329 8.75004 8.54979 8.75004 7.58329C8.75004 6.61679 7.96654 5.83329 7.00004 5.83329ZM4.08337 7.58329C4.08337 5.97246 5.38921 4.66663 7.00004 4.66663C8.61087 4.66663 9.91671 5.97246 9.91671 7.58329C9.91671 9.19412 8.61087 10.5 7.00004 10.5C5.38921 10.5 4.08337 9.19412 4.08337 7.58329Z"
                       fill=""
                     />
-                  </svg>
-                  <input
+                  </svg> */}
+                {/* <input
                     type="file"
                     name="profile"
                     id="profile"
                     className="sr-only"
-                  />
-                </label>
+                  /> */}
+                {/* </label> */}
               </div>
             </div>
             <div className="mt-4">
               <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
                 {userData?.fullname}
               </h3>
-              <p className="font-medium">Ui/Ux Designer</p>
-              <div className="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
-                <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
+              <p className="font-medium">
+                {userData?.role
+                  ? userData.role.charAt(0).toUpperCase() +
+                    userData.role.slice(1)
+                  : ""}
+              </p>
+
+              <div className="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-4 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
+                <div className="col-span-2 flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                   <span className="font-semibold text-black dark:text-white">
                     259
                   </span>
-                  <span className="text-sm">Posts</span>
+                  <span className="text-sm">Trips Completed</span>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
+                <div className="col-span-2 flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                   <span className="font-semibold text-black dark:text-white">
                     129K
                   </span>
-                  <span className="text-sm">Followers</span>
+                  <span className="text-sm">Countries Visited</span>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
-                  <span className="font-semibold text-black dark:text-white">
-                    2K
-                  </span>
-                  <span className="text-sm">Following</span>
-                </div>
+                {/* <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
+    <span className="font-semibold text-black dark:text-white">
+      2K
+    </span>
+    <span className="text-sm">Following</span>
+  </div> */}
               </div>
 
               <div className="mx-auto max-w-180">
