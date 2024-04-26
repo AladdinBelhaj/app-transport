@@ -7,6 +7,7 @@ import { useUserData } from "../../../utils/getUserData";
 import { useEffect } from "react";
 import SidebarFirstLogin from "@/components/SidebarFirstLogin";
 import SidebarClient from "../SidebarClient";
+import SidebarAdmin from "../SidebarAdmin";
 export default function DefaultLayout({
   children,
 }: {
@@ -44,6 +45,11 @@ export default function DefaultLayout({
             />
           ) : role === "client" ? (
             <SidebarClient
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+          ) : role === "admin" ? (
+            <SidebarAdmin
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
             />
