@@ -1224,6 +1224,29 @@ const ViewOffers = () => {
     }
   };
 
+  const handleConfirm = () => {
+    if (offerToConfirmId !== null) {
+      // Remove the rejected offer from the UI
+      setOfferData((prevOfferData) =>
+        prevOfferData.filter((offer: any) => offer.id !== offerToConfirmId),
+      );
+      setIsConfirmModalOpen(false);
+      setOfferToConfirmId(null);
+
+      axios
+        .put(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers/${offerToConfirmId}`,
+          { status: "finished" },
+        )
+        .then((response) => {
+          console.log("Offer confirmed successfully");
+        })
+        .catch((error) => {
+          console.error("Error confirmed offer:", error);
+        });
+    }
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Current Offers" />
@@ -1284,7 +1307,7 @@ const ViewOffers = () => {
                 <button
                   type="submit"
                   className="inline-flex items-center rounded-lg bg-sky-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
-                  // onClick={() => handleDelete()}
+                  onClick={() => handleConfirm()}
                 >
                   <svg
                     className="-ml-1 mr-1.5 h-5 w-5"
@@ -1387,171 +1410,173 @@ const ViewOffers = () => {
         </div>
       )}
       {offerData.length > 0 ? (
-        offerData.map((offer: any, offerIndex: number) => {
-          const tripData = tripDataMap[offer.tripId];
-          const userData = userDataMap[offer.userId];
-          const pictures = JSON.parse(offer.picture);
-          const pictureIds = JSON.parse(offer.pictureIds);
-          let totalWeight = 0;
+        offerData
+          .filter((offer: any) => offer.status !== "finished")
+          .map((offer: any, offerIndex: number) => {
+            const tripData = tripDataMap[offer.tripId];
+            const userData = userDataMap[offer.userId];
+            const pictures = JSON.parse(offer.picture);
+            const pictureIds = JSON.parse(offer.pictureIds);
+            let totalWeight = 0;
 
-          return (
-            <div
-              className="dark:border-stroked mb-10 rounded-sm border border-stroke bg-white shadow-default"
-              key={offerIndex}
-            >
-              <div className="flex items-center justify-between px-4 py-6 md:px-6 xl:px-7.5">
-                <div>
-                  <h4 className="text-xl font-semibold text-black dark:text-white">
-                    {tripData?.departCountry} to {tripData?.destCountry}
-                    {tripData?.status === "finished" ? (
-                      <span className="text-sm font-light">
-                        {" "}
-                        (Trip is finished)
-                      </span>
-                    ) : tripData?.status === "pending" ? (
-                      <span className="text-sm font-light">
-                        {" "}
-                        (Weight Left: {tripData?.maxWeight} kg)
-                      </span>
-                    ) : tripData?.status === "ongoing" ? (
-                      <span className="text-sm font-light">
-                        {" "}
-                        (Trip is ongoing)
-                      </span>
-                    ) : null}
-                  </h4>
+            return (
+              <div
+                className="dark:border-stroked mb-10 rounded-sm border border-stroke bg-white shadow-default"
+                key={offerIndex}
+              >
+                <div className="flex items-center justify-between px-4 py-6 md:px-6 xl:px-7.5">
+                  <div>
+                    <h4 className="text-xl font-semibold text-black dark:text-white">
+                      {tripData?.departCountry} to {tripData?.destCountry}
+                      {tripData?.status === "finished" ? (
+                        <span className="text-sm font-light">
+                          {" "}
+                          (Trip is finished)
+                        </span>
+                      ) : tripData?.status === "pending" ? (
+                        <span className="text-sm font-light">
+                          {" "}
+                          (Weight Left: {tripData?.maxWeight} kg)
+                        </span>
+                      ) : tripData?.status === "ongoing" ? (
+                        <span className="text-sm font-light">
+                          {" "}
+                          (Trip is ongoing)
+                        </span>
+                      ) : null}
+                    </h4>
 
-                  <div className="col-span-1 flex items-center">
-                    <p
-                      className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
-                        offer.status === "accepted"
-                          ? "bg-success text-success"
-                          : offer.status === "rejected"
-                            ? "bg-danger text-danger"
-                            : "bg-warning text-warning"
-                      }`}
-                    >
-                      {offer.status}
-                    </p>
+                    <div className="col-span-1 flex items-center">
+                      <p
+                        className={`rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${
+                          offer.status === "accepted"
+                            ? "bg-success text-success"
+                            : offer.status === "rejected"
+                              ? "bg-danger text-danger"
+                              : "bg-warning text-warning"
+                        }`}
+                      >
+                        {offer.status}
+                      </p>
+                    </div>
+                    <span className="text-sm font-light">
+                      Total Weight: {offer.totalWeight} kg
+                    </span>
                   </div>
-                  <span className="text-sm font-light">
-                    Total Weight: {offer.totalWeight} kg
-                  </span>
-                </div>
-                <div className="space-x-4">
+                  <div className="space-x-4">
+                    {(() => {
+                      if (
+                        offer.status === "accepted" &&
+                        tripData?.status === "finished"
+                      ) {
+                        return (
+                          <button
+                            onClick={() => openConfirmModal(offer.id)}
+                            className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800"
+                          >
+                            Confirm Delivery
+                          </button>
+                        );
+                      }
+                    })()}
+                  </div>
+
                   {(() => {
                     if (
-                      offer.status === "accepted" &&
-                      tripData?.status === "finished"
+                      offer.status === "rejected" ||
+                      offer.status === "pending"
                     ) {
                       return (
                         <button
-                          onClick={() => openConfirmModal(offer.id)}
-                          className="rounded-md bg-sky-600 px-4 py-2 text-white hover:bg-sky-800"
+                          onClick={() => openDeleteModal(offer.id)}
+                          className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-800"
                         >
-                          Confirm Delivery
+                          Delete Offer
                         </button>
                       );
                     }
                   })()}
                 </div>
 
-                {(() => {
-                  if (
-                    offer.status === "rejected" ||
-                    offer.status === "pending"
-                  ) {
-                    return (
-                      <button
-                        onClick={() => openDeleteModal(offer.id)}
-                        className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-800"
-                      >
-                        Delete Offer
-                      </button>
-                    );
-                  }
-                })()}
-              </div>
+                <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+                  <div className="col-span-3 flex items-center">
+                    <p className="font-medium">Object</p>
+                  </div>
+                  <div className="col-span-1 hidden items-center sm:flex">
+                    <p className="font-medium">Width</p>
+                  </div>
+                  <div className="col-span-1 flex items-center">
+                    <p className="font-medium">Length</p>
+                  </div>
+                  <div className="col-span-1 flex items-center">
+                    <p className="font-medium">Height</p>
+                  </div>
+                  <div className="col-span-1 flex items-center">
+                    <p className="font-medium">Weight</p>
+                  </div>
+                </div>
 
-              <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
-                <div className="col-span-3 flex items-center">
-                  <p className="font-medium">Object</p>
-                </div>
-                <div className="col-span-1 hidden items-center sm:flex">
-                  <p className="font-medium">Width</p>
-                </div>
-                <div className="col-span-1 flex items-center">
-                  <p className="font-medium">Length</p>
-                </div>
-                <div className="col-span-1 flex items-center">
-                  <p className="font-medium">Height</p>
-                </div>
-                <div className="col-span-1 flex items-center">
-                  <p className="font-medium">Weight</p>
-                </div>
-              </div>
+                {JSON.parse(offer.objects).map((object: any, index: number) => {
+                  const pictureIndex = pictureIds?.indexOf(index);
+                  const weight = parseFloat(object[`weight-${index}`]);
+                  totalWeight += weight; // Add object weight to total weight
+                  return (
+                    <div
+                      className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
+                      key={index}
+                    >
+                      {/* Render offer details */}
+                      <div className="col-span-3 flex items-center">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                          {pictureIndex !== -1 && (
+                            <div
+                              className="h-15 w-17.5 cursor-pointer rounded-md"
+                              onClick={() =>
+                                openModal(
+                                  `${process.env.NEXT_PUBLIC_BACKEND_URL}/${pictures[pictureIndex]}`,
+                                )
+                              }
+                            >
+                              <img
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${pictures[pictureIndex]}`}
+                                width={60}
+                                height={50}
+                                alt="Product"
+                              />
+                            </div>
+                          )}
 
-              {JSON.parse(offer.objects).map((object: any, index: number) => {
-                const pictureIndex = pictureIds?.indexOf(index);
-                const weight = parseFloat(object[`weight-${index}`]);
-                totalWeight += weight; // Add object weight to total weight
-                return (
-                  <div
-                    className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
-                    key={index}
-                  >
-                    {/* Render offer details */}
-                    <div className="col-span-3 flex items-center">
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                        {pictureIndex !== -1 && (
-                          <div
-                            className="h-15 w-17.5 cursor-pointer rounded-md"
-                            onClick={() =>
-                              openModal(
-                                `${process.env.NEXT_PUBLIC_BACKEND_URL}/${pictures[pictureIndex]}`,
-                              )
-                            }
-                          >
-                            <img
-                              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${pictures[pictureIndex]}`}
-                              width={60}
-                              height={50}
-                              alt="Product"
-                            />
-                          </div>
-                        )}
-
+                          <p className="text-sm text-black dark:text-white">
+                            {object[`name-${index}`]}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="col-span-1 hidden items-center sm:flex">
                         <p className="text-sm text-black dark:text-white">
-                          {object[`name-${index}`]}
+                          {object[`width-${index}`]} cm
+                        </p>
+                      </div>
+                      <div className="col-span-1 flex items-center">
+                        <p className="text-sm text-black dark:text-white">
+                          {object[`length-${index}`]} cm
+                        </p>
+                      </div>
+                      <div className="col-span-1 flex items-center">
+                        <p className="text-sm text-black dark:text-white">
+                          {object[`height-${index}`]} cm
+                        </p>
+                      </div>
+                      <div className="col-span-1 flex items-center">
+                        <p className="text-sm text-black dark:text-white">
+                          {object[`weight-${index}`]} kg
                         </p>
                       </div>
                     </div>
-                    <div className="col-span-1 hidden items-center sm:flex">
-                      <p className="text-sm text-black dark:text-white">
-                        {object[`width-${index}`]} cm
-                      </p>
-                    </div>
-                    <div className="col-span-1 flex items-center">
-                      <p className="text-sm text-black dark:text-white">
-                        {object[`length-${index}`]} cm
-                      </p>
-                    </div>
-                    <div className="col-span-1 flex items-center">
-                      <p className="text-sm text-black dark:text-white">
-                        {object[`height-${index}`]} cm
-                      </p>
-                    </div>
-                    <div className="col-span-1 flex items-center">
-                      <p className="text-sm text-black dark:text-white">
-                        {object[`weight-${index}`]} kg
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })
+                  );
+                })}
+              </div>
+            );
+          })
       ) : (
         <div className="text-gray-500 text-center">
           You did not send any offers yet!
