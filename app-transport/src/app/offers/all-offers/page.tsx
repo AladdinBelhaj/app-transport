@@ -156,14 +156,12 @@ const Offers = () => {
     <DefaultLayout>
       <Breadcrumb pageName="All Offers" />
 
-      {/* Delete Modal */}
-
       {offerData.length > 0 ? (
         offerData
-          .filter(
-            (offer: any) =>
-              offer.status !== "accepted" && offer.status !== "rejected",
-          )
+          //   .filter(
+          //     (offer: any) =>
+          //       offer.status !== "accepted" && offer.status !== "rejected",
+          //   )
           .map((offer: any, offerIndex: number) => {
             const tripData = tripDataMap[offer.tripId];
             const userData = userDataMap[offer.userId];

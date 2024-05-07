@@ -1455,20 +1455,22 @@ const ViewOffers = () => {
                     }
                   })()}
                 </div>
-                <div className="space-x-4">
-                  {(() => {
-                    if (offer.status === "rejected") {
-                      return (
-                        <button
-                          onClick={() => openDeleteModal(offer.id)}
-                          className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-800"
-                        >
-                          Delete Offer
-                        </button>
-                      );
-                    }
-                  })()}
-                </div>
+
+                {(() => {
+                  if (
+                    offer.status === "rejected" ||
+                    offer.status === "pending"
+                  ) {
+                    return (
+                      <button
+                        onClick={() => openDeleteModal(offer.id)}
+                        className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-800"
+                      >
+                        Delete Offer
+                      </button>
+                    );
+                  }
+                })()}
               </div>
 
               <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
