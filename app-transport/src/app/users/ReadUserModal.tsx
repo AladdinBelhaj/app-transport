@@ -16,6 +16,7 @@ interface User {
   picture: string;
   createdAt: string;
   updatedAt: string;
+  blocked: string;
 }
 
 interface ModalProps {
@@ -39,7 +40,6 @@ const ReadUserModal: React.FC<ModalProps> = ({
 
   return (
     <div>
-      {/* Main modal */}
       {isOpen && ( // Render the modal only if isOpen prop is true
         <div
           id="readProductModal"
@@ -58,9 +58,9 @@ const ReadUserModal: React.FC<ModalProps> = ({
               <div className="mb-4 flex justify-between rounded-t sm:mb-5">
                 <div className="text-gray-900 text-lg dark:text-white md:text-xl">
                   <h3 className="font-semibold ">
-                    Trip to {selectedUser?.destCountry}
+                    {/* Trip to {selectedUser?.destCountry} */}
                   </h3>
-                  <p className="text-sm font-bold">{selectedUser?.desState}</p>
+                  {/* <p className="text-sm font-bold">{selectedUser?.desState}</p> */}
                 </div>
                 <div>
                   <button
@@ -90,15 +90,15 @@ const ReadUserModal: React.FC<ModalProps> = ({
                   Details
                 </dt>
                 <dd className="text-gray-500 dark:text-gray-400 mb-4 font-light sm:mb-5">
-                  {selectedUser?.description
+                  {/* {selectedUser?.description
                     ? selectedUser.description
-                    : "No description"}
+                    : "No description"} */}
                 </dd>
               </dl>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3 sm:space-x-4">
-                  {selectedUser?.status !== "ongoing" && (
+                  {selectedUser?.blocked !== "ongoing" && (
                     // Edit Trip button
                     <button
                       type="button"
@@ -147,7 +147,7 @@ const ReadUserModal: React.FC<ModalProps> = ({
                     View Offers
                   </button>
                 </div>
-                {selectedUser?.status == "ongoing" ? (
+                {selectedUser?.blocked == "ongoing" ? (
                   <button
                     type="button"
                     className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-red-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-red-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
@@ -168,7 +168,7 @@ const ReadUserModal: React.FC<ModalProps> = ({
                         d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                       />
                     </svg>
-                    End Trip
+                    Block User
                   </button>
                 ) : (
                   <button
@@ -190,7 +190,7 @@ const ReadUserModal: React.FC<ModalProps> = ({
                         d="M14 5l7 7m0 0l-7 7m7-7H3"
                       ></path>
                     </svg>
-                    Block User
+                    Unblock User
                   </button>
                 )}
               </div>
