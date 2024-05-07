@@ -27,7 +27,7 @@ interface Trip {
 }
 
 const CurrentTrips = () => {
-  const tripData = useTripData();
+  // const tripData = useTripData();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -56,33 +56,17 @@ const CurrentTrips = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const [tripCreatedDel, setTripCreatedDel] = useState(false);
-
+  const [tripData, setTripData] = useState<Trip[] | null>(null);
   useEffect(() => {
-    // Check if a trip has been created
-    const tripCreatedStorage = localStorage.getItem("tripCreatedDel");
-    if (tripCreatedStorage === "true") {
-      // Clear the flag in localStorage
-      localStorage.removeItem("tripCreatedDel");
-      // Set the state to trigger the toast
-      setTripCreatedDel(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Show the toast when tripCreated state changes
-    if (tripCreatedDel) {
-      toast.success("Deleted trip!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips`)
+      .then((response) => {
+        setTripData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching trips:", error);
       });
-    }
-  }, [tripCreatedDel]);
+  }, []);
 
   // function handleDelete(event: React.FormEvent) {
   //   closeDeleteModal();
@@ -112,6 +96,9 @@ const CurrentTrips = () => {
 
   function handleDelete(event: React.FormEvent) {
     closeDeleteModal();
+    setTripData((prevTripData) =>
+      (prevTripData ?? []).filter((trip: any) => trip.id !== selectedTrip?.id),
+    );
     axios.delete(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${selectedTrip?.id}`,
     );
@@ -121,9 +108,16 @@ const CurrentTrips = () => {
       )
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem("tripCreatedDel", "true");
           getAndDeleteOffers(selectedTrip?.id);
-          window.location.reload();
+          toast.success("Deleted trip!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       })
       .catch((err) => {
