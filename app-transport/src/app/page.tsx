@@ -56,8 +56,10 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const userData = useUserData();
 
+  console.log(userData?.isBlocked);
+
   useEffect(() => {
-    if (userData?.isBlocked !== "0") {
+    if (userData?.isBlocked && userData.isBlocked !== "false") {
       const modal = document.getElementById(
         "my_modal_1",
       ) as HTMLDialogElement | null;
@@ -66,7 +68,6 @@ export default function Home() {
       }
     }
   }, [userData?.isBlocked]);
-
   const router = useRouter();
   function handleLogout() {
     localStorage.removeItem("token");

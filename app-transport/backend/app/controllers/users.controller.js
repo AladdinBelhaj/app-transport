@@ -54,8 +54,7 @@ exports.signup = async (req, res) => {
         password: bcrypt.hashSync(password, salt),
         isFirstLogin: "1",
         picture: "app/uploads/images/default.png",
-
-        isBlocked:"0"
+        isBlocked:"false"
     })
         .then(user => {
             if (req.body.role) {

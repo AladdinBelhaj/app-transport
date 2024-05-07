@@ -252,7 +252,7 @@ const Users = () => {
       .put(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${selectedUser?.id}`,
         {
-          isBlocked: "0",
+          isBlocked: "false",
         },
       )
       .then((response) => {
@@ -263,7 +263,7 @@ const Users = () => {
           if (!prevUserData) return prevUserData; // Ensure prevUserData is not null
           const updatedUserData = prevUserData.map((user) => {
             if (user.id === selectedUser?.id) {
-              return { ...user, isBlocked: "0" };
+              return { ...user, isBlocked: "false" };
             }
             return user;
           });
@@ -300,7 +300,7 @@ const Users = () => {
               <div className="mb-4 flex justify-between rounded-t sm:mb-5">
                 <div className="text-gray-900 md:text-md text-lg dark:text-white">
                   <h3 className="font-semibold">
-                    {selectedUser?.isBlocked !== "0"
+                    {selectedUser?.isBlocked !== "false"
                       ? `This user is blocked for: ${selectedUser?.isBlocked}`
                       : "Block User"}
                   </h3>
