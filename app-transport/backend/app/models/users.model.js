@@ -28,6 +28,9 @@ module.exports = (sequelize, Sequelize) => {
         isFirstLogin: {
             type: Sequelize.STRING
         },
+        isBlocked:{
+            type: Sequelize.STRING
+        }
     });
     return Users;
 };

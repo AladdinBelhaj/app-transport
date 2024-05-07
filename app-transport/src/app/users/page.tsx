@@ -6,23 +6,6 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import { SocketContext } from "../context/SocketContext";
-import ReadUserModal from "./ReadUserModal";
-
-interface TripData {
-  id: number;
-  departCountry: string;
-  departState: string;
-  destCountry: string;
-  desState: string;
-  departDate: string;
-  arrivDate: string;
-  maxWeight: string;
-  description: string;
-  transporterId: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 // interface UserData {
 //   id: string;

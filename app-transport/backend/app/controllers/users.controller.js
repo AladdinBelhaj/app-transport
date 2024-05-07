@@ -53,7 +53,9 @@ exports.signup = async (req, res) => {
         role: req.body.role,
         password: bcrypt.hashSync(password, salt),
         isFirstLogin: "1",
-        picture: "app/uploads/images/default.png"
+        picture: "app/uploads/images/default.png",
+
+        isBlocked:"0"
     })
         .then(user => {
             if (req.body.role) {
@@ -146,7 +148,8 @@ exports.signin = async (req, res) => {
             role: user.role,
             accessToken: token,
             picture: user.picture,
-            isFirstLogin: user.isFirstLogin
+            isFirstLogin: user.isFirstLogin,
+            isBlocked: user.isBlocked
 
         });
     } catch (err) {
@@ -200,6 +203,9 @@ exports.updateUserData = async (req, res) => {
 
         if (req.body.isFirstLogin) {
             updatedFields.isFirstLogin = req.body.isFirstLogin;
+        }
+        if (req.body.isBlocked) {
+            updatedFields.isBlocked = req.body.isBlocked;
         }
 
         if (req.body.username) {
