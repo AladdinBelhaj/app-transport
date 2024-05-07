@@ -10,6 +10,7 @@ interface UserData {
   bio: string;
   isFirstLogin: string;
   picture: string;
+  isBlocked: string;
 }
 
 export const useUserData = (): UserData | null => {
