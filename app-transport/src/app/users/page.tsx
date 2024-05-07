@@ -118,7 +118,7 @@ interface User {
   picture: string;
   createdAt: string;
   updatedAt: string;
-  blocked: string;
+  isBlocked: string;
 }
 
 const Users = () => {
@@ -145,7 +145,7 @@ const Users = () => {
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
-  }, []); // Empty dependency array to run the effect only once on component mount
+  }, []);
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -170,6 +170,116 @@ const Users = () => {
     return `${day} ${month}, ${year}`;
   }
 
+  const [reason, setReason] = useState(""); // State to track the reason for blocking
+
+  // Function to handle changes in the textarea
+  const handleReasonChange = (event: any) => {
+    setReason(event.target.value); // Update the reason state with the new value
+  };
+
+  //   const blockUser = () => {
+  //     axios
+  //       .put(
+  //         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${selectedUser?.id}`,
+  //         {
+  //           isBlocked: reason,
+  //         },
+  //       )
+  //       .then((response) => {
+  //         // Handle success
+  //         console.log("User blocked successfully:", response.data);
+  //         // Close the modal or perform any other actions
+  //         closeModal();
+  //       })
+  //       .catch((error) => {
+  //         // Handle error
+  //         console.error("Error blocking user:", error);
+  //       });
+  //   };
+
+  //   const unblockUser = () => {
+  //     axios
+  //       .put(
+  //         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${selectedUser?.id}`,
+  //         {
+  //           isBlocked: "0",
+  //         },
+  //       )
+  //       .then((response) => {
+  //         // Handle success
+  //         console.log("User unblocked successfully:", response.data);
+  //         // Close the modal or perform any other actions
+  //         closeModal();
+  //       })
+  //       .catch((error) => {
+  //         // Handle error
+  //         console.error("Error unblocking user:", error);
+  //       });
+  //   };
+  const blockUser = () => {
+    axios
+      .put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${selectedUser?.id}`,
+        {
+          isBlocked: reason,
+        },
+      )
+      .then((response) => {
+        // Handle success
+        console.log("User blocked successfully:", response.data);
+        // Update the userData object to reflect the change in isBlocked
+        setUserData((prevUserData) => {
+          if (!prevUserData) return prevUserData; // Ensure prevUserData is not null
+          const updatedUserData = prevUserData.map((user) => {
+            if (user.id === selectedUser?.id) {
+              return { ...user, isBlocked: reason };
+            }
+            return user;
+          });
+          return updatedUserData;
+        });
+        // Close the modal or perform any other actions
+        closeModal();
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error blocking user:", error);
+      });
+  };
+
+  const unblockUser = () => {
+    axios
+      .put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${selectedUser?.id}`,
+        {
+          isBlocked: "0",
+        },
+      )
+      .then((response) => {
+        // Handle success
+        console.log("User unblocked successfully:", response.data);
+        // Update the userData object to reflect the change in isBlocked
+        setUserData((prevUserData) => {
+          if (!prevUserData) return prevUserData; // Ensure prevUserData is not null
+          const updatedUserData = prevUserData.map((user) => {
+            if (user.id === selectedUser?.id) {
+              return { ...user, isBlocked: "0" };
+            }
+            return user;
+          });
+          return updatedUserData;
+        });
+        // Close the modal or perform any other actions
+        closeModal();
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error unblocking user:", error);
+      });
+  };
+
+  const isButtonDisabled = reason.trim() === "";
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Current Users" />
@@ -190,7 +300,9 @@ const Users = () => {
               <div className="mb-4 flex justify-between rounded-t sm:mb-5">
                 <div className="text-gray-900 md:text-md text-lg dark:text-white">
                   <h3 className="font-semibold">
-                    Reason for blocking the user?
+                    {selectedUser?.isBlocked !== "0"
+                      ? `This user is blocked for: ${selectedUser?.isBlocked}`
+                      : "Block User"}
                   </h3>
                 </div>
                 <div>
@@ -217,16 +329,21 @@ const Users = () => {
                 </div>
               </div>
 
-              <textarea
-                className="border-gray-300 dark:bg-gray-700 h-24 w-full rounded-md border p-2 focus:outline-none focus:ring focus:ring-blue-400 dark:text-white"
-                placeholder="Enter reason here..."
-              ></textarea>
+              {selectedUser?.isBlocked === "0" && ( // Render textarea only if user is not blocked
+                <textarea
+                  className="border-gray-300 dark:bg-gray-700 h-24 w-full rounded-md border p-2 focus:outline-none focus:ring focus:ring-blue-400 dark:text-white"
+                  placeholder="Enter reason here..."
+                  onChange={handleReasonChange}
+                ></textarea>
+              )}
 
               <div className="flex items-center justify-between">
-                {selectedUser?.blocked == "ongoing" ? (
+                {selectedUser?.isBlocked === "0" ? (
                   <button
                     type="button"
-                    className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-red-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-red-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    className={`text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-red-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white ${isButtonDisabled ? "cursor-not-allowed opacity-50" : ""}`}
+                    onClick={blockUser}
+                    disabled={isButtonDisabled}
                   >
                     <svg
                       aria-hidden="true"
@@ -250,6 +367,7 @@ const Users = () => {
                   <button
                     type="button"
                     className="text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-green-500 px-5 py-2.5  text-sm font-medium text-white hover:bg-green-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white"
+                    onClick={unblockUser}
                   >
                     <svg
                       aria-hidden="true"
