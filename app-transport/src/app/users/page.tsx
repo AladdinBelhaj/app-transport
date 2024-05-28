@@ -329,7 +329,7 @@ const Users = () => {
                 </div>
               </div>
 
-              {selectedUser?.isBlocked === "0" && ( // Render textarea only if user is not blocked
+              {selectedUser?.isBlocked === "false" && ( // Render textarea only if user is not blocked
                 <textarea
                   className="border-gray-300 dark:bg-gray-700 h-24 w-full rounded-md border p-2 focus:outline-none focus:ring focus:ring-blue-400 dark:text-white"
                   placeholder="Enter reason here..."
@@ -338,7 +338,7 @@ const Users = () => {
               )}
 
               <div className="flex items-center justify-between">
-                {selectedUser?.isBlocked === "0" ? (
+                {selectedUser?.isBlocked === "false" ? (
                   <button
                     type="button"
                     className={`text-gray-900 border-gray-200 hover:bg-gray-100 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg border bg-red-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:z-10 focus:outline-none focus:ring-4 dark:hover:text-white ${isButtonDisabled ? "cursor-not-allowed opacity-50" : ""}`}

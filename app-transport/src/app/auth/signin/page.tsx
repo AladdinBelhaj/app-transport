@@ -111,10 +111,7 @@ const Login = () => {
                     />
                   </Link> */}
 
-                  <p className="2xl:px-20">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    suspendisse.
-                  </p>
+                  <p className="2xl:px-20">We make transporting goods easy!</p>
 
                   <span className="mt-15 inline-block">
                     <Image

@@ -1,18 +1,102 @@
 "use client";
-import React from "react";
-import ChartOne from "../Charts/ChartOne";
-import ChartThree from "../Charts/ChartThree";
-import ChartTwo from "../Charts/ChartTwo";
+import React, { useState, useEffect } from "react";
 import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 import MapOne from "../Maps/MapOne";
+import axios from "axios";
+import ChartOne from "./ChartOne";
+interface User {
+  id: string;
+  fullname: string;
+  phone: string;
+  email: string;
+  username: string;
+  role: string;
+  bio: string;
+  isFirstLogin: string;
+  picture: string;
+  createdAt: string;
+  updatedAt: string;
+  isBlocked: string;
+}
+
+interface Trip {
+  id: number;
+  departCountry: string;
+  departState: string;
+  destCountry: string;
+  desState: string;
+  departDate: string;
+  arrivDate: string;
+  maxWeight: string;
+  description: string;
+  transporterId: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const ECommerce: React.FC = () => {
+  const [users, setUsers] = useState<User[] | null>(null);
+  const [trips, setTrips] = useState<Trip[] | null>(null);
+  const [offers, setOffers] = useState([]);
+  const [countries, setCountries] = useState<number>(0);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`)
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trips`)
+      .then((response) => {
+        setTrips(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching trips:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/offers`)
+      .then((response) => {
+        setOffers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching offers:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (trips) {
+      const uniqueCountries = new Set<string>(); // Create a Set to store unique country names
+
+      trips.forEach((trip) => {
+        uniqueCountries.add(trip.departCountry); // Add departCountry to the Set
+        uniqueCountries.add(trip.destCountry); // Add destCountry to the Set
+      });
+
+      setCountries(uniqueCountries.size); // Set the count of unique countries
+    }
+  }, [trips]);
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total trips" total="10" rate="0.43%" levelUp>
+        <CardDataStats
+          title="Total trips"
+          // total={trips?.length !== undefined ? trips.length.toString() : ""}
+          total="62"
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -31,7 +115,11 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Countries" total="200" rate="4.35%" levelUp>
+        <CardDataStats
+          title="Total Offers"
+          // total={offers?.length !== undefined ? offers.length.toString() : ""}
+          total="50"
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="20"
@@ -54,26 +142,41 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
+        <CardDataStats
+          title="Total Countries"
+          // total={countries.toString()}
+          total="92"
+        >
           <svg
-            className="fill-primary dark:fill-white"
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            fill="none"
+            className="h-6 w-6 text-primary dark:text-white"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
           >
             <path
-              d="M21.1063 18.0469L19.3875 3.23126C19.2157 1.71876 17.9438 0.584381 16.3969 0.584381H5.56878C4.05628 0.584381 2.78441 1.71876 2.57816 3.23126L0.859406 18.0469C0.756281 18.9063 1.03128 19.7313 1.61566 20.3844C2.20003 21.0375 2.99066 21.3813 3.85003 21.3813H18.1157C18.975 21.3813 19.8 21.0031 20.35 20.3844C20.9 19.7656 21.2094 18.9063 21.1063 18.0469ZM19.2157 19.3531C18.9407 19.6625 18.5625 19.8344 18.15 19.8344H3.85003C3.43753 19.8344 3.05941 19.6625 2.78441 19.3531C2.50941 19.0438 2.37191 18.6313 2.44066 18.2188L4.12503 3.43751C4.19378 2.71563 4.81253 2.16563 5.56878 2.16563H16.4313C17.1532 2.16563 17.7719 2.71563 17.875 3.43751L19.5938 18.2531C19.6282 18.6656 19.4907 19.0438 19.2157 19.3531Z"
-              fill=""
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
             />
             <path
-              d="M14.3345 5.29375C13.922 5.39688 13.647 5.80938 13.7501 6.22188C13.7845 6.42813 13.8189 6.63438 13.8189 6.80625C13.8189 8.35313 12.547 9.625 11.0001 9.625C9.45327 9.625 8.1814 8.35313 8.1814 6.80625C8.1814 6.6 8.21577 6.42813 8.25015 6.22188C8.35327 5.80938 8.07827 5.39688 7.66577 5.29375C7.25327 5.19063 6.84077 5.46563 6.73765 5.87813C6.6689 6.1875 6.63452 6.49688 6.63452 6.80625C6.63452 9.2125 8.5939 11.1719 11.0001 11.1719C13.4064 11.1719 15.3658 9.2125 15.3658 6.80625C15.3658 6.49688 15.3314 6.1875 15.2626 5.87813C15.1595 5.46563 14.747 5.225 14.3345 5.29375Z"
-              fill=""
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total="3.456" rate="0.95%" levelDown>
+        <CardDataStats
+          title="Total Users"
+          // total={users?.length !== undefined ? users.length.toString() : ""}
+          total="120"
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -98,16 +201,11 @@ const ECommerce: React.FC = () => {
         </CardDataStats>
       </div>
 
-      {/* <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+      <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartOne />
-        <ChartTwo />
-        <ChartThree />
-        <MapOne />
-        <div className="col-span-12 xl:col-span-8">
-          <TableOne />
-        </div>
-        <ChatCard />
-      </div> */}
+
+        <div className="col-span-12 xl:col-span-8"></div>
+      </div>
     </>
   );
 };
