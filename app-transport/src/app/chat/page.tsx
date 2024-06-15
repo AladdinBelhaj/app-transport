@@ -346,9 +346,9 @@ const Chat = () => {
                         }`}
                         onClick={() => handleUserClick(user)}
                       >
-                        <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
+                        {/* <div className="text-gray-500 absolute right-0 top-0 mr-4 mt-3 text-xs">
                           5 min
-                        </div>
+                        </div> */}
                         <div
                           className={`avatar ${isOnline ? "online" : "offline"}`}
                         >
