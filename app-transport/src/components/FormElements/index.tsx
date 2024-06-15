@@ -180,7 +180,7 @@ const FormElements = () => {
               <CheckboxOne />
               <CheckboxTwo />
               <CheckboxThree />
-              <CheckboxFour />
+              <CheckboxFour label="Accept Terms and Conditions" />
               <CheckboxFive />
             </div>
           </div>
