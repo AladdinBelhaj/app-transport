@@ -51,21 +51,79 @@ app-transport is a web-based application designed to facilitate the connection b
 
 The application will be available at http://localhost:3000.
 
-### 4. API Documentation
 
-**Example:**
-```markdown
 ## API Documentation
 
 ### Endpoints
 
-#### Create a Task
-- **URL:** `/api/tasks`
+#### Create a Trip
+
+- **URL:** `/api/trips/create`
 - **Method:** `POST`
 - **Request Body:**
+  
   ```json
   {
-    "title": "Task Title",
-    "description": "Task Description",
-    "assignedTo": "userId"
+    "departCountry": "Country of departure",
+    "departState": "State of departure",
+    "destCountry": "Country of arrival",
+    "desState": "State of arrival",
+    "departDate": "Date of departure",
+    "arrivDate": "Date of arrival",
+    "maxWeight": "Trip's maximum weight to be carried",
+    "description": "Optinal trip description",
+    "transporterId": "Trip is assigned to the user's ID", 
+    "status": "Trip status"
   }
+
+- **Response:**
+  ```json
+  {
+    "message": "Trip created successfully"
+  }
+
+
+#### Update a Trip
+
+- **URL:** `/api/trips/:tripId`
+- **Method:** `PUT`
+- **Request Body:**
+  
+  ```json
+  {
+    "departCountry": "Updated Country of departure",
+    "departState": "Updated State of departure",
+    "destCountry": "Updated Country of arrival",
+    "desState": "Updated State of arrival",
+    "departDate": "Updated Date of departure",
+    "arrivDate": "Updated Date of arrival",
+    "maxWeight": "Updated Trip's maximum weight to be carried",
+    "description": "Updated Optinal trip description",
+    "transporterId": "Updated Trip is assigned to the user's ID", 
+    "status": "Updated Trip status"
+  }
+
+- **Response:**
+  ```json
+  {
+    "message": "Trip updated successfully"
+  }
+
+#### Delete a Trip
+
+- **URL:** `/api/trips/:tripId`
+- **Method:** `DELETE`
+- **Request Body:**
+  
+  ```json
+  {
+  "tripId": "Trip's ID"
+  }
+
+- **Response:**
+  ```json
+  {
+    "message": "Trip deleted successfully"
+  }
+
+
