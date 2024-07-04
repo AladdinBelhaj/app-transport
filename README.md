@@ -32,3 +32,21 @@ app-transport is a web-based application designed to facilitate the connection b
       ```bash
    npm install
 
+### Usage
+
+1. To start the backend server, run:
+   ```bash
+   cd app-transport/backend
+   nodemon server.js
+   
+2. To start the socket, run:
+   ```bash
+   cd app-transport/backend/socket
+   nodemon index.js
+
+3. To start the development server, run:
+   ```bash
+   cd app-transport/backend/socket
+   npm run dev
+
+The application will be available at http://localhost:3000.
