@@ -22,4 +22,13 @@ app-transport is a web-based application designed to facilitate the connection b
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/projectname.git
+   git clone git@github.com:AladdinBelhaj/app-transport.git
+
+2. Navigate to project directory:
+   ```bash
+   cd app-transport
+
+3. Install dependencies
+      ```bash
+   npm install
+
