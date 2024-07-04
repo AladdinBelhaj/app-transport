@@ -50,3 +50,22 @@ app-transport is a web-based application designed to facilitate the connection b
    npm run dev
 
 The application will be available at http://localhost:3000.
+
+### 4. API Documentation
+
+**Example:**
+```markdown
+## API Documentation
+
+### Endpoints
+
+#### Create a Task
+- **URL:** `/api/tasks`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+    "title": "Task Title",
+    "description": "Task Description",
+    "assignedTo": "userId"
+  }
